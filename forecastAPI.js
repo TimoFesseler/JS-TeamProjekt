@@ -21,7 +21,7 @@ MongoClient.connect(url, function (err, db) {
 
 
 
-request('http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=1ccf6bfbf52e4b3abadde9b4125547d3', function (error, response, body) {
+request('http://api.openweathermap.org/data/2.5/forecast/city?id=2848175&APPID=1ccf6bfbf52e4b3abadde9b4125547d3', function (error, response, body) {
     if (!error) {
 
 
@@ -59,7 +59,7 @@ request('http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=1c
 
             forecast.forecast.push({
 
-                'date_time': data.list[i].dt_txt, 'temp': +data.list[i].main.temp, 'clouds' : data.list[i].clouds.all
+                'date_time': data.list[i].dt_txt, 'temp': +(data.list[i].main.temp-273.15), 'clouds' : data.list[i].clouds.all
 
             });
 

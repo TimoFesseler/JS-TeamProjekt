@@ -14,7 +14,7 @@
 
 
 var fs = require('fs');
-var csv = require ('ya-csv');
+var mongoose = require('mongoose');
 
 fs.readFile('../TeamProjekt/PV-Daten/Fesseler-201601.csv', 'utf-8', function (err, inhalt){
     if (err){
@@ -24,31 +24,61 @@ fs.readFile('../TeamProjekt/PV-Daten/Fesseler-201601.csv', 'utf-8', function (er
     var lines = inhalt.split(/\r?\n/);
     var result = new Array();
 
-    for (var i = 0; i < lines.length-1; i++) {
-        if(i > 8 ) {
+    for (var i = 9; i < lines.length-1; i++) {
+        // if(i > 8 ) {
             var line = lines[i];
-            console.log("# das ist das Attribut 'line': " + line);
+            // console.log("# das ist das Attribut 'line': " + line);
             var tokens = line.split(/;/);
-            console.log("# das ist das Attribut 'tokens': " + tokens);
-            console.log("# das ist das Attribut 'date': " + tokens[0]);
-            console.log("# das ist das Attribut 'kWhTilToday': " + tokens[1]);
-            console.log("# das ist das Attribut 'kWhMom': " + tokens[2] + "\n");
+            // console.log("# das ist das Attribut 'tokens': " + tokens);
+            // console.log("# das ist das Attribut 'datum': " + tokens[0]);
+            // console.log("# das ist das Attribut 'kWhTilToday': " + tokens[1]);
+            // console.log("# das ist das Attribut 'kWhMom': " + tokens[2] + "\n");
 
             // if (tokens.length != 5) {
             //     error("Komische Zeile (" + (i + 1) + "): " + line);
             // }
             var daten = {
-                date: tokens[0],
+                datum: tokens[0],
                 kWhTilToday: tokens[1],
                 kWhMom: tokens[2]
             };
-        }
+        // }
         result.push(daten);
     }
-    console.log(daten);
+    console.log(result);
     // output(JSON.stringify(result, null, 2));
 });
 
+var db = mongoose.connection;
+mongoose.connect(url);
+var url = 'mongodb://localhost/PV';
+
+db.on('error', console.error);
+db.once('open', function() {
+    var pvDatenSchema = new mongoose.Schema({
+        datum: {type: date},
+        kWhTilToday: Number,
+        kWhMom: Number
+    });
+    var PV = mongoose.model('PV', pvDatenSchema);
+
+    var pvDaten = new PV({
+        datum: tokens[0],
+        kWhTilToday: tokens[1],
+        kWhMom: tokens[2]
+    });
+
+    pvDaten.save(function (err, pvDaten) {
+        if (err) {
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            console.log('Connection established to', url);
+            // return console.error(err);
+            // console.dir(pvDaten);
+        }
+
+    });
+});
 
 
 // var lines = inhalt.split(/\r?\n/);
