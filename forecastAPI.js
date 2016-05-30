@@ -5,7 +5,7 @@ var assert = require('assert');
 
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost/test';
-var cityID = '524901';
+var cityID = '2848175';
 var token = '1ccf6bfbf52e4b3abadde9b4125547d3';
 var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast/';
 
