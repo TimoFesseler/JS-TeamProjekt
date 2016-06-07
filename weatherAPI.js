@@ -33,6 +33,7 @@ MongoClient.connect(url, function (err, db) {
                 //console.log(body);
 
                 var weather = {
+                    'date_time': new Date(),
                     'city_id': data.id,
                     'city_name': data.name,
                     'cords': {'lon': data.coord.lon, 'lat': data.coord.lat},
@@ -46,7 +47,6 @@ MongoClient.connect(url, function (err, db) {
 
                     weather.weather.push({
 
-                        'date_time': new Date(),
                         'temp': (data.main.temp - 273.15),
                         'temp_min': (data.main.temp_min - 273.15),
                         'temp_max': (data.main.temp_max - 273.15),
