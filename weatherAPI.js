@@ -30,12 +30,14 @@ MongoClient.connect(url, function (err, db) {
 
                 data = JSON.parse(body);
 
-                console.log(body);
+                //console.log(body);
 
                 var weather = {
                     'city_id': data.id,
                     'city_name': data.name,
                     'cords': {'lon': data.coord.lon, 'lat': data.coord.lat},
+                    'sunrise': data.sys.sunrise,
+                    'sunset' : data.sys.sunset,
 
                     'weather': []
 
@@ -44,8 +46,11 @@ MongoClient.connect(url, function (err, db) {
 
                     weather.weather.push({
 
-                        //'date_time': new date(),
+                        'date_time': new Date(),
                         'temp': (data.main.temp - 273.15),
+                        'temp_min': (data.main.temp_min - 273.15),
+                        'temp_max': (data.main.temp_max - 273.15),
+                        'rain': data.rain['1h'],
                         'clouds': data.clouds.all
 
                     });
