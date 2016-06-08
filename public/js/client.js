@@ -19,21 +19,9 @@ socket.on('chat', function (data) {
 
     var ort = data.city_name;
 
+var para = document.createElement("p");
+var node = document.createTextNode("This is new.");
+para.appendChild(node);
 
-    $('#content').append(
-        $('<li></li>').append(
-            // Uhrzeit
-            $('<span>').text('[' +
-                (zeit.getHours() < 10 ? '0' + ort
-                + ':' +
-                (zeit.getMinutes() < 10 ? '0' + zeit.getMinutes() : zeit.getMinutes())
-                + '] '
-            ),
-            // Name
-            $('<b>').text(typeof(data.name) != 'undefined' ? data.city_name + ': ' : ''),
-            // Text
-            $('<span>').text(data.text))
-    );
-    // nach unten scrollen
-    $('body').scrollTop($('body')[0].scrollHeight);
+
 });
