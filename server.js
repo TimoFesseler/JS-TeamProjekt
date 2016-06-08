@@ -50,9 +50,10 @@ var weatherSchema = mongoose.Schema({
   var Weather = mongoose.model('weather', weatherSchema);
 
 
-Weather.find(function (err, weathers) {
+Weather.find(function (err, abc) {
   if (err) return console.error(err);
-console.log(weathers);
+console.log(abc);
+console.log("3333333");
 })});
 
 
