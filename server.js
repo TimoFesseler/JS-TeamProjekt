@@ -9,6 +9,23 @@ var express = require('express')
 ,   io = require('socket.io').listen(server)
 ,   conf = require('./config.json');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Webserver
 // auf den Port x schalten
 server.listen(conf.port);
@@ -26,8 +43,12 @@ app.get('/', function (req, res) {
 
 // Websocket
 io.sockets.on('connection', function (socket) {
+
+var text = "hhhhhhhhh";
+var zeit = new Date();
+
 	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
+	socket.emit('chat', { zeit: zeit, text: text });
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
 		// so wird dieser Text an alle anderen Benutzer gesendet
