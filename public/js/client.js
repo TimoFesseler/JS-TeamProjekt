@@ -5,8 +5,8 @@ $(document).ready(function(){
     socket.on('chat', function (data) {
 
 
-alert(data[1].city_name);
-alert("aaaaaaaaaaaaaaaaaaaaaaa");
+console.log(data[1].city_name);
+console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
 
 
