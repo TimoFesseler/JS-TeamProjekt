@@ -25,8 +25,43 @@ app.get('/', function (req, res) {
 
 // Websocket
 io.sockets.on('connection', function (socket) {
+
+// Weather Model
+
+var weatherSchema = mongoose.Schema({
+
+
+      date_time : Date,
+      city_id : Number,
+      city_name : String,
+      cords : {
+          lon : Number,
+          lat : Number
+      },
+      sunrise : Number,
+      sunset :  Number,
+
+              temp : Number,
+              temp_min : Number,
+              temp_max : Number,
+              rain : String,
+              clouds : Number
+
+
+  });
+
+
+  var Weather = mongoose.model('weather', weatherSchema);
+
+
+Weather.find(function (err, weathers) {
+  if (err) return console.error(err);
+  console.log(weathers);
+})
+
+
 	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
+	socket.emit('chat', weathers);
 
 
 

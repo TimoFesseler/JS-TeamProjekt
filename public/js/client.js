@@ -10,6 +10,23 @@ var socket = io.connect();
 
 
 socket.on('chat', function (data) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var zeit = new Date(data.zeit);
     $('#content').append(
         $('<li></li>').append(
