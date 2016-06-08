@@ -4,6 +4,9 @@ var express = require('express')
 ,   io = require('socket.io').listen(server)
 ,   conf = require('./config.json');
 
+var mongoose = require('mongoose');
+
+
 // Webserver
 // auf den Port x schalten
 server.listen(conf.port);
@@ -23,6 +26,25 @@ app.get('/', function (req, res) {
 io.sockets.on('connection', function (socket) {
 	// der Client ist verbunden
 	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
+
+
+mongoose.connect('mongodb://localhost/test');
+
+ var collection = db.collection('weather');
+
+
+
+// get all the users
+collection.find({}, function(err, collection) {
+  if (err) throw err;
+
+  // object of all the users
+  console.log(weather);
+});
+
+
+
+	socket.emit('weatherNow')
 
 
 
