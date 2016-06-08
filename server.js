@@ -56,12 +56,12 @@ var weatherSchema = mongoose.Schema({
 
 Weather.find(function (err, weather) {
   if (err) return console.error(err);
-  console.log(weathers);
+  console.log(weather);
 })
 
 
 	// der Client ist verbunden
-	socket.emit('chat', weathers);
+	socket.emit('chat', weather);
 
 
 
