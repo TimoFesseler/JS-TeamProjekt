@@ -2,6 +2,8 @@ var mysql = require('mysql');
 var fs = require('fs');
 var loginFile = 'SBFspot-user.json';
 
+
+
 fs.readFile(loginFile, 'utf-8', function (err, data){
  if(err){
      console.log('Error: ' + err);
@@ -17,10 +19,10 @@ fs.readFile(loginFile, 'utf-8', function (err, data){
 
 // First you need to create a connection to the db
 var con = mysql.createConnection({
-    host: "www.schrolm.de",
+    host: logServer,
     user: logUser,
     password: logPsw,
-    database: "SBFspot"
+    database: logData
 });
 
 con.connect(function(err){
