@@ -63,7 +63,7 @@ io.sockets.on('connection', function (socket) {
 
 
 	// der Client ist verbunden
-	socket.emit('chat', { result });
+	socket.emit('chat', result );
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
 		// so wird dieser Text an alle anderen Benutzer gesendet
