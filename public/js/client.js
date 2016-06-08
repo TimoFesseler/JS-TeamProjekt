@@ -5,6 +5,7 @@ $(document).ready(function(){
     socket.on('chat', function (data) {
 
     alert("haööööasdad");
+    console.log("gasfaf");
 
 
         var zeit = new Date(data.zeit);
@@ -25,22 +26,6 @@ $(document).ready(function(){
         // nach unten scrollen
         $('body').scrollTop($('body')[0].scrollHeight);
     });
-    // Nachricht senden
-    function senden(){
-        // Eingabefelder auslesen
-        var name = $('#name').val();
-        var text = $('#text').val();
-        // Socket senden
-        socket.emit('chat', { name: name, text: text });
-        // Text-Eingabe leeren
-        $('#text').val('');
-    }
-    // bei einem Klick
-    $('#senden').click(senden);
-    // oder mit der Enter-Taste
-    $('#text').keypress(function (e) {
-        if (e.which == 13) {
-            senden();
-        }
-    });
+
+
 });

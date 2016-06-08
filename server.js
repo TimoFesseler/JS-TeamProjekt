@@ -69,8 +69,7 @@ console.log(weathers);
 })
 
 
-	// der Client ist verbunden
-	socket.emit('chat', weathers);
+	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
 
 
 });
