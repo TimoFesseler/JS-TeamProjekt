@@ -77,7 +77,6 @@ console.log(weathers);
 
 
 
-
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
 		// so wird dieser Text an alle anderen Benutzer gesendet
