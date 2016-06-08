@@ -1,18 +1,31 @@
-/**
- * Created by Affagichtli xD on 02.05.2016.
- */
-var Forecast = require('forecast.io');
+/* Creds:  https://www.npmjs.com/package/node-rest-client */
 
+var Client = require('node-rest-client').Client;
 
-var options = {
-        APIKey: process.env.FORECAST_API_KEY,
-        timeout: 1000
-    },
-    forecast = new Forecast(options);
+var client = new Client();
 
-forecast.get(latitude, longitude, function (err, res, data) {
-    if (err) throw err;
-    log('res: ' + util.inspect(res));
-    log('data: ' + util.inspect(data));
+// direct way
+client.get("http://api.openweathermap.org/data/2.5/forecast/city?id=524901&APPID=1ccf6bfbf52e4b3abadde9b4125547d3", function (data, response) {
+   // parsed response body as js object
+        console.log(data);
+        // raw response
+        console.log(response);
+
 });
 
+// // registering remote methods
+// client.registerMethod("jsonMethod", "api.openweathermap.org/data/2.5/weather?q=Stuttgart&APPID=481a70ace50d395a348161874f706968", "GET");
+//
+// client.methods.jsonMethod(function (data, response) {
+//     // parsed response body as js object
+//     console.log(data);
+//     // raw response
+//     console.log(response);
+// });
+
+
+/*
+api.openweathermap.org/data/2.5/forecast/city?id=71272&APPID=481a70ace50d395a348161874f706968
+
+API: "481a70ace50d395a348161874f706968"
+*/

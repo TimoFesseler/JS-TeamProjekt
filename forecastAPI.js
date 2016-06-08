@@ -66,8 +66,7 @@ MongoClient.connect(url, function (err, db) {
                 }
 
 
-                console.log(forecast);
-
+                // console.log(forecast);
 
                 var collection = db.collection('forecast');
                 collection.insert([forecast], function (err, result) {

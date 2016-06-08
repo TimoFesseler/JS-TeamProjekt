@@ -2,7 +2,7 @@ var fs = require('fs');
 var date = require('date-and-time');
 var mongoose = require('mongoose');
 
-var url = 'mongodb://localhost:27017/PVtest';
+var url = 'mongodb://localhost:27017/PV';
 mongoose.connect(url);
 
 
