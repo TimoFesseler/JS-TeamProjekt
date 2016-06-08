@@ -7,11 +7,11 @@
 
 var socket = io.connect();
 
-
+alert('Hallo Welt');
 
 socket.on('chat', function (data) {
 
 
-alert('Hallo Welt');
+
 
 });
