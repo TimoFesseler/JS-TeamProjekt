@@ -1,8 +1,3 @@
-/**
- * Created by Fabian Tschullik on 08.06.2016.
- */
-
-
 var express = require('express')
 ,   app = express()
 ,   server = require('http').createServer(app)
@@ -10,9 +5,26 @@ var express = require('express')
 ,   conf = require('./config.json');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://87.106.111.229/test');
 
-console.log("asdad");
+
+
+// Webserver
+// auf den Port x schalten
+server.listen(conf.port);
+
+
+	// statische Dateien ausliefern
+	app.use(express.static(__dirname + '/public'));
+
+
+// wenn der Pfad / aufgerufen wird
+app.get('/', function (req, res) {
+	// so wird die Datei index.html ausgegeben
+	res.sendfile(__dirname + '/public/index.html');
+});
+
+// Websocket
+io.sockets.on('connection', function (socket) {
 
 
 var db = mongoose.connection;
@@ -51,60 +63,21 @@ var weatherSchema = mongoose.Schema({
   var Weather = mongoose.model('weather', weatherSchema);
 
 
-Weather.find(function (err, abc) {
+Weather.find(function (err, weathers) {
   if (err) return console.error(err);
-
-  var result = abc
-console.log(abc);
-
-
-// Websocket
-io.sockets.on('connection', function (socket) {
+console.log(weathers);
+})
 
 
+	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
 
-	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: result.city_name  });
-	// wenn ein Benutzer einen Text senden
-	socket.on('chat', function (data) {
-		// so wird dieser Text an alle anderen Benutzer gesendet
-		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data.text });
-	});
+
 });
 
 
 
 
-
-})});
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Webserver
-// auf den Port x schalten
-server.listen(conf.port);
-
-	// statische Dateien ausliefern
-	app.use(express.static(__dirname + '/public'));
-
-
-// wenn der Pfad / aufgerufen wird
-app.get('/', function (req, res) {
-	// so wird die Datei index.html ausgegeben
-	res.sendfile(__dirname + '/public/index.html');
 });
-
-
 
 // Portnummer in die Konsole schreiben
 console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
