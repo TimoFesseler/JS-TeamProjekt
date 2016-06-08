@@ -9,10 +9,49 @@ var express = require('express')
 ,   io = require('socket.io').listen(server)
 ,   conf = require('./config.json');
 
+var mongoose = require('mongoose');
+
+
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+  console.log("Connected to DBll");
 
 
 
 
+// Weather Model
+var weatherSchema = mongoose.Schema({
+
+
+      date_time : Date,
+      city_id : Number,
+      city_name : String,
+      cords : {
+          lon : Number,
+          lat : Number
+      },
+      sunrise : Number,
+      sunset :  Number,
+
+              temp : Number,
+              temp_min : Number,
+              temp_max : Number,
+              rain : String,
+              clouds : Number
+
+
+  });
+
+
+  var Weather = mongoose.model('weather', weatherSchema);
+
+
+Weather.find(function (err, weathers) {
+  if (err) return console.error(err);
+console.log(weathers);
+})}
 
 
 
@@ -44,8 +83,24 @@ app.get('/', function (req, res) {
 // Websocket
 io.sockets.on('connection', function (socket) {
 
-var text = "hhhhhhhhh";
-var zeit = new Date();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// der Client ist verbunden
 	socket.emit('chat', { zeit: zeit, text: text });
