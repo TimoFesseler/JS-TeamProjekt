@@ -11,6 +11,8 @@ var express = require('express')
 
 var mongoose = require('mongoose');
 
+console.log("asdad");
+
 
 var db = mongoose.connection;
 
