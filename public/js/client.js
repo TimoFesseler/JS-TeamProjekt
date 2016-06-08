@@ -19,9 +19,6 @@ socket.on('chat', function (data) {
 
     var ort = data.city_name;
 
-var para = document.createElement("p");
-var node = document.createTextNode("This is new.");
-para.appendChild(node);
-
+alert('Hallo Welt');
 
 });
