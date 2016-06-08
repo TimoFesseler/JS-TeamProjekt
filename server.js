@@ -107,7 +107,7 @@ io.sockets.on('connection', function (socket) {
 
 
 	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: "asd" });
+	socket.emit('chat', { zeit: new Date(), text: abc.city_name  });
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
 		// so wird dieser Text an alle anderen Benutzer gesendet
