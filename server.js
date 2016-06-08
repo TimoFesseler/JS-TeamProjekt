@@ -77,11 +77,7 @@ console.log(weathers);
 
 
 
-	// wenn ein Benutzer einen Text senden
-	socket.on('chat', function (data) {
-		// so wird dieser Text an alle anderen Benutzer gesendet
-		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data.text });
-	});
+
 });
 
 // Portnummer in die Konsole schreiben
