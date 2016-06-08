@@ -12,6 +12,6 @@ alert('Hallo Welt');
 socket.on('chat', function (data) {
 
 
-
+console.log("hallo");
 
 });
