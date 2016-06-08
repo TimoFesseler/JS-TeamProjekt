@@ -43,11 +43,6 @@ mongoose.connect('mongodb://localhost/test');
  var collection = db.collection('weather');
 
 
-// Find all movies.
-weather.find(function(err, weather) {
-  if (err) return console.error(err);
-  console.dir(weather);
-});
 
 
 // get all the users
