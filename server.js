@@ -55,7 +55,26 @@ Weather.find(function (err, abc) {
   if (err) return console.error(err);
 
   var result = abc
-//console.log(abc);
+console.log(abc);
+
+
+// Websocket
+io.sockets.on('connection', function (socket) {
+
+
+
+	// der Client ist verbunden
+	socket.emit('chat', { zeit: new Date(), text: result.city_name  });
+	// wenn ein Benutzer einen Text senden
+	socket.on('chat', function (data) {
+		// so wird dieser Text an alle anderen Benutzer gesendet
+		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data.text });
+	});
+});
+
+
+
+
 
 })});
 
@@ -86,36 +105,6 @@ app.get('/', function (req, res) {
 });
 
 
-// Websocket
-io.sockets.on('connection', function (socket) {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: result.city_name  });
-	// wenn ein Benutzer einen Text senden
-	socket.on('chat', function (data) {
-		// so wird dieser Text an alle anderen Benutzer gesendet
-		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data.text });
-	});
-});
 
 // Portnummer in die Konsole schreiben
 console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
