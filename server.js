@@ -5,6 +5,7 @@ var express = require('express')
 ,   conf = require('./config.json');
 
 var mongoose = require('mongoose');
+var db = mongoose.connection;
 
 
 // Webserver
@@ -28,10 +29,25 @@ io.sockets.on('connection', function (socket) {
 	socket.emit('chat', { zeit: new Date(), text: 'Du bist nun mit dem Server verbunden!' });
 
 
+
+db.on('error', console.error);
+db.once('open', function() {
+  // Create your schemas and models here.
+});
+
+
 mongoose.connect('mongodb://localhost/test');
+
+
 
  var collection = db.collection('weather');
 
+
+// Find all movies.
+weather.find(function(err, weather) {
+  if (err) return console.error(err);
+  console.dir(weather);
+});
 
 
 // get all the users
@@ -43,8 +59,6 @@ collection.find({}, function(err, collection) {
 });
 
 
-
-	socket.emit('weatherNow')
 
 
 
