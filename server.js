@@ -10,6 +10,7 @@ var express = require('express')
 ,   conf = require('./config.json');
 
 var mongoose = require('mongoose');
+mongoose.connect('mongodb://87.106.111.229/test');
 
 console.log("asdad");
 
@@ -53,7 +54,7 @@ var weatherSchema = mongoose.Schema({
 Weather.find(function (err, abc) {
   if (err) return console.error(err);
 console.log(abc);
-console.log("3333333");
+
 })});
 
 
