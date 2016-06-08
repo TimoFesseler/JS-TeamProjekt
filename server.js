@@ -5,7 +5,7 @@ var express = require('express')
 ,   conf = require('./config.json');
 
 var mongoose = require('mongoose');
-var db = mongoose.connection;
+
 
 
 // Webserver
@@ -26,8 +26,17 @@ app.get('/', function (req, res) {
 // Websocket
 io.sockets.on('connection', function (socket) {
 
-// Weather Model
 
+var db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function(){
+  console.log("Connected to DBll");
+
+
+
+
+// Weather Model
 var weatherSchema = mongoose.Schema({
 
 
@@ -64,30 +73,7 @@ console.log(weathers);
 	socket.emit('chat', weathers);
 
 
-
-db.on('error', console.error);
-db.once('open', function() {
-  // Create your schemas and models here.
-});
-
-
-mongoose.connect('mongodb://localhost/test');
-
-
-
- var collection = db.collection('weather');
-
-
-
-
-// get all the users
-collection.find({}, function(err, collection) {
-  if (err) throw err;
-
-  // object of all the users
-  console.log(collection.date_time);
-});
-
+}
 
 
 
