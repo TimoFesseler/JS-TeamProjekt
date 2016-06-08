@@ -73,7 +73,7 @@ console.log(weathers);
 	socket.emit('chat', weathers);
 
 
-}
+});
 
 
 
