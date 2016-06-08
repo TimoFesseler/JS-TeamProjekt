@@ -53,7 +53,9 @@ var weatherSchema = mongoose.Schema({
 
 Weather.find(function (err, abc) {
   if (err) return console.error(err);
-console.log(abc);
+
+  var result = abc
+//console.log(abc);
 
 })});
 
@@ -107,7 +109,7 @@ io.sockets.on('connection', function (socket) {
 
 
 	// der Client ist verbunden
-	socket.emit('chat', { zeit: new Date(), text: abc.city_name  });
+	socket.emit('chat', { zeit: new Date(), text: result.city_name  });
 	// wenn ein Benutzer einen Text senden
 	socket.on('chat', function (data) {
 		// so wird dieser Text an alle anderen Benutzer gesendet
