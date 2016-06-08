@@ -61,7 +61,7 @@ console.log(weathers);
 
 
 	// der Client ist verbunden
-	socket.emit('chat', weather);
+	socket.emit('chat', weathers);
 
 
 
