@@ -10,7 +10,7 @@ mongoose.connect('mongodb://87.106.111.229/test');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
-  console.log("Connected to DB");
+  console.log("Connected to DBll");
 
   var weatherSchema = mongoose.Schema({
 
@@ -66,6 +66,7 @@ console.log(weather);
 weather.save(function (err, weather) {
 
   if (err) return console.error(err);
+  if (!err) mongoose.connection.close();
 
 });
 
@@ -74,5 +75,6 @@ weather.save(function (err, weather) {
 
 });
 
+
+
 });
-mongoose.connection.close();
