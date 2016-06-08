@@ -50,7 +50,7 @@ collection.find({}, function(err, collection) {
   if (err) throw err;
 
   // object of all the users
-  console.log(collection);
+  console.log(collection.date_time);
 });
 
 
