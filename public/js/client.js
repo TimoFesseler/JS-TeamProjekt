@@ -14,13 +14,13 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
  var temp = data[1].temp;
  var temp = temp.toString();
+ document.getElementById("temp").innerHTML = temp.slice(0,5);
 
-
- document.getElementById("temp").innerHTML = temp.slice(0,4);
  document.getElementById("clouds").innerHTML = data[1].clouds;
  document.getElementById("rain").innerHTML = data[1].rain;
-  document.getElementById("sunrise").innerHTML = data[1].sunrise;
-   document.getElementById("sunset").innerHTML = data[1].sunset;
+
+  document.getElementById("sunrise").innerHTML = new Date(data[1].sunrise*1000);
+   document.getElementById("sunset").innerHTML = new Date (data[1].sunset*1000);
 
 
 
