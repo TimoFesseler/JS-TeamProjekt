@@ -4,10 +4,10 @@
 
 
 var express = require('express')
-,   app = express()
-,   server = require('http').createServer(app)
-,   io = require('socket.io').listen(server)
-,   conf = require('./config.json');
+    ,   app = express()
+    ,   server = require('http').createServer(app)
+    ,   io = require('socket.io').listen(server)
+    ,   conf = require('./config.json');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://87.106.111.229/test');
@@ -19,63 +19,63 @@ var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(){
-  console.log("Connected to DBll");
+    console.log("Connected to DBll");
 
 
 
 
 // Weather Model
-var weatherSchema = mongoose.Schema({
+    var weatherSchema = mongoose.Schema({
 
 
-      date_time : Date,
-      city_id : Number,
-      city_name : String,
-      cords : {
-          lon : Number,
-          lat : Number
-      },
-      sunrise : Number,
-      sunset :  Number,
+        date_time : Date,
+        city_id : Number,
+        city_name : String,
+        cords : {
+            lon : Number,
+            lat : Number
+        },
+        sunrise : Number,
+        sunset :  Number,
 
-              temp : Number,
-              temp_min : Number,
-              temp_max : Number,
-              rain : String,
-              clouds : Number
-
-
-  });
+        temp : Number,
+        temp_min : Number,
+        temp_max : Number,
+        rain : String,
+        clouds : Number
 
 
-  var Weather = mongoose.model('weather', weatherSchema);
+    });
 
 
-Weather.find(function (err, abc) {
-  if (err) return console.error(err);
+    var Weather = mongoose.model('weather', weatherSchema);
 
-  var result = abc
+
+    Weather.find(function (err, abc) {
+        if (err) return console.error(err);
+
+        var result = abc
 
 
 // Websocket
-io.sockets.on('connection', function (socket) {
+        io.sockets.on('connection', function (socket) {
 
 
 
-	// der Client ist verbunden
-	socket.emit('chat', result );
-	// wenn ein Benutzer einen Text senden
-	socket.on('chat', function (data) {
-		// so wird dieser Text an alle anderen Benutzer gesendet
-		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data[1].text });
-	});
-});
+            // der Client ist verbunden
+            socket.emit('chat', result );
+            // wenn ein Benutzer einen Text senden
+            socket.on('chat', function (data) {
+                // so wird dieser Text an alle anderen Benutzer gesendet
+                io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data[1].text });
+            });
+        });
 
 
 
 
 
-})});
+    })});
 
 
 
@@ -93,14 +93,14 @@ io.sockets.on('connection', function (socket) {
 // auf den Port x schalten
 server.listen(conf.port);
 
-	// statische Dateien ausliefern
-	app.use(express.static(__dirname + '/public'));
+// statische Dateien ausliefern
+app.use(express.static(__dirname + '/public'));
 
 
 // wenn der Pfad / aufgerufen wird
 app.get('/', function (req, res) {
-	// so wird die Datei index.html ausgegeben
-	res.sendfile(__dirname + '/public/index.html');
+    // so wird die Datei index.html ausgegeben
+    res.sendfile(__dirname + '/public/index.html');
 });
 
 
