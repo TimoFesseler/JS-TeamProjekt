@@ -12,6 +12,9 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
 
 
+
+
+
         var zeit = new Date(data.zeit);
         $('#content').append(
             $('<li></li>').append(
