@@ -11,7 +11,12 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
 
  document.getElementById("ort").innerHTML = data[1].city_name;
- document.getElementById("temp").innerHTML = data[1].temp.slice(0,4);
+
+ var temp = data[1].temp;
+ var temp = temp.toString();
+
+
+ document.getElementById("temp").innerHTML = temp.slice(0,4);
  document.getElementById("clouds").innerHTML = data[1].clouds;
  document.getElementById("rain").innerHTML = data[1].rain;
   document.getElementById("sunrise").innerHTML = data[1].sunrise;
