@@ -51,27 +51,31 @@ var weatherSchema = mongoose.Schema({
   var Weather = mongoose.model('weather', weatherSchema);
 
 
-Weather.find({}).sort({date: -1}).exec(function(err, docs) {
+Weather.find(function (err, abc).limit(1) {
+  if (err) return console.error(err);
 
- io.sockets.on('connection', function (socket) {
+  var result = abc
 
-   var result = docs
 
- 	// der Client ist verbunden
- 	socket.emit('chat', result );
- 	// wenn ein Benutzer einen Text senden
- 	socket.on('chat', function (data) {
- 		// so wird dieser Text an alle anderen Benutzer gesendet
- 		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data[1].text });
- 	});
- });
+// Websocket
+io.sockets.on('connection', function (socket) {
 
 
 
- });
+	// der Client ist verbunden
+	socket.emit('chat', result );
+	// wenn ein Benutzer einen Text senden
+	socket.on('chat', function (data) {
+		// so wird dieser Text an alle anderen Benutzer gesendet
+		io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data[1].text });
+	});
+});
 
 
-)});
+
+
+
+})});
 
 
 
