@@ -10,7 +10,13 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
 
 
-    document.getElementById("ort").innerHTML = data[1].city_name;
+ document.getElementById("ort").innerHTML = data[1].city_name;
+ document.getElementById("temp").innerHTML = data[1].temp;
+ document.getElementById("clouds").innerHTML = data[1].clouds;
+ document.getElementById("rain").innerHTML = data[1].rain;
+  document.getElementById("sunrise").innerHTML = data[1].sunrise;
+   document.getElementById("sunset").innerHTML = data[1].sunset;
+
 
 
 
