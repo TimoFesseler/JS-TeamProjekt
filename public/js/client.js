@@ -4,8 +4,27 @@ $(document).ready(function(){
     // neue Nachricht
     socket.on('chat', function (data) {
 
-    alert("haööööasdad");
-    console.log("gasfaf");
+
+console.log(data[1].city_name);
+console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+
+
+
+ document.getElementById("ort").innerHTML = data[1].city_name;
+
+ var temp = data[1].temp;
+ var temp = temp.toString();
+ document.getElementById("temp").innerHTML = temp.slice(0,5);
+
+ document.getElementById("clouds").innerHTML = data[1].clouds;
+ document.getElementById("rain").innerHTML = data[1].rain;
+
+  document.getElementById("sunrise").innerHTML = new Date(data[1].sunrise*1000);
+   document.getElementById("sunset").innerHTML = new Date (data[1].sunset*1000);
+
+
+
+
 
 
         var zeit = new Date(data.zeit);

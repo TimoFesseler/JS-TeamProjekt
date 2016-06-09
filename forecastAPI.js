@@ -2,11 +2,15 @@ var request = require('request');
 
 var mongodb = require('mongodb');
 var assert = require('assert');
+var fs = require('fs');
+var loginFile = require('./SBFspot-user.json');
+
+var logOutkey = loginFile.outkey;
 
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost/test';
 var cityID = '2848175';
-var token = '1ccf6bfbf52e4b3abadde9b4125547d3';
+var token = logOutkey;
 var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast/';
 
 function getCelsius (far){
