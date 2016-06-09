@@ -53,6 +53,7 @@ db.once('open', function(){
     var q = Weather.find().sort({'date': -1}).limit(20);
     q.exec(function(err, posts) {
 
+        console.log(posts);
     });
 
 
