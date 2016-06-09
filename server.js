@@ -50,9 +50,8 @@ db.once('open', function(){
     var Weather = mongoose.model('weather', weatherSchema);
 
 
-    var q = Weather.find({published: true}).sort({'date': -1}).limit(20);
+    var q = Weather.find().sort({'date': -1}).limit(20);
     q.exec(function(err, posts) {
-console.log(posts.stringify());
 
     });
 
