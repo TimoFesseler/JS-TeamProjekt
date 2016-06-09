@@ -54,15 +54,11 @@ db.once('open', function(){
     q.exec(function(err, posts) {
 
         console.log(posts);
-    });
 
 
 
 
-    Weather.find(function (err, abc) {
-        if (err) return console.error(err);
 
-        var result = abc
 
 
 // Websocket
@@ -71,7 +67,7 @@ db.once('open', function(){
 
 
             // der Client ist verbunden
-            socket.emit('chat', result );
+            socket.emit('chat', posts );
             // wenn ein Benutzer einen Text senden
             socket.on('chat', function (data) {
                 // so wird dieser Text an alle anderen Benutzer gesendet
