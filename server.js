@@ -52,7 +52,7 @@ db.once('open', function(){
 
     var q = Weather.find({published: true}).sort({'date': -1}).limit(20);
     q.exec(function(err, posts) {
-console.log(posts[1].city_name);
+console.log(posts.stringify());
 
     });
 
