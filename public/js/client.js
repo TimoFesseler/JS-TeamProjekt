@@ -4,8 +4,12 @@ $(document).ready(function(){
     // neue Nachricht
     socket.on('chat', function (data) {
 
-    alert("haööööasdad");
-    console.log("gasfaf");
+
+console.log(data[1].city_name);
+console.log("aaaaaaaaaaaaaaaaaaaaaaa");
+
+
+
 
 
         var zeit = new Date(data.zeit);
