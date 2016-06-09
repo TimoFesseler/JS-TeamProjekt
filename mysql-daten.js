@@ -1,29 +1,20 @@
 var mysql = require('mysql');
-var fs = require('fs');
-var loginFile = 'SBFspot-user.json';
+var loginFile = require('./SBFspot-user.json');
 
-fs.readFile(loginFile, 'utf-8', function (err, data){
- if(err){
-     console.log('Error: ' + err);
-     return;
- }
-    //Auslesen der JSON-Datei um Logindaten nicht auf GIT preiszugeben
-    data = JSON.parse(data);
-    var logServer = data.server;
-    var logData = data.database;
-    var logUser = data.user;
-    var logPsw = data.psw;
-
+var logServer = loginFile.server;
+var logData = loginFile.database;
+var logUser = loginFile.user;
+var logPsw = loginFile.psw;
 
 // First you need to create a connection to the db
-var con = mysql.createConnection({
-    host: "www.schrolm.de",
+var connectionMySQL = mysql.createConnection({
+    host: logServer,
     user: logUser,
     password: logPsw,
-    database: "SBFspot"
+    database: logData
 });
 
-con.connect(function(err){
+connectionMySQL.connect(function(err){
     if(err){
         console.log('Error connecting to Db' + err );
         return;
@@ -31,17 +22,66 @@ con.connect(function(err){
     console.log('Connection established');
 });
 
-con.query('SELECT * FROM DayData', function(err, rows, fields){
+connectionMySQL.query('SELECT * FROM DayData', function(err, rows, fields){
     if(err) throw err;
+for (i=0; i< rows.length;i++) {
+    datum = rows[i].TimeStamp;
+    function timeConverter(datum){
+        datum = this.datum;
+        dat = new Date(datum*1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = dat.getFullYear();
+        var month = months[dat.getMonth()];
 
-    console.log(rows[0].Serial);
+
+        // Führende 0 bei Tag, Stunden & Minuten <10 anfügen
+        function date(){
+            if (dat.getDate()<10){
+                return ("0" + dat.getDate());
+            }
+            else
+            {return dat.getDate()}
+        }
+
+        function hour(){
+            if (dat.getHours()<10){
+                return ("0" + dat.getHours());
+            }
+            else
+            {return dat.getHours()}
+        }
+
+        function min(){
+            if (dat.getMinutes()<10){
+               return ("0" + dat.getMinutes());
+            }
+            else
+            {return dat.getMinutes()}
+        }
+        var time = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min() ;
+        return time;
+    }
+
+
+    power = rows[i].Power;
+    function zero2i (){
+        if (i<10){
+            return "0"+i;
+        }
+        else
+        {
+            return i;
+        }
+    }
+    
+    console.log("Zeile " + zero2i() + ": " + timeConverter() + " --- KW ---> " + power);
+}
 });
 
 
 
-con.end(function(err) {
+connectionMySQL.end(function(err) {
     // The connection is terminated gracefully
     // Ensures all previously enqueued queries are still
     // before sending a COM_QUIT packet to the MySQL server.
-});
 });
