@@ -12,7 +12,6 @@ var express = require('express')
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://87.106.111.229/test');
 
-console.log("asdad");
 
 
 var db = mongoose.connection;
@@ -53,7 +52,7 @@ db.once('open', function(){
 
     var q = Weather.find({published: true}).sort({'date': -1}).limit(20);
     q.exec(function(err, posts) {
-console.log(posts)
+console.log(posts.city_name[1])
 
     });
 
