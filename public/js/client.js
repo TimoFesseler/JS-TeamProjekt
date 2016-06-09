@@ -10,6 +10,7 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaa");
 
 
 
+    document.getElementById("weather").innerHTML = data[1].city_name;
 
 
 
