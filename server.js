@@ -12,7 +12,6 @@ var express = require('express')
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://87.106.111.229/test');
 
-console.log("asdad");
 
 
 var db = mongoose.connection;
@@ -51,10 +50,15 @@ db.once('open', function(){
     var Weather = mongoose.model('weather', weatherSchema);
 
 
-    Weather.find(function (err, abc) {
-        if (err) return console.error(err);
+    var q = Weather.find().sort({'_id': -1}).limit(2);
+    q.exec(function(err, posts) {
 
-        var result = abc
+        console.log(posts);
+
+
+
+
+
 
 
 // Websocket
@@ -63,7 +67,7 @@ db.once('open', function(){
 
 
             // der Client ist verbunden
-            socket.emit('chat', result );
+            socket.emit('chat', posts );
             // wenn ein Benutzer einen Text senden
             socket.on('chat', function (data) {
                 // so wird dieser Text an alle anderen Benutzer gesendet
