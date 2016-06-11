@@ -12,7 +12,7 @@ var express = require('express')
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://87.106.111.229/test');
 
-
+// var pvDaten = require('./mysql-daten.js');
 
 var db = mongoose.connection;
 
@@ -64,6 +64,7 @@ db.once('open', function(){
 // Websocket
         io.sockets.on('connection', function (socket) {
 
+            // socket.emit('timo', pvDaten.;
 
 
             // der Client ist verbunden

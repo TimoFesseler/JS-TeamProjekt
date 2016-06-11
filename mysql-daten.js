@@ -1,12 +1,14 @@
 var mysql = require('mysql');
 var loginFile = require('./SBFspot-user.json');
 
+//Variablen für die MySQL-Verbindungdaten aus der JSON Datei.
+// Man soll auf GIT-Hub keine Login-Daten aus dem Code lesen können
 var logServer = loginFile.server;
 var logData = loginFile.database;
 var logUser = loginFile.user;
 var logPsw = loginFile.psw;
 
-// First you need to create a connection to the db
+// Erstellung einer Verbindung
 var connectionMySQL = mysql.createConnection({
     host: logServer,
     user: logUser,
@@ -14,55 +16,59 @@ var connectionMySQL = mysql.createConnection({
     database: logData
 });
 
-connectionMySQL.connect(function(err){
-    if(err){
-        console.log('Error connecting to Db' + err );
+// Herstellung einer Verbindung mit Ausgabe in der Konsole, ob Verbindung hergestellt oder nicht
+connectionMySQL.connect(function (err) {
+    if (err) {
+        console.log('Error connecting to Db' + err);
         return;
     }
     console.log('Connection established');
 });
 
-
-var dayPower ={};
-console.log(dayPower.power);
-
-connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462077900 ORDER BY TimeStamp', function(err, rows, fields) {
+// Ausführung der SQL-Abfrage mit Verarbeitung der Daten
+// Startzeit (siehe SQL-Statement), da wir erst die Daten ab dem 1. Mai 2016 abfangen
+connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER BY TimeStamp', function (err, rows, fields) {
     if (err) throw err;
 
+    // Array für die kurzfristige Speicherung der PV-Daten aus der MySQL-DB
     var dayData = [];
     var weekData = [];
     var weeksData = [];
-    var startTime = 1462060800;
+
+//Variable als Counter für die Arrays.
+    var startTime = 0;
     console.log(rows.length + " Zeilen");
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
+        // Speichern des Konvertierten Datums, je ausgelesener Zeile aus der DB
         var datum = timeConverter(rows[i].TimeStamp);
-
-        // folgender Code stammt von http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+        // Speichern der KW-Anzahl, je ausgelesener Zeile aus der DB
         var power = rows[i].Power;
+        // Schreiben des Datums & Energy in ein Array, je ausgelesener Zeile aus der DB
+        var timeData = {datum: datum, power: power};
 
-        var timeData = { datum: datum, power: power };
-
-        if (startTime + (60*60*24) > rows[i].TimeStamp) {
-            // Alle Einträge eines Tages in dayData
+        // Anweisung um die Daten Tagesweise in ein Array schreiben zu können.
+        // Gezählt wird in Sekunden, da UNIX-Timestamp in der DB hinterlegt ist.
+        // Wenn der nächste Tag erreicht ist (24h in Sek) wird ein neues Array erstellt und das "volle" Array in das "Wochen"-Array geschrieben.
+        if (startTime + (60 * 60 * 24) > rows[i].TimeStamp) {
+            // Alle Einträge eines Tages in werden in das Array "dayData" geschrieben
             dayData.push(timeData);
         } else {
-            // Nach einem Tag
-
-            weekData.push(dayData)
+            weekData.push(dayData);
             dayData = [];
             dayData.push(timeData);
-            startTime = startTime + (60*60*24);
-
+            startTime = startTime + (60 * 60 * 24);
+            // Sobald 5 Tage in dem Wochen-Array stehen, wird ein neues Wochenarray erstellt.
             if (weekData.length > 4) {
                 weeksData.push(weekData);
                 weekData = [];
 
+                // 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
             }
         }
-
-
-
     }
+    // Zählervariable für die Zeilen in der Konsolenausgabe
+    var countZeile = 0;
+    // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
     for (var k = 0; k < weeksData.length; k++) {
         var testWeekData = weeksData[k];
 
@@ -70,23 +76,23 @@ connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462077900 ORDER 
             var testDayData = testWeekData[j];
             for (var x = 0; x < testDayData.length; x++) {
                 var testTimeData = testDayData[x];
-
-
-                console.log("Zeile " + zero2i() + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
+                countZeile++;
+                console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
             }
         }
     }
-})
-//78115598233698317051
 
-connectionMySQL.end(function(err) {
-    // The connection is terminated gracefully
-    // Ensures all previously enqueued queries are still
-    // before sending a COM_QUIT packet to the MySQL server.
 });
+// Verbing wird hier beendet
+connectionMySQL.end(function (err) {
 
+});
+// folgender Code stammt von http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
 function timeConverter(datum) {
-
+    // Das Datum wird in die DB als UNIX-Timestamp geschrieben.
+    // Um das richtige Datum als auch Uhrzeit bekommen zu können muss man
+    // den UNIX-Timestamp, welcher in Sekunden ist *1000 nehmen,
+    // damit die "new Date()"-Funktion den Timnestamp richtig übersetzt.
     var dat = new Date(datum * 1000);
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var year = dat.getFullYear();
@@ -123,13 +129,4 @@ function timeConverter(datum) {
 
     var time = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
     return time;
-}
-
-function zero2i() {
-    if (i < 10) {
-        return "0" + i;
-    }
-    else {
-        return i;
-    }
 }

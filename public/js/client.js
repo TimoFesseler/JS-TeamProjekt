@@ -1,6 +1,18 @@
 $(document).ready(function(){
     // WebSocket
     var socket = io.connect();
+
+
+    socket.on('timo', function (test) {
+       $('#bla').text(test);
+
+
+    });
+
+
+
+
+
     // neue Nachricht
     socket.on('chat', function (data) {
 
