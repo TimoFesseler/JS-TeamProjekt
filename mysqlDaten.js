@@ -34,10 +34,18 @@ connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER 
     var dayData = [];
     var weekData = [];
     var weeksData = [];
+    
+    // Variablen zum Speichern von Durchschnittswerten der Tage, geordnet in 5er-Wochen
+    averageDays = [];
+    // weeksAverageDays = [];
+    
+    // Variable zum Addieren der Energie (KW)
+    var countPower = 0;
+    // Variable zum Zählen der Einträge des Arrays
+    var entriesCountPower = 0;
 
 //Variable als Counter für die Arrays.
-    var startTime = 0;
-    console.log(rows.length + " Zeilen");
+    var startTime = 1462060800;
     for (var i = 0; i < rows.length; i++) {
         // Speichern des Konvertierten Datums, je ausgelesener Zeile aus der DB
         var datum = timeConverter(rows[i].TimeStamp);
@@ -50,43 +58,89 @@ connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER 
         // Gezählt wird in Sekunden, da UNIX-Timestamp in der DB hinterlegt ist.
         // Wenn der nächste Tag erreicht ist (24h in Sek) wird ein neues Array erstellt und das "volle" Array in das "Wochen"-Array geschrieben.
         if (startTime + (60 * 60 * 24) > rows[i].TimeStamp) {
+
             // Alle Einträge eines Tages in werden in das Array "dayData" geschrieben
             dayData.push(timeData);
+
+            countPower += power;
+            entriesCountPower++;
+            // console.log(power + " / Anzahl = " + countPower);
+
         } else {
             weekData.push(dayData);
             dayData = [];
             dayData.push(timeData);
             startTime = startTime + (60 * 60 * 24);
+
+            averageDays.push(countPower/entriesCountPower);
+            countPower = 0;
+            entriesCountPower = 0;
+
             // Sobald 5 Tage in dem Wochen-Array stehen, wird ein neues Wochenarray erstellt.
             if (weekData.length > 4) {
                 weeksData.push(weekData);
                 weekData = [];
 
-                // 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
+                // weeksAverageDays.push(averageDays);
+                // averageDays = [];
+/*
+ * 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
+  */
             }
         }
     }
+
+
+    for (var k = (averageDays.length-5); k < averageDays.length; k++) {
+        averageDays5 = averageDays[k];
+
+            console.log("Tag " + k + " - " + averageDays5 + " <--- KW --- ");
+        }
+
+
+    // var countZeile = 0;
+    //
+    // for (var k = 0; k < weeksAverageDays.length; k++) {
+    //     var testAverageDays = weeksAverageDays[k];
+    //
+    //     for (var j = 0; j < testAverageDays.length; j++) {
+    //         testDayAverage = testAverageDays[j];
+    //
+    //         countZeile++;
+    //         console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + testDayAverage + " <--- KW --- ");
+    //     }
+    // }
+
+
     // Zählervariable für die Zeilen in der Konsolenausgabe
-    var countZeile = 0;
-    // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
-    for (var k = 0; k < weeksData.length; k++) {
-        var testWeekData = weeksData[k];
-
-        for (var j = 0; j < testWeekData.length; j++) {
-            var testDayData = testWeekData[j];
-            for (var x = 0; x < testDayData.length; x++) {
-                var testTimeData = testDayData[x];
-                countZeile++;
-                console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
-            }
-        }
-    }
-
+    // var countZeile = 0;
+    //
+    // // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
+    // for (var k = 0; k < weeksData.length; k++) {
+    //     var testWeekData = weeksData[k];
+    //
+    //     for (var j = 0; j < testWeekData.length; j++) {
+    //         var testDayData = testWeekData[j];
+    //
+    //         for (var x = 0; x < testDayData.length; x++) {
+    //             var testTimeData = testDayData[x];
+    //
+    //             countZeile++;
+    //
+    //             console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
+    //         }
+    //     }
+    // }
 });
-// Verbing wird hier beendet
-connectionMySQL.end(function (err) {
 
-});
+
+
+
+
+
+// Verbindung wird hier beendet
+connectionMySQL.end(function (err) {});
+
 // folgender Code stammt von http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
 function timeConverter(datum) {
     // Das Datum wird in die DB als UNIX-Timestamp geschrieben.
@@ -130,3 +184,5 @@ function timeConverter(datum) {
     var time = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
     return time;
 }
+
+
