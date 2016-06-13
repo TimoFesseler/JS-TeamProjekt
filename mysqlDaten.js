@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var loginFile = require('./SBFspot-user.json');
+// var io = require('socket.io').listen(server);
 
 //Variablen für die MySQL-Verbindungdaten aus der JSON Datei.
 // Man soll auf GIT-Hub keine Login-Daten aus dem Code lesen können
@@ -17,122 +18,127 @@ var connectionMySQL = mysql.createConnection({
 });
 
 // Herstellung einer Verbindung mit Ausgabe in der Konsole, ob Verbindung hergestellt oder nicht
-connectionMySQL.connect(function (err) {
-    if (err) {
-        console.log('Error connecting to Db' + err);
-        return;
-    }
-    console.log('Connection established');
-});
+    connectionMySQL.connect(function (err) {
+        if (err) {
+            console.log('Error connecting to Db' + err);
+            return;
+        }
+        console.log('Connection established');
+    });
+
 
 // Ausführung der SQL-Abfrage mit Verarbeitung der Daten
 // Startzeit (siehe SQL-Statement), da wir erst die Daten ab dem 1. Mai 2016 abfangen
-connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER BY TimeStamp', function (err, rows, fields) {
-    if (err) throw err;
+    connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER BY TimeStamp', function (err, rows, fields) {
+        if (err) throw err;
 
-    // Array für die kurzfristige Speicherung der PV-Daten aus der MySQL-DB
-    var dayData = [];
-    var weekData = [];
-    var weeksData = [];
-    
-    // Variablen zum Speichern von Durchschnittswerten der Tage, geordnet in 5er-Wochen
-    averageDays = [];
-    // weeksAverageDays = [];
-    
-    // Variable zum Addieren der Energie (KW)
-    var countPower = 0;
-    // Variable zum Zählen der Einträge des Arrays
-    var entriesCountPower = 0;
+        // Array für die kurzfristige Speicherung der PV-Daten aus der MySQL-DB
+        var dayData = [];
+        var weekData = [];
+        var weeksData = [];
 
-//Variable als Counter für die Arrays.
-    var startTime = 1462060800;
-    for (var i = 0; i < rows.length; i++) {
-        // Speichern des Konvertierten Datums, je ausgelesener Zeile aus der DB
-        var datum = timeConverter(rows[i].TimeStamp);
-        // Speichern der KW-Anzahl, je ausgelesener Zeile aus der DB
-        var power = rows[i].Power;
-        // Schreiben des Datums & Energy in ein Array, je ausgelesener Zeile aus der DB
-        var timeData = {datum: datum, power: power};
+        // Variablen zum Speichern von Durchschnittswerten der Tage, geordnet in 5er-Wochen
+        var averageDays = [];
+        var weeksAverageDays = [];
 
-        // Anweisung um die Daten Tagesweise in ein Array schreiben zu können.
-        // Gezählt wird in Sekunden, da UNIX-Timestamp in der DB hinterlegt ist.
-        // Wenn der nächste Tag erreicht ist (24h in Sek) wird ein neues Array erstellt und das "volle" Array in das "Wochen"-Array geschrieben.
-        if (startTime + (60 * 60 * 24) > rows[i].TimeStamp) {
+        // Variable zum Addieren der Energie (KW)
+        var countPower = 0;
+        // Variable zum Zählen der Einträge des Arrays
+        var entriesCountPower = 0;
 
-            // Alle Einträge eines Tages in werden in das Array "dayData" geschrieben
-            dayData.push(timeData);
+        //Variable als Counter für die Arrays.
+        var startTime = 1462060800;
+        for (var i = 0; i < rows.length; i++) {
+            // Speichern des konvertierten Datums, je ausgelesener Zeile aus der DB
+            var datum = timeConverter(rows[i].TimeStamp);
+            // Speichern der KW-Anzahl, je ausgelesener Zeile aus der DB
+            var power = rows[i].Power;
+            // Schreiben des Datums & Energy in ein Array, je ausgelesener Zeile aus der DB
+            var timeData = {datum: datum, power: power};
 
-            countPower += power;
-            entriesCountPower++;
-            // console.log(power + " / Anzahl = " + countPower);
+            // Anweisung um die Daten Tagesweise in ein Array schreiben zu können.
+            // Gezählt wird in Sekunden, da UNIX-Timestamp in der DB hinterlegt ist.
+            // Wenn der nächste Tag erreicht ist (24h in Sek) wird ein neues Array erstellt und das "volle" Array in das "Wochen"-Array geschrieben.
+            if (startTime + (60 * 60 * 24) > rows[i].TimeStamp) {
 
-        } else {
-            weekData.push(dayData);
-            dayData = [];
-            dayData.push(timeData);
-            startTime = startTime + (60 * 60 * 24);
+                // Alle Einträge eines Tages in werden in das Array "dayData" geschrieben
+                dayData.push(timeData);
 
-            averageDays.push(countPower/entriesCountPower);
-            countPower = 0;
-            entriesCountPower = 0;
 
-            // Sobald 5 Tage in dem Wochen-Array stehen, wird ein neues Wochenarray erstellt.
-            if (weekData.length > 4) {
-                weeksData.push(weekData);
-                weekData = [];
+            } else {
+                weekData.push(dayData);
+                dayData = [];
+                dayData.push(timeData);
+                startTime = startTime + (60 * 60 * 24);
 
-                // weeksAverageDays.push(averageDays);
-                // averageDays = [];
-/*
- * 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
-  */
+
+                // Sobald 5 Tage in dem Wochen-Array stehen, wird ein neues Wochenarray erstellt.
+                if (weekData.length > 4) {
+                    weeksData.push(weekData);
+                    weekData = [];
+
+                    /*
+                     * 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
+                     */
+                }
             }
         }
-    }
+
+        
+        // for (var k = (averageDays.length-5); k < averageDays.length; k++) {
+        //     var averageDays5 = averageDays[k];
+        //
+        //     // console.log("Tag " + averageDays5 + " - " + averageDays5 + " <--- KW --- ");
+        // }
 
 
-    for (var k = (averageDays.length-5); k < averageDays.length; k++) {
-        averageDays5 = averageDays[k];
+        // var countZeile = 0;
+        //
+        // for (var k = 0; k < weeksAverageDays.length; k++) {
+        //     var testAverageDays = weeksAverageDays[k];
+        //
+        //     for (var j = 0; j < testAverageDays.length; j++) {
+        //         testDayAverage = testAverageDays[j];
+        //
+        //         countZeile++;
+        //         console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + testDayAverage + " <--- KW --- ");
+        //     }
+        // }
 
-            console.log("Tag " + k + " - " + averageDays5 + " <--- KW --- ");
+
+        // Zählervariable für die Zeilen in der Konsolenausgabe
+        var countZeile = 0;
+
+        // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
+        for (var k = 0; k < weeksData.length; k++) {
+            var testWeekData = weeksData[k];
+
+            for (var j = 0; j < testWeekData.length; j++) {
+                var testDayData = testWeekData[j];
+
+                for (var x = 0; x < testDayData.length; x++) {
+                    var testTimeData = testDayData[x];
+
+                    countZeile++;
+
+                    console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
+                }
+            }
         }
+    });
 
 
-    // var countZeile = 0;
-    //
-    // for (var k = 0; k < weeksAverageDays.length; k++) {
-    //     var testAverageDays = weeksAverageDays[k];
-    //
-    //     for (var j = 0; j < testAverageDays.length; j++) {
-    //         testDayAverage = testAverageDays[j];
-    //
-    //         countZeile++;
-    //         console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + testDayAverage + " <--- KW --- ");
-    //     }
-    // }
-
-
-    // Zählervariable für die Zeilen in der Konsolenausgabe
-    // var countZeile = 0;
-    //
-    // // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
-    // for (var k = 0; k < weeksData.length; k++) {
-    //     var testWeekData = weeksData[k];
-    //
-    //     for (var j = 0; j < testWeekData.length; j++) {
-    //         var testDayData = testWeekData[j];
-    //
-    //         for (var x = 0; x < testDayData.length; x++) {
-    //             var testTimeData = testDayData[x];
-    //
-    //             countZeile++;
-    //
-    //             console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
-    //         }
-    //     }
-    // }
-});
-
+// //Websocket
+// io.sockets.on('connection', function (socket) {
+//
+//     // der Client ist verbunden
+//     socket.emit('chat', posts);
+//     // wenn ein Benutzer einen Text sendet
+//     socket.on('chat', function (data) {
+//         // so wird dieser Text an alle anderen Benutzer gesendet
+//         io.sockets.emit('chat', {zeit: new Date(), name: data.name || 'Anonym', text: data[1].text});
+//     });
+// });
 
 
 
@@ -184,5 +190,4 @@ function timeConverter(datum) {
     var time = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
     return time;
 }
-
 

@@ -4,44 +4,42 @@
 
 
 var express = require('express')
-    ,   app = express()
-    ,   server = require('http').createServer(app)
-    ,   io = require('socket.io').listen(server)
-    ,   conf = require('./config.json');
+    , app = express()
+    , server = require('http').createServer(app)
+    , io = require('socket.io').listen(server)
+    , conf = require('./config.json');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://87.106.111.229/test');
 
-// var pvDaten = require('./mysql-daten.js');
+var mysqlDaten = require('./mysqlDaten.js');
 
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function(){
+db.once('open', function () {
     console.log("Connected to DBll");
-
-
 
 
 // Weather Model
     var weatherSchema = mongoose.Schema({
 
 
-        date_time : Date,
-        city_id : Number,
-        city_name : String,
-        cords : {
-            lon : Number,
-            lat : Number
+        date_time: Date,
+        city_id: Number,
+        city_name: String,
+        cords: {
+            lon: Number,
+            lat: Number
         },
-        sunrise : Number,
-        sunset :  Number,
+        sunrise: Number,
+        sunset: Number,
 
-        temp : Number,
-        temp_min : Number,
-        temp_max : Number,
-        rain : String,
-        clouds : Number
+        temp: Number,
+        temp_min: Number,
+        temp_max: Number,
+        rain: String,
+        clouds: Number
 
 
     });
@@ -51,47 +49,26 @@ db.once('open', function(){
 
 
     var q = Weather.find().sort({'_id': -1}).limit(2);
-    q.exec(function(err, posts) {
+    q.exec(function (err, posts) {
 
         console.log(posts);
-
-
-
-
-
 
 
 // Websocket
         io.sockets.on('connection', function (socket) {
 
-            // socket.emit('timo', pvDaten.;
-
-
             // der Client ist verbunden
-            socket.emit('chat', posts );
-            // wenn ein Benutzer einen Text senden
+            socket.emit('chat', posts);
+            // wenn ein Benutzer einen Text sendet
             socket.on('chat', function (data) {
                 // so wird dieser Text an alle anderen Benutzer gesendet
-                io.sockets.emit('chat', { zeit: new Date(), name: data.name || 'Anonym', text: data[1].text });
+                io.sockets.emit('chat', {zeit: new Date(), name: data.name || 'Anonym', text: data[1].text});
             });
         });
 
 
-
-
-
-    })});
-
-
-
-
-
-
-
-
-
-
-
+    })
+});
 
 
 // Webserver
@@ -107,7 +84,6 @@ app.get('/', function (req, res) {
     // so wird die Datei index.html ausgegeben
     res.sendfile(__dirname + '/public/index.html');
 });
-
 
 
 // Portnummer in die Konsole schreiben
