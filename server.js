@@ -57,60 +57,27 @@ db.once('open', function () {
 // Websocket
         io.sockets.on('connection', function (socket) {
 
-  console.log("ööööööööööööööööööö");
-
             // der Client ist verbunden
 
             //Übertrage Daten zur Anzeige des aktuellen Wetters
-            socket.emit('chat', posts );
+            socket.emit('chat', posts);
 
-
-            //Dummy-Daten erzeugen
-            var pfData = [{	"date":"15. Juni",
-            		"power":"300"
-            	},
-            	{	"date":"16. Juni",
-            		"power":"355"
-            	},
-            	{	"date":"17. Juni",
-            		"power":"600"
-            	},
-            	{	"date":"18. Juni",
-            		"power":"200"
-            	},
-            	{	"date":"19. Juni",
-            		"power":"288"
-            	}];
-
-  console.log(pfData[1].date);
 
             //Übertrage Daten zur Anzeige des Power-Forecasts
-            socket.emit('powerForecast', pfData );
+            mysqlDaten.get5DaysPVData(function (result) {
+                socket.emit('powerForecast', result);
+            });
 
 
+            forecastAPI.get5DayForecast(function (result) {
+
+                socket.emit('weatherForecast', result);
+
+            });
 
 
-
-forecastAPI.get5DayForecast(function(result) {
-
-socket.emit('weatherForecast', result );
-
-})
-
-
-
-
-
-
-
-
-
- forecastAPI.get5DayForecast(function(result) {});
-
-
-
-
-
+            forecastAPI.get5DayForecast(function (result) {
+            });
 
 
             // wenn ein Benutzer einen Text senden
@@ -122,10 +89,6 @@ socket.emit('weatherForecast', result );
 
 
     })
-});
-
-mysqlDaten.get5DaysPVData(function(result){
-    console.log(result);
 });
 
 

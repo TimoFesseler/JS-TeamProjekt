@@ -171,17 +171,12 @@ module.exports =
             }
 
 
-
         });
-
 
 
 // Verbindung wird hier beendet
         connectionMySQL.end(function (err) {
         });
-
-
-
 
 
 // folgender Code stammt von http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
@@ -226,7 +221,6 @@ module.exports =
 
             var zeit = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
             return zeit;
-
 
 
         }
