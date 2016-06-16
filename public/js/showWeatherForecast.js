@@ -2,8 +2,6 @@
  * Created by Fabian Tschullik on 15.06.2016.
  */
 
-console.log("asdasd");
-
 $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
@@ -20,16 +18,13 @@ $(document).ready(function () {
             };
 
             chartData.push(line)
-
-
+            
         }
-
-        console.log(chartData);
 
 
         var margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            width = 750 - margin.left - margin.right,
+            height = 350 - margin.top - margin.bottom;
 
         var formatDate = d3.time.format("%d-%b-%y");
 
@@ -83,7 +78,7 @@ $(document).ready(function () {
                 .attr("y", 6)
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
-                .text("Price ($)");
+                .text("Wolken in %");
 
             svg.append("path")
                 .datum(data)

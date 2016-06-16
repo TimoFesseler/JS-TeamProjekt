@@ -63,28 +63,20 @@ db.once('open', function () {
             socket.emit('chat', posts);
 
 
-            //Übertrage Daten zur Anzeige des Power-Forecasts
+            //Übertrage Daten zur Anzeige des PV-Leistung
             mysqlDaten.get5DaysPVData(function (result) {
+
                 socket.emit('powerForecast', result);
+
             });
 
-
+            //Übertrage Daten zur Anzeige des Wettervorhersage
             forecastAPI.get5DayForecast(function (result) {
 
                 socket.emit('weatherForecast', result);
 
             });
-
-
-            forecastAPI.get5DayForecast(function (result) {
-            });
-
-
-            // wenn ein Benutzer einen Text senden
-            socket.on('chat', function (data) {
-                // so wird dieser Text an alle anderen Benutzer gesendet
-                io.sockets.emit('chat', {zeit: new Date(), name: data.name || 'Anonym', text: data[1].text});
-            });
+            
         });
 
 

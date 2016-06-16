@@ -149,13 +149,15 @@ module.exports =
                         avgPower = Math.ceil(addAvgPower / counterAvg);
                     }
 
+                        var showDate = timeConverter(avgTimeStamp);
+
                     // Objekterzeugnung und schreiben in das daysJSON-Array
                     daysJSON.push({
-                        date: avgTimeStamp,
+                        date: showDate,
                         power: avgPower
                     });
 
-                    callback(daysJSON);
+
 
 
                     // Zurücksetzen der Variablen, nachdem das Array durch iteriert wurde
@@ -169,7 +171,7 @@ module.exports =
                     avgTimeStamp = null;
                 }
             }
-
+            callback(daysJSON);
 
         });
 
@@ -219,7 +221,8 @@ module.exports =
                 }
             }
 
-            var zeit = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
+            // var zeit = date() + ' ' + month + ' ' + year + ' ' + hour() + ':' + min();
+            var zeit = date() + ' ' + month + ' ' + year;
             return zeit;
 
 

@@ -71,9 +71,7 @@ db.once('open', function () {
             });
 
         }
-
-
+        
     });
-
 
 });
