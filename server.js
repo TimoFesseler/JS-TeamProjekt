@@ -2,6 +2,8 @@
  * Created by Fabian Tschullik on 08.06.2016.
  */
 
+var forecastAPI = require('./forecastAPI.js');
+
 var express = require('express')
     , app = express()
     , server = require('http').createServer(app)
@@ -50,15 +52,68 @@ db.once('open', function () {
     var q = Weather.find().sort({'_id': -1}).limit(2);
     q.exec(function (err, posts) {
 
-        console.log(posts);
 
 
 // Websocket
         io.sockets.on('connection', function (socket) {
 
+  console.log("ööööööööööööööööööö");
+
             // der Client ist verbunden
-            socket.emit('chat', posts);
-            // wenn ein Benutzer einen Text sendet
+
+            //Übertrage Daten zur Anzeige des aktuellen Wetters
+            socket.emit('chat', posts );
+
+
+            //Dummy-Daten erzeugen
+            var pfData = [{	"date":"15. Juni",
+            		"power":"300"
+            	},
+            	{	"date":"16. Juni",
+            		"power":"355"
+            	},
+            	{	"date":"17. Juni",
+            		"power":"600"
+            	},
+            	{	"date":"18. Juni",
+            		"power":"200"
+            	},
+            	{	"date":"19. Juni",
+            		"power":"288"
+            	}];
+
+  console.log(pfData[1].date);
+
+            //Übertrage Daten zur Anzeige des Power-Forecasts
+            socket.emit('powerForecast', pfData );
+
+
+
+
+
+forecastAPI.get5DayForecast(function(result) {
+
+socket.emit('weatherForecast', result );
+
+})
+
+
+
+
+
+
+
+
+
+ forecastAPI.get5DayForecast(function(result) {});
+
+
+
+
+
+
+
+            // wenn ein Benutzer einen Text senden
             socket.on('chat', function (data) {
                 // so wird dieser Text an alle anderen Benutzer gesendet
                 io.sockets.emit('chat', {zeit: new Date(), name: data.name || 'Anonym', text: data[1].text});

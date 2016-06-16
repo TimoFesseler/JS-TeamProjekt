@@ -12,13 +12,15 @@ var url = 'mongodb://localhost/test';
 var cityID = '2848175';
 var token = logOutkey;
 var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast/';
+var forecast = null;
 
-function getCelsius (far){
 
 
-    return  this.far;
-}
-console.log(getCelsius('ssss'));
+
+module.exports =
+{
+
+get5DayForecast: function (callback){
 
 MongoClient.connect(url, function (err, db) {
     if (err) {
@@ -47,7 +49,7 @@ MongoClient.connect(url, function (err, db) {
                 console.log('Länge-Liste: ' + data.list.length);
 
 
-                var forecast = {
+                forecast = {
                     'city_id': data.city.id,
                     'city_name': data.city.name,
                     'cords': {'lon': data.city.coord.lon, 'lat': data.city.coord.lat},
@@ -70,7 +72,8 @@ MongoClient.connect(url, function (err, db) {
                 }
 
 
-                // console.log(forecast);
+callback(forecast);
+
 
                 var collection = db.collection('forecast');
                 collection.insert([forecast], function (err, result) {
@@ -94,4 +97,22 @@ MongoClient.connect(url, function (err, db) {
 
     }
 });
+
+
+
+
+}
+
+
+
+
+};
+
+
+
+
+
+
+
+
 
