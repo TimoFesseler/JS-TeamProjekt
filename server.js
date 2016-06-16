@@ -2,7 +2,6 @@
  * Created by Fabian Tschullik on 08.06.2016.
  */
 
-
 var express = require('express')
     , app = express()
     , server = require('http').createServer(app)
@@ -70,6 +69,10 @@ db.once('open', function () {
     })
 });
 
+mysqlDaten.get5DaysPVData(function(result){
+    console.log(result);
+});
+
 
 // Webserver
 // auf den Port x schalten
@@ -88,3 +91,4 @@ app.get('/', function (req, res) {
 
 // Portnummer in die Konsole schreiben
 console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
+
