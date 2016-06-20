@@ -1,6 +1,7 @@
 /**
- * Created by Fabian Tschullik on 17.06.2016.
+ * Created by Fabian Tschullik on 18.06.2016.
  */
+
 
 var mongoose = require('mongoose');
    var Schema = mongoose.Schema;

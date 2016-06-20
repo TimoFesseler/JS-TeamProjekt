@@ -1,49 +1,33 @@
-var mongoose = require('mongoose');
+var request = require('request');
+var Weather = require('./weather_model.js');
 var cityID = '2848175';
 var token = '1ccf6bfbf52e4b3abadde9b4125547d3';
 var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?id=';
+var mongoose = require('mongoose');
 var db = mongoose.connection;
-var request = require('request');
-
-mongoose.connect('mongodb://87.106.111.229/test');
+var weatherData = null;
 
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log("Connected to DBll");
 
-    var weatherSchema = mongoose.Schema({
+module.exports =
+{
 
 
-        date_time: Date,
-        city_id: Number,
-        city_name: String,
-        cords: {
-            lon: Number,
-            lat: Number
-        },
-        sunrise: Number,
-        sunset: Number,
-
-        temp: Number,
-        temp_min: Number,
-        temp_max: Number,
-        rain: String,
-        clouds: Number
+getActualWeather: function (callback) {
 
 
-    });
+mongoose.createConnection('mongodb://87.106.111.229/test');
 
 
-    var Weather = mongoose.model('weather', weatherSchema);
+
 
     request(apiUrl + cityID + '&APPID=' + token, function (error, response, body) {
         if (!error) {
 
             var data = JSON.parse(body);
 
-
-            var weather = new Weather(
+console.log(data);
+            var weatherData = new Weather(
                 {
                     date_time: new Date(),
                     city_id: data.id,
@@ -57,21 +41,34 @@ db.once('open', function () {
                     temp: (data.main.temp - 273.15),
                     temp_min: (data.main.temp_min - 273.15),
                     temp_max: (data.main.temp_max - 273.15),
-                    rain: data.rain['1h'],
+                    rain: data.rain['3h'],
                     clouds: data.clouds.all
                 });
 
-            console.log(weather);
-
-            weather.save(function (err, weather) {
+    weatherData.save(function (err, weather) {
 
                 if (err) return console.error(err);
-                if (!err) mongoose.connection.close();
+               // if (!err) mongoose.connection.close();
 
             });
 
-        }
-        
-    });
+
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log("Connected to DBll");
 
 });
+
+        }
+
+        callback(weatherData);
+
+
+    });
+
+
+
+
+
+}}

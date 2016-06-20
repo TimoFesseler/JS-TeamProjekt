@@ -3,6 +3,8 @@
  */
 
 var forecastAPI = require('./forecastAPI.js');
+var weatherAPI = require('./weatherAPI.js');
+var mysqlDaten = require('./mysqlDaten.js');
 
 var express = require('express')
     , app = express()
@@ -10,57 +12,21 @@ var express = require('express')
     , io = require('socket.io').listen(server)
     , conf = require('./config.json');
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://87.106.111.229/test');
-
-var mysqlDaten = require('./mysqlDaten.js');
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log("Connected to DBll");
-
-
-// Weather Model
-    var weatherSchema = mongoose.Schema({
-
-
-        date_time: Date,
-        city_id: Number,
-        city_name: String,
-        cords: {
-            lon: Number,
-            lat: Number
-        },
-        sunrise: Number,
-        sunset: Number,
-
-        temp: Number,
-        temp_min: Number,
-        temp_max: Number,
-        rain: String,
-        clouds: Number
-
-
-    });
-
-
-    var Weather = mongoose.model('weather', weatherSchema);
-
-
-    var q = Weather.find().sort({'_id': -1}).limit(2);
-    q.exec(function (err, posts) {
-
 
 
 // Websocket
         io.sockets.on('connection', function (socket) {
 
-            // der Client ist verbunden
 
             //Übertrage Daten zur Anzeige des aktuellen Wetters
-            socket.emit('chat', posts);
+
+            weatherAPI.getActualWeather(function (result) {
+
+           socket.emit('weather', result);
+
+            });
+
+
 
 
             //Übertrage Daten zur Anzeige des PV-Leistung
@@ -80,8 +46,7 @@ db.once('open', function () {
         });
 
 
-    })
-});
+
 
 
 // Webserver
