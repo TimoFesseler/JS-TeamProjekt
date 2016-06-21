@@ -24,8 +24,13 @@ result.save(function (err, result) {
 
 
   if (err) return console.error(err);
+  if (!err) {
 
-else {console.log("Datensatz zwurde gepspeichert: \n"+result)};
+  console.log("Datensatz zwurde gepspeichert: \n"+result);
+  process.exit()
+  }
+
+
 
 
 });
