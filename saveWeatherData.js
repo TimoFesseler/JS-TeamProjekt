@@ -43,3 +43,5 @@ weatherAPI.getActualWeather(function (result) {
 setTimeout(save,5);
 
 }
+
+save();
