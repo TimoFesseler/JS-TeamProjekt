@@ -24,8 +24,7 @@ weatherAPI.getActualWeather(function (result) {
 
       result.save(function (err, weatherData) {
 
-                      if (err) return console.error(err);
-                      if (!err) mongoose.connection.close();
+
 
                   });
 
@@ -34,6 +33,7 @@ weatherAPI.getActualWeather(function (result) {
 
     //Zeigt das erhaltene Ergebnis der API-Abfrage auf der Konsole
     console.log(result);
+process.exit();
 
 });
 

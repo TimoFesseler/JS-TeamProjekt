@@ -3,8 +3,8 @@ var request = require('request');
 var Weather = require('./weather_model.js');
 
 //Anhand der cityID wird die Abfrage an die API der openWeatherMap gestellt
-var cityID = '2848175';
-
+//var cityID = '2848175';
+var cityID = '2846158';
 //Token zur Autentifizierung an der openWeatherMap-Api
 var token = '1ccf6bfbf52e4b3abadde9b4125547d3';
 
@@ -23,7 +23,7 @@ module.exports =
 //diese anschließend zurück. Da Wetterdaten werden ebenfalls in einer MongoDB gespeichert.
     getActualWeather: function (callback) {
 
-
+console.log(apiUrl + cityID + '&APPID=' + token);
 
 
         //Hier wird der String zur Abfrage zusammen gefügt und der request anschließend gestartet
@@ -31,7 +31,7 @@ module.exports =
             if (!error) {
 
                 var data = JSON.parse(body);
-                console.log(data);
+                console.log(data+"kkkkkkkkkkkkkkkkkkkkkkk");
 
                 //Speichert das Ergebnis der Abfrage in einem Objekt
                 var weatherData = new Weather(
