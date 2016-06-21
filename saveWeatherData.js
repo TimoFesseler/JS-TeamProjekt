@@ -13,9 +13,9 @@ var i = 0;
 
 
 
-while (i=0) {
 
 
+function save(){
 
 
 //Ruft die Funktion getActualWeather auf, um die Ergebnisse in der DB zu speichern.
@@ -40,6 +40,6 @@ weatherAPI.getActualWeather(function (result) {
 
 });
 
-setTimeout(5);
+setTimeout(save,5);
 
 }
