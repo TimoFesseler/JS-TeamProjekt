@@ -31,6 +31,7 @@ module.exports =
             if (!error) {
 
                 var data = JSON.parse(body);
+                console.log(data);
 
                 //Speichert das Ergebnis der Abfrage in einem Objekt
                 var weatherData = new Weather(
