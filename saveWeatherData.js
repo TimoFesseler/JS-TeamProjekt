@@ -4,11 +4,9 @@
 
 //Benötigte Requirements
 var weatherAPI = require('./weatherAPI.js');
-var Weather = require('./weather_model.js');
-var db = require('./db.js');
+require('./weather_model');
 var mongoose = require('mongoose');
-var db = mongoose.createConnection('mongodb://87.106.111.229/photovoltaik');
-Weather = mongoose.model('weather');
+var Weather = mongoose.model('Weather');
 
 
 
@@ -22,21 +20,17 @@ weatherAPI.getActualWeather(function (result) {
 
 
 
-      result.save(function (err, weatherData) {
+result.save(function (err, result) {
 
 
+  if (err) return console.error(err);
 
-                  });
+else {console.log("Datensatz zwurde gepspeichert: \n"+result)};
 
-
-    console.log("Neuer Datensatz wurde in der DB gespeichert:");
-
-    //Zeigt das erhaltene Ergebnis der API-Abfrage auf der Konsole
-    console.log(result);
-process.exit();
 
 });
 
+});
 
 
 

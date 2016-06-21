@@ -6,7 +6,7 @@
 var mongoose = require( 'mongoose' );
 
 // Build the connection string
-var dbURI = 'mongodb://87.106.111.229/photovoltaik';
+var dbURI = 'mongodb://87.106.111.229/test';
 
 // Create the database connection
 mongoose.connect(dbURI);

@@ -3,8 +3,7 @@
  */
 
 var mongoose = require('mongoose');
-   var Schema = mongoose.Schema;
-   var weatherSchema = mongoose.Schema({
+   var weatherSchema =  new mongoose.Schema({
 
 
         date_time: Date,
@@ -26,4 +25,4 @@ var mongoose = require('mongoose');
 
     });
 
-    module.exports = mongoose.model('weather', weatherSchema);
+    var Weather = module.exports = mongoose.model('Weather', weatherSchema);
