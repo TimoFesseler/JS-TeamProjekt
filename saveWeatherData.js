@@ -38,9 +38,9 @@ weatherAPI.getActualWeather(function (result) {
     //Zeigt das erhaltene Ergebnis der API-Abfrage auf der Konsole
     console.log(result);
 
-sleep.sleep(5); // sleep for five seconds
+
 });
 
-
+setTimeout(5);
 
 }
