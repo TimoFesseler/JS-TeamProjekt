@@ -9,6 +9,14 @@ var db = require('./db.js');
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('mongodb://87.106.111.229/photovoltaik');
 Weather = mongoose.model('weather');
+var sleep = require('sleep');
+var i = 0;
+
+
+
+while (i=0) {
+
+
 
 
 //Ruft die Funktion getActualWeather auf, um die Ergebnisse in der DB zu speichern.
@@ -30,4 +38,9 @@ weatherAPI.getActualWeather(function (result) {
     //Zeigt das erhaltene Ergebnis der API-Abfrage auf der Konsole
     console.log(result);
 
+sleep.sleep(5); // sleep for five seconds
 });
+
+
+
+}
