@@ -25,6 +25,8 @@ mongoose.createConnection('mongodb://87.106.111.229/test');
         if (!error) {
 
             var data = JSON.parse(body);
+            
+            console.log(body);
 
 console.log(data);
             var weatherData = new Weather(
@@ -44,6 +46,7 @@ console.log(data);
                     rain: data.rain['3h'],
                     clouds: data.clouds.all
                 });
+
 
     weatherData.save(function (err, weather) {
 
