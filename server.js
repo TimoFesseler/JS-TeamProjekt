@@ -5,6 +5,7 @@
 var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
 var mysqlDaten = require('./mysqlDaten.js');
+var db = require('./db.js')
 
 var express = require('express')
     , app = express()
@@ -23,6 +24,8 @@ var express = require('express')
             weatherAPI.getActualWeather(function (result) {
 
            socket.emit('weather', result);
+           console.log("XXXXXXXXXXXXXXXXXXXXXXXX")
+           console.log(result);
 
             });
 
