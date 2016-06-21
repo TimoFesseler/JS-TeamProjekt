@@ -9,7 +9,6 @@ var db = require('./db.js');
 var mongoose = require('mongoose');
 var db = mongoose.createConnection('mongodb://87.106.111.229/photovoltaik');
 Weather = mongoose.model('weather');
-var sleep = require('sleep');
 var i = 0;
 
 
