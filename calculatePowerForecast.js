@@ -7,9 +7,23 @@
 var ml = require('machine_learning');
 var request = require('request');
 var mysqlDaten = require('./mysqlDaten.js');
-var FiveDayAvgWeather = require('./5DayAvgWeather.js');
+var fiveDayAvgWeather = require('./5DayAvgWeather.js');
 
 var data2 = [];
+
+
+
+
+
+module.exports =
+{
+
+calcPowerForecast: function (callback) {
+
+
+
+
+
 
 // [power]
 mysqlDaten.get5DaysPVData(function(result){
@@ -18,7 +32,20 @@ mysqlDaten.get5DaysPVData(function(result){
     }
     console.log(data2);
 
-FiveDayAvgWeather.get5DaysWeather
+fiveDayAvgWeather.getFiveDayWeatherData(function(result){
+
+
+console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+
+console.log(result);
+
+});
+
+
+
 
 // Decision Tree
 // Reference : 'Programming Collective Intellignece' by Toby Segaran.
@@ -51,22 +78,12 @@ FiveDayAvgWeather.get5DaysWeather
     dt.prune(1.0); // 1.0 : mingain.
     dt.print();
 
-
-
-
-
-
-
-
-
+callback(result);
 
 
 });
 
 
+}
 
-//Hole PV-Daten Durchschnitt der letzten 5 Tage
-
-
-
-
+}

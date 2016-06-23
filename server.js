@@ -6,6 +6,7 @@ var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
 var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
+var calculatePowerForecast = require('./calculatePowerForecast.js');
 
 var express = require('express')
     , app = express()
@@ -22,16 +23,12 @@ var express = require('express')
 
 io.sockets.on('connection', function (socket) {
 
- weatherFiveDay.getFiveDayWeatherData(function (result) {
-
-console.log("CALLED");
+calculatePowerForecast.calcPowerForecast(function (result) {
 
 
-                         socket.emit('weatherFiveDay', result);
-
-
-
-
+console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+console.log(result);
+                         socket.emit('powerForecastFive', result);
 
 
 
@@ -39,6 +36,20 @@ console.log("CALLED");
 
 
 
+
+
+
+
+
+
+ weatherFiveDay.getFiveDayWeatherData(function (result) {
+
+
+                         socket.emit('weatherFiveDay', result);
+
+
+
+               });
 
 
 
