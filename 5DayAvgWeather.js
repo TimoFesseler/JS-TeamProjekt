@@ -21,6 +21,19 @@ var roundedClouds;
 var roundedCloudsCounter = 0;
 var roundedDay;
 var teiler = 0;
+var month = new Array();
+month[0] = "January";
+month[1] = "February";
+month[2] = "March";
+month[3] = "April";
+month[4] = "May";
+month[5] = "June";
+month[6] = "July";
+month[7] = "August";
+month[8] = "September";
+month[9] = "October";
+month[10] = "November";
+month[11] = "December";
 
 var roundedWeek = [];
 
@@ -67,13 +80,10 @@ var dateFirst = docs[0].date_time.getDate();
 
 
         };
-console.log(week.length);
+
 week.push(oneDay);
 
-console.log(week.length);
-console.log(week.length);
-console.log(week.length);
-console.log(week.length);
+
 
 
 // round the clouds
@@ -90,7 +100,7 @@ console.log("Counter"+roundedCloudsCounter);
 
 }
 
-roundedDay = {clouds: (roundedCloudsCounter/week[h].length), date_time: (week[h][0].date_time) };
+roundedDay = {clouds: (roundedCloudsCounter/week[h].length), date_time: (week[h][0].date_time.getDate()+". "+month[week[h][0].date_time.getMonth()]+" "+week[h][0].date_time.getFullYear()) };
 
 
 roundedWeek.push(roundedDay);
@@ -106,6 +116,9 @@ roundedCloudsCounter =0;
 
 console.log(roundedWeek);
 callback(roundedWeek);
+
+roundedWeek = [];
+roundedDay = [];
 
 
 

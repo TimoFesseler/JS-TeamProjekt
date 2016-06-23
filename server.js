@@ -14,6 +14,72 @@ var express = require('express')
     , conf = require('./config.json');
 
 
+
+
+
+
+
+
+io.sockets.on('connection', function (socket) {
+
+ weatherFiveDay.getFiveDayWeatherData(function (result) {
+
+console.log("CALLED");
+
+
+                         socket.emit('weatherFiveDay', result);
+
+
+
+
+
+
+
+               });
+
+
+
+
+
+
+
+            //Übertrage Daten zur Anzeige des aktuellen Wetters
+
+            weatherAPI.getActualWeather(function (result) {
+
+
+
+           socket.emit('weather', result);
+
+
+            });
+
+
+
+
+            //Übertrage Daten zur Anzeige des PV-Leistung
+            mysqlDaten.get5DaysPVData(function (result) {
+
+                socket.emit('powerForecast', result);
+
+
+              });
+
+
+
+
+
+
+            //Übertrage Daten zur Anzeige des Wettervorhersage
+            forecastAPI.get5DayForecast(function (result) {
+
+
+                socket.emit('weatherForecast', result);
+
+            });
+            
+        });
+
 // Webserver
 // auf den Port x schalten
 server.listen(conf.port);
@@ -32,68 +98,3 @@ app.get('/', function (req, res) {
 
 // Portnummer in die Konsole schreiben
 console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
-
-
-
-
-
-
-
- weatherFiveDay.getFiveDayWeatherData(function (result) {
-
-
-        io.sockets.on('connection', function (socket) {
-
-                         socket.emit('weatherFiveDay', result);
-
-
-
-               });
-
-
-
-               });
-
-
-
-
-
-
-
-            //Übertrage Daten zur Anzeige des aktuellen Wetters
-
-            weatherAPI.getActualWeather(function (result) {
-
- io.sockets.on('connection', function (socket) {
-
-           socket.emit('weather', result);
-
- });
-            });
-
-
-
-
-            //Übertrage Daten zur Anzeige des PV-Leistung
-            mysqlDaten.get5DaysPVData(function (result) {
- io.sockets.on('connection', function (socket) {
-                socket.emit('powerForecast', result);
-
-            });
-              });
-
-
-
-
-
-
-            //Übertrage Daten zur Anzeige des Wettervorhersage
-            forecastAPI.get5DayForecast(function (result) {
-
- io.sockets.on('connection', function (socket) {
-                socket.emit('weatherForecast', result);
-
-            });
-            
-        });
-
