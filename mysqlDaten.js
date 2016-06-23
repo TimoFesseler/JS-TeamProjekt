@@ -172,6 +172,7 @@ module.exports =
                 }
             }
             callback(daysJSON);
+            console.log(daysJSON);
 
         });
 

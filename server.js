@@ -4,6 +4,7 @@
 
 var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
+var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
 
 var express = require('express')
@@ -14,15 +15,42 @@ var express = require('express')
 
 
 
-// Websocket
-        io.sockets.on('connection', function (socket) {
+
+
+
+
+
+io.sockets.on('connection', function (socket) {
+
+ weatherFiveDay.getFiveDayWeatherData(function (result) {
+
+console.log("CALLED");
+
+
+                         socket.emit('weatherFiveDay', result);
+
+
+
+
+
+
+
+               });
+
+
+
+
+
 
 
             //Übertrage Daten zur Anzeige des aktuellen Wetters
 
             weatherAPI.getActualWeather(function (result) {
 
+
+
            socket.emit('weather', result);
+
 
             });
 
@@ -34,20 +62,23 @@ var express = require('express')
 
                 socket.emit('powerForecast', result);
 
-            });
+
+              });
+
+
+
+
+
 
             //Übertrage Daten zur Anzeige des Wettervorhersage
             forecastAPI.get5DayForecast(function (result) {
+
 
                 socket.emit('weatherForecast', result);
 
             });
             
         });
-
-
-
-
 
 // Webserver
 // auf den Port x schalten
@@ -59,11 +90,11 @@ app.use(express.static(__dirname + '/public'));
 
 // wenn der Pfad / aufgerufen wird
 app.get('/', function (req, res) {
-    // so wird die Datei index.html ausgegeben
+
     res.sendfile(__dirname + '/public/index.html');
+
 });
 
 
 // Portnummer in die Konsole schreiben
 console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
-

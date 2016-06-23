@@ -66,6 +66,7 @@ $(document).ready(function () {
                 .style("font-size", "16px")
                 .text("Photovoltaik Leistung (5 Tage)");
 
+
             svg.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")

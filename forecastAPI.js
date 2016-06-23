@@ -8,7 +8,7 @@ var loginFile = require('./SBFspot-user.json');
 var logOutkey = loginFile.outkey;
 
 var MongoClient = mongodb.MongoClient;
-var url = 'mongodb://localhost/test';
+var url = 'mongodb://87.106.111.229/photovoltaik';
 var cityID = '2848175';
 var token = logOutkey;
 var apiUrl = 'http://api.openweathermap.org/data/2.5/forecast/';
