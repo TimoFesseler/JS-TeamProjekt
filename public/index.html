@@ -74,78 +74,101 @@
                 </div>
                 <div id="power" class="panel-body">
 
-                    <script src="/js/energyForecast.js"></script>
-                    <script src="../mysqlDaten.js"></script>
+                    <!--   <script src="/js/energyForecast.js"></script>-->
+                       <script src="../mysqlDaten.js"></script>
 
-                    <div id="powerForecast"></div>
-                    <script src="/js/showPVPower.js"></script>
-                    <script src="/js/showPowerForecast.js"></script>
-                    <script src="/js/showWeatherForecast.js"></script>
+                       <div id="powerForecast"></div>
+                       <!--  <script src="/js/showPVPower.js"></script>-->
+                      <!-- <script src="/js/showPowerForecast.js"></script>-->
+                    <!-- //<script src="/js/showWeatherForecast.js"></script>-->
 
-                </div>
-            </div>
-        </div>
+                    <script src="/js/dashboard1.js"></script>
+
+                 </div>
+             </div>
+         </div>
 
 
-        <div id="weather" class="col-md-4">
+         <div id="weather" class="col-md-4">
 
+
+             <div class="panel panel-default">
+                 <div class="panel-heading">
+                     <h3 class="panel-title">Aktuelles Wetter</h3>
+                 </div>
+                 <div class="panel-body">
+
+
+                     <table class="table">
+
+                         <tbody>
+
+                         <tr>
+                             <td>Ort:</td>
+                             <td id="ort"></td>
+                         </tr>
+
+                         <tr>
+                             <td>Temperatur:</td>
+                             <td id="temp"></td>
+                         </tr>
+
+                         <tr>
+                             <td>Wolken:</td>
+                             <td id="clouds"></td>
+                         </tr>
+
+                         <tr>
+                             <td>Regen:</td>
+                             <td id="rain"></td>
+                         </tr>
+
+                         <tr>
+                             <td>Sonnenaufgang:</td>
+                             <td id="sunrise"></td>
+                         </tr>
+
+                         <tr>
+                             <td>Sonnenuntergang:</td>
+                             <td id="sunset"></td>
+                         </tr>
+
+                         </tbody>
+
+
+                     </table>
+
+
+                 </div>
+             </div>
+
+
+         </div>
+     </div>
+
+    <div class="row">
+
+        <div class="col-md-8">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Aktuelles Wetter</h3>
+                    <h3 class="panel-title">Ertragsvorhersage</h3>
                 </div>
-                <div class="panel-body">
+                <div id="power" class="panel-body">
 
+                    <!--   <script src="/js/energyForecast.js"></script>-->
+                    <script src="../mysqlDaten.js"></script>
 
-                    <table class="table">
-
-                        <tbody>
-
-                        <tr>
-                            <td>Ort:</td>
-                            <td id="ort"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Temperatur:</td>
-                            <td id="temp"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Wolken:</td>
-                            <td id="clouds"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Regen:</td>
-                            <td id="rain"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Sonnenaufgang:</td>
-                            <td id="sunrise"></td>
-                        </tr>
-
-                        <tr>
-                            <td>Sonnenuntergang:</td>
-                            <td id="sunset"></td>
-                        </tr>
-
-                        </tbody>
-
-
-                    </table>
+                    <div id="fiveDays"></div>
+                    <!--  <script src="/js/showPVPower.js"></script>-->
+                    <!-- <script src="/js/showPowerForecast.js"></script>-->
+                    <!-- //<script src="/js/showWeatherForecast.js"></script>-->
 
 
                 </div>
             </div>
-
-
         </div>
-    </div>
-
-
-</div><!-- /.container -->
+ </div><!-- /.container -->
 
 
 <!-- Bootstrap core JavaScript

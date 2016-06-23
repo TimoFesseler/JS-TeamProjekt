@@ -6,30 +6,18 @@ $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
     // neue Nachricht
-    socket.on('weatherForecast', function (data) {
+    socket.on('weatherFiveDay', function (data) {
 
-        var chartData = [];
 
-        for (var i = 0; i < data.forecast.length; i++) {
 
-            var line = {
-                date: data.forecast[i].date_time,
-                clouds: data.forecast[i].clouds
-            };
 
-            chartData.push(line)
             
-        }
-
-
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
+ var margin = {top: 25, right: 20, bottom: 30, left: 40},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
 
-        var formatDate = d3.time.format("%d-%b-%y");
-
-        var x = d3.time.scale()
-            .range([0, width]);
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
 
         var y = d3.scale.linear()
             .range([height, 0]);
@@ -42,28 +30,22 @@ $(document).ready(function () {
             .scale(y)
             .orient("left");
 
-        var line = d3.svg.line()
-            .x(function (d) {
-                return x(d.date);
-            })
-            .y(function (d) {
-                return y(d.close);
-            });
-
-        var svg = d3.select("body").append("svg")
+        var svg = d3.select("#powerForecast").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+
         function draw(data) {
 
-            x.domain(d3.extent(data, function (d) {
-                return d.date;
+
+            x.domain(data.map(function (d) {
+                return d.date_time;
             }));
-            y.domain(d3.extent(data, function (d) {
-                return d.close;
-            }));
+            y.domain([0, d3.max(data, function (d) {
+                return d.clouds;
+            })]);
 
             svg.append("g")
                 .attr("class", "x axis")
@@ -75,25 +57,48 @@ $(document).ready(function () {
                 .call(yAxis)
                 .append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
+                .attr("y", 5)
+                .attr("dy", ".6em")
                 .style("text-anchor", "end")
-                .text("Wolken in %");
+                .text("Ø Leistung in Watt");
 
-            svg.append("path")
-                .datum(data)
-                .attr("class", "line")
-                .attr("d", line);
+            svg.append("text")
+                .attr("x", (width/2))
+                .attr("y", 0 - (margin.top/2.8))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .text("Wolken in den letzten Tagen");
+
+
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d) {
+                    return x(d.date);
+                })
+                .attr("width", x.rangeBand())
+                .attr("y", function (d) {
+                    return y(d.power);
+                })
+                .attr("height", function (d) {
+                    return height - y(d.power);
+                });
+
+
         }
 
-        draw(chartData);
 
-        function type(d) {
-            d.date = formatDate.parse(d.date);
-            d.close = +d.close;
-            return d;
-        }
+        draw(data);
 
+
+        // function type(d) {
+        //     d.power = +d.power;
+        //     return d;
+        // }
 
     });
+
+
+
 });
