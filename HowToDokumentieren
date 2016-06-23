@@ -1,0 +1,15 @@
+Auf jeden Fall alles im Code durch Kommentare kennzeichnen. Es muss nicht jedes Zeichen exakt stimmen, üblicherweise hat man so was:
+
+// der folgende code stammt von http://.....
+// Zur Anpassung habe ich aus dem Array eine Map gemacht
+code
+code
+code
+// ab hier wieder eigener code
+Das ist auch wirklich sinnvoll für eigenen Code später, als Erinnerung, was man sich da noch mal gedacht hat oder um das noch mal nachzulesen, z.B.
+
+// Median ausrechnen, http://stackoverflow/...
+codezeile, die den median einer liste berechnet
+In der Dokumentation brauchen Sie nur Quellen nennen, die wesentlich sind, also z.B. wenn Sie einen kompletten Workflow übernommen haben, der die Basis für Ihr Projekt darstellt.
+Was wesentlich ist und was nicht, müssen natürlich Sie entscheiden, wenn Sie unsicher sind, geben Sie es lieber an.
+Unwesentlich ist auf jeden Fall alles, was aus wenigen Zeilen besteht und nur ein typisches Programmierproblem löst (Datei öffnen, Stringmanipulation, ...)
