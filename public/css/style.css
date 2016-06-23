@@ -1,7 +1,7 @@
 body {
     padding-top: 50px;
 }
-.starter-template {
+.template {
     padding: 40px 15px;
     text-align: center;
 }
@@ -12,9 +12,7 @@ body {
       fill: steelblue;
   }
 
-/*.bar:hover {*/
-    /*fill: brown;*/
-/*}*/
+
 
 .axis {
     font: 11px sans-serif;
