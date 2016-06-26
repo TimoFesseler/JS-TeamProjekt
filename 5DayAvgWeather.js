@@ -16,6 +16,7 @@ var Weather = mongoose.model('Weather');
 
 
 var date1 = new Date();
+date1.setDate(date1.getDate()-1);
 var date2 = new Date();
 var dateFirst = 0;
 var dateNext = 0;
@@ -30,18 +31,18 @@ var roundedCloudsCounter = 0;
 var roundedDay;
 var teiler = 0;
 var month = new Array();
-month[0] = "January";
-month[1] = "February";
-month[2] = "March";
-month[3] = "April";
-month[4] = "May";
-month[5] = "June";
-month[6] = "July";
-month[7] = "August";
-month[8] = "September";
-month[9] = "October";
-month[10] = "November";
-month[11] = "December";
+month[0] = "Jan";
+month[1] = "Feb";
+month[2] = "Mär";
+month[3] = "Apr";
+month[4] = "Mai";
+month[5] = "Jun";
+month[6] = "Jul";
+month[7] = "Aug";
+month[8] = "Sep";
+month[9] = "Oct";
+month[10] = "Nov";
+month[11] = "Dec";
 
 var roundedWeek = [];
 

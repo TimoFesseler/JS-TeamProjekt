@@ -95,10 +95,7 @@ console.log(data);
         draw(data);
 
 
-        // function type(d) {
-        //     d.power = +d.power;
-        //     return d;
-        // }
+
 
     });
 
@@ -111,7 +108,20 @@ console.log(data);
             document.getElementById("temp").innerHTML = temp.slice(0, 5)+" C";
 
             document.getElementById("clouds").innerHTML = result.clouds+" %";
-            document.getElementById("rain").innerHTML = result.rain;
+
+            if (result.rain == null){
+
+            document.getElementById("rain").innerHTML = "kein Regen";
+            }
+
+            else {
+
+             document.getElementById("rain").innerHTML = result.rain;
+            }
+
+
+
+
 
             d1=new Date(result.sunrise * 1000);
             document.getElementById("sunrise").innerHTML = d1.getHours()+":"+d1.getMinutes()+" Uhr";
@@ -204,20 +214,6 @@ console.log(data);
 
 
             draw(data);
-
-
-            // function type(d) {
-            //     d.power = +d.power;
-            //     return d;
-            // }
-
-
-
-
-
-
-
-
 
 
 

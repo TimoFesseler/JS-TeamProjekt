@@ -32,8 +32,6 @@ io.sockets.on('connection', function (socket) {
 // calculatePowerForecast.calcPowerForecast(function (result) {
 //
 //
-// // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-// console.log(result);
 //                          socket.emit('powerForecastFive', result);
 //
 //

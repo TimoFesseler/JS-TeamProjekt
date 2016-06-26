@@ -38,6 +38,9 @@ module.exports =
                 request(apiUrl + 'city?id=' + cityID + '&APPID=' + token + '&lang=de', function (error, response, body) {
                     if (!error) {
 
+                    console.log(apiUrl + 'city?id=' + cityID + '&APPID=' + token + '&lang=de');
+
+
 
                         data = JSON.parse(body);
 
