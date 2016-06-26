@@ -2,6 +2,11 @@
  * Created by Fabian Tschullik on 18.06.2016.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
 
 
 var ml = require('machine_learning');
@@ -15,10 +20,10 @@ var data2 = [];
 
 
 
-module.exports =
-{
-
-calcPowerForecast: function (callback) {
+// module.exports =
+// {
+//
+// calcPowerForecast: function (callback) {
 
 
 
@@ -30,7 +35,7 @@ mysqlDaten.get5DaysPVData(function(result){
     for (var g = 0; g < result.length; g++){
         data2.push(result[g].power);
     }
-    console.log(data2);
+    // console.log(data2);
 
 fiveDayAvgWeather.getFiveDayWeatherData(function(result){
 
@@ -40,7 +45,7 @@ console.log("5555555555555555555555555555555555555555555555555555555555555555555
 console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
 console.log("5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
 
-console.log(result);
+// console.log(result);
 
 });
 
@@ -51,8 +56,6 @@ console.log(result);
 // Reference : 'Programming Collective Intellignece' by Toby Segaran.
 
 // [clouds, rain, temp]
-
-
     var data =[[88, 0.5, 23.6],
         [20, 0.5, 13.6],
         [1, 0.0, 23.8],
@@ -70,7 +73,6 @@ console.log(result);
     });
 
     dt.build();
-// console.log("Start");
     dt.print();
 
     console.log("Classify : ", dt.classify([50, 0, 24.7]));
@@ -78,12 +80,15 @@ console.log(result);
     dt.prune(1.0); // 1.0 : mingain.
     dt.print();
 
-callback(result);
-
+// callback(result);
 
 });
 
 
-}
 
-}
+
+
+
+
+// }
+// };

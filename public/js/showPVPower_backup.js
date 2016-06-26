@@ -2,22 +2,14 @@
  * Created by Fabian Tschullik on 15.06.2016.
  */
 
-/*
- ## Clientseitig
- ++++++++   Dashboard Panel: Wetterdiagramm   +++++++
- */
-
 $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
     // neue Nachricht
-    socket.on('weatherFiveDay', function (data) {
+    socket.on('powerForecast', function (data) {
 
 
-
-
-            
- var margin = {top: 25, right: 20, bottom: 30, left: 40},
+        var margin = {top: 25, right: 20, bottom: 30, left: 40},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
 
@@ -46,10 +38,10 @@ $(document).ready(function () {
 
 
             x.domain(data.map(function (d) {
-                return d.date_time;
+                return d.date;
             }));
             y.domain([0, d3.max(data, function (d) {
-                return d.clouds;
+                return d.power;
             })]);
 
             svg.append("g")
@@ -65,14 +57,14 @@ $(document).ready(function () {
                 .attr("y", 5)
                 .attr("dy", ".6em")
                 .style("text-anchor", "end")
-                .text("Ø Wolken in %");
+                .text("Ø Leistung in Watt");
 
             svg.append("text")
                 .attr("x", (width/2))
                 .attr("y", 0 - (margin.top/2.8))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Wolken der letzten 5 Tagen");
+                .text("Photovoltaik Leistung (5 Tage)");
 
 
             svg.selectAll(".bar")
@@ -96,14 +88,7 @@ $(document).ready(function () {
 
         draw(data);
 
-
-        // function type(d) {
-        //     d.power = +d.power;
-        //     return d;
-        // }
-
     });
-
 
 
 });

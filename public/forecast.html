@@ -34,7 +34,8 @@
 
     <script src="socket.io/socket.io.js"></script>
     <script src="/js/jquery-1.12.4.min.js"></script>
-    <script src="/js/dashboard1.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="/js/energyForecast.js"></script>
 
 
 </head>
@@ -71,19 +72,14 @@
 
         <div class="col-md-8">
 
-            <div class="panel panel-default">
+            <div class="panel panel-default  panel-transparent">
                 <div class="panel-heading">
                     <h3 class="panel-title">Ertragsvorhersage</h3>
                 </div>
                 <div id="power" class="panel-body">
 
-                    <!--   <script src="/js/energyForecast.js"></script>-->
-                    <script src="../mysqlDaten.js"></script>
+                    <div id="powerForecastFive"></div>
 
-                    <div id="fiveDays"></div>
-                    <!--  <script src="/js/showPVPower.js"></script>-->
-                    <!-- <script src="/js/showPowerForecast.js"></script>-->
-                    <!-- //<script src="/js/showWeatherForecast.js"></script>-->
 
 
                 </div>

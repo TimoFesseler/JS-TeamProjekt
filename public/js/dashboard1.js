@@ -2,6 +2,10 @@
  * Created by Fabian Tschullik on 23.06.2016.
  */
 
+/*
+ ## Clientseitig
+ ++++++++   Dashboard Panel: D3-Diagramme für PV-Power und Wetter    +++++++
+ */
 
 $(document).ready(function () {
     // WebSocket
@@ -170,14 +174,14 @@ console.log(data);
                     .attr("y", 5)
                     .attr("dy", ".6em")
                     .style("text-anchor", "end")
-                    .text("Ø Leistung in Watt");
+                    .text("Ø Wolken in %");
 
                 svg.append("text")
                     .attr("x", (width/2))
                     .attr("y", 0 - (margin.top/2.8))
                     .attr("text-anchor", "middle")
                     .style("font-size", "16px")
-                    .text("Photovoltaik Leistung (5 Tage)");
+                    .text("Wolken der letzten 5 Tage");
 
 
                 svg.selectAll(".bar")

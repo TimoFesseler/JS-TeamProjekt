@@ -2,6 +2,14 @@
  * Created by Fabian Tschullik on 17.06.2016.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
+
+
 var mongoose = require('mongoose');
    var forecastSchema =  new mongoose.Schema({
 
@@ -19,8 +27,5 @@ var mongoose = require('mongoose');
  });
 
 
-
-
-    });
 
     var Forecast = module.exports = mongoose.model('Forecast', forecastSchema);

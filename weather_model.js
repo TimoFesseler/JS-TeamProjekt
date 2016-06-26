@@ -2,6 +2,12 @@
  * Created by Fabian Tschullik on 17.06.2016.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 var mongoose = require('mongoose');
    var weatherSchema =  new mongoose.Schema({
 

@@ -1,6 +1,12 @@
 body {
-    padding-top: 50px;
+    padding-top: 40px;
+    background-image: url('../solar.jpg');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+
 }
+
 .template {
     padding: 40px 15px;
     text-align: center;
@@ -8,11 +14,12 @@ body {
 
 
 
-  .bar {
-      fill: steelblue;
-  }
-
-
+/*
+        D3 - Bar Chart
+===============================*/
+.bar {
+    fill: steelblue;
+}
 
 .axis {
     font: 11px sans-serif;
@@ -27,4 +34,47 @@ body {
 
 .x.axis path {
     display: none;
+}
+
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+
+
+/*
+light transparency of panels
+============================= */
+
+.panel-transparent {
+    background: none;
+}
+
+.panel-transparent .panel-heading{
+    background: rgba(245, 245, 245, 0.98) !important;
+}
+
+.panel-transparent .panel-body{
+    background: rgba(255, 255, 255, 0.88) !important;
+}
+
+.jumbotron {
+    background: rgba(245, 245, 245, 0.8) !important;
 }

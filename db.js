@@ -2,6 +2,12 @@
  * Created by Fabian Tschullik on 21.06.2016.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 // Bring Mongoose into the app
 var mongoose = require( 'mongoose' );
 

@@ -1,3 +1,10 @@
+/*
+ ## Server-Seitig
+ ++++++++   Datenbankverbindung (MySQL) zu den PV-Daten   ++++++++
+ ++++++++   Verarbeitung der Daten zum Anzeigen in Diagrammen und Verwendung der Ertragsvorhersage   ++++++++
+ */
+
+
 var mysql = require('mysql');
 var loginFile = require('./SBFspot-user.json');
 var request = require('request');
@@ -43,7 +50,6 @@ module.exports =
             // Array für die kurzfristige Speicherung der PV-Daten aus der MySQL-DB
             var dayData = [];
             var weekData = [];
-            var weeksData = [];
 
             //Variable als Counter für die Arrays.
             var startTime = 1462060800;
@@ -71,34 +77,6 @@ module.exports =
                     startTime = startTime + (60 * 60 * 24);
 
 
-                    // Sobald 5 Tage in dem Wochen-Array stehen, wird ein neues Wochenarray erstellt.
-                    if (weekData.length > 4) {
-                        weeksData.push(weekData);
-                        weekData = [];
-
-                        /*
-                         * 5 Tage je Woche, da die API der Wettervorhersage von OpenWeatherMap uns diese Anzahl ausgibt.
-                         */
-                    }
-                }
-            }
-
-            // Zählervariable für die Zeilen in der Konsolenausgabe
-            var countZeile = 0;
-
-            // Ausgabe der Arrays um zu sehen, ob die Daten auch richtig gesichert werden
-            for (var k = 0; k < weeksData.length; k++) {
-                var testWeekData = weeksData[k];
-                for (var j = 0; j < testWeekData.length; j++) {
-                    var testDayData = testWeekData[j];
-
-                    for (var x = 0; x < testDayData.length; x++) {
-                        var testTimeData = testDayData[x];
-
-                        countZeile++;
-
-                        // console.log("Zeile " + countZeile + ": " + k + " - " + j + " - " + x + " - " + testTimeData.datum + " --- KW ---> " + testTimeData.power);
-                    }
                 }
             }
 
@@ -106,9 +84,6 @@ module.exports =
             /*
              *  Durschnitt berechen und Objekt aufbereiten für Darstellung in GUI
              */
-
-            // Array um JSON Objekte mit Datum und Energie je Tag zu speichern
-            // var daysJSON = [];
 
             // Zähler für Durchnittswerte von Datum und Energie
             var counterAvg = null;
@@ -128,51 +103,45 @@ module.exports =
              * um das Datum und die Energie der letzten 5 Tage auslesen zu können,
              * und um diese im "daysJSON" Array als JSON-Objekte abzulegen.
              */
-            for (var a = weeksData.length - 1; a < weeksData.length; a++) {
-                var aWeeksDataArr = weeksData[a];
+            for (var a = (weekData.length - 5); a < weekData.length; a++) {
+                var aDayDataArr = weekData[a];
 
-                for (var b = 0; b < aWeeksDataArr.length; b++) {
-                    var aDayArr = aWeeksDataArr[b];
+                for (var c = 0; c < aDayDataArr.length; c++) {
+                    var aRowData = aDayDataArr[c];
 
-                    for (var c = 0; c < aDayArr.length; c++) {
-                        var aRowData = aDayArr[c];
+                    ++counterAvg;
+                    // Addtion des Zeitstempels
+                    addAvgTimeStamp += aRowData.datum;
+                    // Durchschnittserrechnung des Zeitstempels
+                    avgTimeStamp = addAvgTimeStamp / counterAvg;
 
-                        ++counterAvg;
-                        // Addtion des Zeitstempels
-                        addAvgTimeStamp += aRowData.datum;
-                        // Durchschnittserrechnung des Zeitstempels
-                        avgTimeStamp = addAvgTimeStamp / counterAvg;
-
-                        // Addtion der Energie
-                        addAvgPower += aRowData.power;
-                        // Durchschnittserrechnung der Energie
-                        avgPower = Math.ceil(addAvgPower / counterAvg);
-                    }
-
-                        var showDate = timeConverter(avgTimeStamp);
-
-                    // Objekterzeugnung und schreiben in das daysJSON-Array
-                    daysJSON.push({
-                        date: showDate,
-                        power: avgPower
-                    });
-
-
-
-
-                    // Zurücksetzen der Variablen, nachdem das Array durch iteriert wurde
-                    // (Daten des Tages fertig ausgelesen, zurücksetzen für neuen Tag)
-                    counterAvg = null;
-
-                    addAvgPower = null;
-                    avgPower = null;
-
-                    addAvgTimeStamp = null;
-                    avgTimeStamp = null;
+                    // Addtion der Energie
+                    addAvgPower += aRowData.power;
+                    // Durchschnittserrechnung der Energie
+                    avgPower = Math.ceil(addAvgPower / counterAvg);
                 }
+
+                var showDate = timeConverter(avgTimeStamp);
+
+                // Objekterzeugnung und schreiben in das daysJSON-Array
+                daysJSON.push({
+                    date: showDate,
+                    power: avgPower
+                });
+
+
+                // Zurücksetzen der Variablen, nachdem das Array durch iteriert wurde
+                // (Daten des Tages fertig ausgelesen, zurücksetzen für neuen Tag)
+                counterAvg = null;
+
+                addAvgPower = null;
+                avgPower = null;
+
+                addAvgTimeStamp = null;
+                avgTimeStamp = null;
             }
+
             callback(daysJSON);
-            console.log(daysJSON);
 
         });
 

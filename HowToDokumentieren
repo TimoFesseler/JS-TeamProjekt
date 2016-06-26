@@ -13,3 +13,14 @@ codezeile, die den median einer liste berechnet
 In der Dokumentation brauchen Sie nur Quellen nennen, die wesentlich sind, also z.B. wenn Sie einen kompletten Workflow übernommen haben, der die Basis für Ihr Projekt darstellt.
 Was wesentlich ist und was nicht, müssen natürlich Sie entscheiden, wenn Sie unsicher sind, geben Sie es lieber an.
 Unwesentlich ist auf jeden Fall alles, was aus wenigen Zeilen besteht und nur ein typisches Programmierproblem löst (Datei öffnen, Stringmanipulation, ...)
+
+
+
+
++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++
+
+Leere Files:
+
+# socket.js
+#

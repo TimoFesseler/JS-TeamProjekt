@@ -1,8 +1,12 @@
+/*
+ ## Clientseitig
+++++++++   Dashboard Panel: Aktuelles Wetter   +++++++
+ */
+
+
 $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
-
-
 
 
     // neue Nachricht

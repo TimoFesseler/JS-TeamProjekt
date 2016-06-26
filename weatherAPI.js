@@ -1,3 +1,9 @@
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 //Verwendete Requirements
 var request = require('request');
 require('./weather_model');

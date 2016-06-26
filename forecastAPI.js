@@ -1,3 +1,10 @@
+/*
+ ## Server-Seitig
+ ++++++++   Abfrage der API: OpenWeatherMap.org   ++++++++
+ ++++++++   Speicherung der Daten in einer MongoDB   ++++++++
+ */
+
+
 var request = require('request');
 
 var mongodb = require('mongodb');

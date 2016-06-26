@@ -1,12 +1,20 @@
 /**
  * Created by Fabian Tschullik on 18.06.2016.
  */
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 
 
 var mongoose = require('mongoose');
 var request = require('request');
 require('./weather_model');
 var Weather = mongoose.model('Weather');
+
+
 var date1 = new Date();
 var date2 = new Date();
 var dateFirst = 0;

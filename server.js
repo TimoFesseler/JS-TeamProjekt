@@ -2,11 +2,17 @@
  * Created by Fabian Tschullik on 08.06.2016.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
 var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
-var calculatePowerForecast = require('./calculatePowerForecast.js');
+// var calculatePowerForecast = require('./calculatePowerForecast.js');
 
 var express = require('express')
     , app = express()
@@ -23,16 +29,16 @@ var express = require('express')
 
 io.sockets.on('connection', function (socket) {
 
-calculatePowerForecast.calcPowerForecast(function (result) {
-
-
-console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-console.log(result);
-                         socket.emit('powerForecastFive', result);
-
-
-
-               });
+// calculatePowerForecast.calcPowerForecast(function (result) {
+//
+//
+// // console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+// console.log(result);
+//                          socket.emit('powerForecastFive', result);
+//
+//
+//
+//                });
 
 
 
@@ -68,7 +74,7 @@ console.log(result);
 
 
 
-            //Übertrage Daten zur Anzeige des PV-Leistung
+            //Übertrage Daten zur Anzeige der PV-Leistung
             mysqlDaten.get5DaysPVData(function (result) {
 
                 socket.emit('powerForecast', result);
@@ -81,7 +87,7 @@ console.log(result);
 
 
 
-            //Übertrage Daten zur Anzeige des Wettervorhersage
+            //Übertrage Daten zur Anzeige der Wettervorhersage
             forecastAPI.get5DayForecast(function (result) {
 
 

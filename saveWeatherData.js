@@ -2,6 +2,13 @@
  * Created by fabiantschullik on 21.06.16.
  */
 
+/*
+ ## Server-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
+
 //Benötigte Requirements
 var weatherAPI = require('./weatherAPI.js');
 require('./weather_model');

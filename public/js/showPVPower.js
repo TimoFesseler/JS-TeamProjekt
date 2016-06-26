@@ -2,6 +2,12 @@
  * Created by Fabian Tschullik on 15.06.2016.
  */
 
+/*
+ ## Client-Seitig
+ ++++++++   -   ++++++++
+ ++++++++   -   ++++++++
+ */
+
 $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
@@ -9,92 +15,60 @@ $(document).ready(function () {
     socket.on('powerForecast', function (data) {
 
 
-        var margin = {top: 25, right: 20, bottom: 30, left: 40},
-            width = 750 - margin.left - margin.right,
-            height = 350 - margin.top - margin.bottom;
+        var data = d3.range(1000).map(d3.randomBates(10));
 
-        var x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+        var formatCount = d3.format(",.0f");
 
-        var y = d3.scale.linear()
+        var margin = {top: 10, right: 30, bottom: 30, left: 30},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        var x = d3.scaleLinear()
+            .rangeRound([0, width]);
+
+        var bins = d3.histogram()
+            .domain(x.domain())
+            .thresholds(x.ticks(20))
+            (data);
+
+        var y = d3.scaleLinear()
+            .domain([0, d3.max(bins, function(d) { return d.length; })])
             .range([height, 0]);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
-
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left");
-
-        var svg = d3.select("#powerForecast").append("svg")
+        var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        var bar = svg.selectAll(".bar")
+            .data(bins)
+            .enter().append("g")
+            .attr("class", "bar")
+            .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; });
 
-        function draw(data) {
+        bar.append("rect")
+            .attr("x", 1)
+            .attr("width", x(bins[0].x1) - x(bins[0].x0) - 1)
+            .attr("height", function(d) { return height - y(d.length); });
 
+        bar.append("text")
+            .attr("dy", ".75em")
+            .attr("y", 6)
+            .attr("x", (x(bins[0].x1) - x(bins[0].x0)) / 2)
+            .attr("text-anchor", "middle")
+            .text(function(d) { return formatCount(d.length); });
 
-            x.domain(data.map(function (d) {
-                return d.date;
-            }));
-            y.domain([0, d3.max(data, function (d) {
-                return d.power;
-            })]);
-
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
-
-            svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-                .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 5)
-                .attr("dy", ".6em")
-                .style("text-anchor", "end")
-                .text("Ø Leistung in Watt");
-
-            svg.append("text")
-                .attr("x", (width/2))
-                .attr("y", 0 - (margin.top/2.8))
-                .attr("text-anchor", "middle")
-                .style("font-size", "16px")
-                .text("Photovoltaik Leistung (5 Tage)");
+        svg.append("g")
+            .attr("class", "axis axis--x")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
 
 
-            svg.selectAll(".bar")
-                .data(data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function (d) {
-                    return x(d.date);
-                })
-                .attr("width", x.rangeBand())
-                .attr("y", function (d) {
-                    return y(d.power);
-                })
-                .attr("height", function (d) {
-                    return height - y(d.power);
-                });
-
-
-        }
+        });
 
 
         draw(data);
-
-
-        // function type(d) {
-        //     d.power = +d.power;
-        //     return d;
-        // }
-
-    });
-
-
 });
+
+ 
