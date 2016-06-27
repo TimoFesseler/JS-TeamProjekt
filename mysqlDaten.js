@@ -44,103 +44,23 @@ module.exports =
 
 // Ausführung der SQL-Abfrage mit Verarbeitung der Daten
 // Startzeit (siehe SQL-Statement), da wir erst die Daten ab dem 1. Mai 2016 abfangen
-        connectionMySQL.query('SELECT * FROM DayData WHERE TimeStamp > 1462060800 ORDER BY TimeStamp', function (err, rows, fields) {
+        connectionMySQL.query('SELECT * FROM MonthData WHERE TimeStamp > 1462060800 ORDER BY TimeStamp', function (err, rows, fields) {
             if (err) throw err;
 
-            // Array für die kurzfristige Speicherung der PV-Daten aus der MySQL-DB
-            var dayData = [];
-            var weekData = [];
-
-            //Variable als Counter für die Arrays.
-            var startTime = 1462060800;
             for (var i = 0; i < rows.length; i++) {
                 // Speichern des konvertierten Datums, je ausgelesener Zeile aus der DB
                 var datum = rows[i].TimeStamp;
-                // Speichern der KW-Anzahl, je ausgelesener Zeile aus der DB
-                var power = rows[i].Power;
-                // Schreiben des Datums & Energy in ein Array, je ausgelesener Zeile aus der DB
-                var rowData = {datum: datum, power: power};
+                // Speichern der kWh-Anzahl, je ausgelesener Zeile aus der DB
+                var power = (rows[i].DayYield/1000);
 
-                // Anweisung um die Daten Tagesweise in ein Array schreiben zu können.
-                // Gezählt wird in Sekunden, da UNIX-Timestamp in der DB hinterlegt ist.
-                // Wenn der nächste Tag erreicht ist (24h in Sek) wird ein neues Array erstellt und das "volle" Array in das "Wochen"-Array geschrieben.
-                if (startTime + (60 * 60 * 24) > rows[i].TimeStamp) {
-
-                    // Alle Einträge eines Tages werden in das Array "dayData" geschrieben
-                    dayData.push(rowData);
-
-
-                } else {
-                    weekData.push(dayData);
-                    dayData = [];
-                    dayData.push(rowData);
-                    startTime = startTime + (60 * 60 * 24);
-
-
-                }
-            }
-
-
-            /*
-             *  Durschnitt berechen und Objekt aufbereiten für Darstellung in GUI
-             */
-
-            // Zähler für Durchnittswerte von Datum und Energie
-            var counterAvg = null;
-
-            // zum Addieren der Energie um nachher den Durschnittswert zu bekommen
-            var addAvgPower = null;
-            // Ergebnis des Durchschnitts
-            var avgPower = null;
-
-            // zum Addieren des TimeStamps um nachher ebenfalls hier den Durschnittswert zu bekommen
-            var addAvgTimeStamp = null;
-            // Ergebnis des Durchschnitts
-            var avgTimeStamp = null;
-
-            /*
-             * Iteration durch den letzten Eintrag im Array "weeksData",
-             * um das Datum und die Energie der letzten 5 Tage auslesen zu können,
-             * und um diese im "daysJSON" Array als JSON-Objekte abzulegen.
-             */
-            for (var a = (weekData.length - 5); a < weekData.length; a++) {
-                var aDayDataArr = weekData[a];
-
-                for (var c = 0; c < aDayDataArr.length; c++) {
-                    var aRowData = aDayDataArr[c];
-
-                    ++counterAvg;
-                    // Addtion des Zeitstempels
-                    addAvgTimeStamp += aRowData.datum;
-                    // Durchschnittserrechnung des Zeitstempels
-                    avgTimeStamp = addAvgTimeStamp / counterAvg;
-
-                    // Addtion der Energie
-                    addAvgPower += aRowData.power;
-                    // Durchschnittserrechnung der Energie
-                    avgPower = Math.ceil(addAvgPower / counterAvg);
-                }
-
-                var showDate = timeConverter(avgTimeStamp);
-
+                var showDate = timeConverter(datum);
                 // Objekterzeugnung und schreiben in das daysJSON-Array
                 daysJSON.push({
                     date: showDate,
-                    power: avgPower
+                    power: power
                 });
-
-
-                // Zurücksetzen der Variablen, nachdem das Array durch iteriert wurde
-                // (Daten des Tages fertig ausgelesen, zurücksetzen für neuen Tag)
-                counterAvg = null;
-
-                addAvgPower = null;
-                avgPower = null;
-
-                addAvgTimeStamp = null;
-                avgTimeStamp = null;
             }
-
+console.log(daysJSON);
             callback(daysJSON);
 
         });

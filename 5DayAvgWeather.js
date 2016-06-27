@@ -88,7 +88,7 @@ var dateFirst = docs[0].date_time.getDate();
         dateFirst = dateNext;
 
 
-        };
+        }
 
 week.push(oneDay);
 
@@ -137,5 +137,5 @@ roundedDay = [];
         });
 
 }
-}
+};
 

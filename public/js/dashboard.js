@@ -12,9 +12,12 @@ $(document).ready(function () {
     var socket = io.connect();
     // neue Nachricht
 
+    /*
+           PV-Daten-Diagramm letzer 5 Tage
+     ================================================
+     */
     socket.on('powerForecast', function (data) {
-
-console.log(data);
+        
         var margin = {top: 25, right: 20, bottom: 30, left: 40},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
@@ -63,7 +66,7 @@ console.log(data);
                 .attr("y", 5)
                 .attr("dy", ".6em")
                 .style("text-anchor", "end")
-                .text("Ø Leistung in Watt");
+                .text("Tages-Leistung in kWh");
 
             svg.append("text")
                 .attr("x", (width/2))
@@ -87,17 +90,18 @@ console.log(data);
                 .attr("height", function (d) {
                     return height - y(d.power);
                 });
-
-
         }
-
-
+        
         draw(data);
-
-
-
-
+        
     });
+
+
+
+    /*
+                   Aktuelles Wetter
+     ================================================
+     */
 
     socket.on('weather', function (result) {
 
@@ -120,9 +124,6 @@ console.log(data);
             }
 
 
-
-
-
             d1=new Date(result.sunrise * 1000);
             document.getElementById("sunrise").innerHTML = d1.getHours()+":"+d1.getMinutes()+" Uhr";
 
@@ -130,9 +131,14 @@ console.log(data);
             document.getElementById("sunset").innerHTML = d2.getHours()+":"+d2.getMinutes()+" Uhr";
 
 
-
         });
 
+
+
+    /*
+            Wetter-Diagramm letzer 5 Tage
+     ================================================
+     */
     socket.on('weatherFiveDay', function (data) {
     console.log(data);
 
@@ -208,20 +214,97 @@ console.log(data);
                     .attr("height", function (d) {
                         return height - y(d.clouds);
                     });
-
-
             }
-
-
+        
             draw(data);
-
-
-
-
-
 
             });
 
+
+    /*
+        Ertragsvorschau-Diagramm letzer 5 Tage
+     ================================================
+     */
+    socket.on('powerForecastFive', function (data) {
+console.log(data);
+
+        var margin = {top: 25, right: 20, bottom: 30, left: 40},
+            width = 750 - margin.left - margin.right,
+            height = 350 - margin.top - margin.bottom;
+
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .1);
+
+        var y = d3.scale.linear()
+            .range([height, 0]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+
+        var svg = d3.select("#powerForecastFive").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        function draw(data) {
+
+
+            x.domain(data.map(function (d) {
+                return d.date;
+            }));
+            y.domain([0, d3.max(data, function (d) {
+                return d.power;
+            })]);
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 5)
+                .attr("dy", ".6em")
+                .style("text-anchor", "end")
+                .text("Tages-Leistung in kWh");
+
+            // svg.append("text")
+            //     .attr("x", (width / 2))
+            //     .attr("y", 0 - (margin.top / 2.8))
+            //     .attr("text-anchor", "middle")
+            //     .style("font-size", "16px")
+            //     .text("Ertragsvorhersage");
+
+
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d) {
+                    return x(d.date);
+                })
+                .attr("width", x.rangeBand())
+                .attr("y", function (d) {
+                    return y(d.power);
+                })
+                .attr("height", function (d) {
+                    return height - y(d.power);
+                });
+        }
+
+        draw(data);
+
+    });
 });
 
 

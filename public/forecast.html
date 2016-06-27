@@ -34,8 +34,8 @@
 
     <script src="socket.io/socket.io.js"></script>
     <script src="/js/jquery-1.12.4.min.js"></script>
-    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="/js/energyForecast.js"></script>
+    <!--<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>-->
+    <script src="/js/dashboard.js"></script>
 
 
 </head>
@@ -44,28 +44,27 @@
 
 <div class="template">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/index.html">Photovoltaik Dashboard</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html">Photovoltaik Dashboard</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/index.html">Home</a></li>
+                    <li class="active"><a href="#">Forecast</a></li>
+                    <li><a href="/about.html">About</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li ><a href="/index.html">Home</a></li>
-                <li class="active"><a href="#">Forecast</a></li>
-                <li><a href="/about.html">About</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-
+    </nav>
 
 
     <div class="row">
@@ -80,12 +79,10 @@
 
                     <div id="powerForecastFive"></div>
 
-
-
                 </div>
             </div>
         </div>
- </div><!-- /.container -->
+    </div><!-- /.container -->
 
 </div>
 <!-- Bootstrap core JavaScript

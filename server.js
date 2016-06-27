@@ -12,7 +12,7 @@ var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
 var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
-// var calculatePowerForecast = require('./calculatePowerForecast.js');
+var calculatePowerForecast = require('./calculatePowerForecast.js');
 
 var express = require('express')
     , app = express()
@@ -21,79 +21,51 @@ var express = require('express')
     , conf = require('./config.json');
 
 
-
-
-
-
-
-
 io.sockets.on('connection', function (socket) {
 
-// calculatePowerForecast.calcPowerForecast(function (result) {
-//
-//
-//                          socket.emit('powerForecastFive', result);
-//
-//
-//
-//                });
+    calculatePowerForecast.calcPowerForecast(function (result) {
+
+        socket.emit('powerForecastFive', result);
+
+    });
 
 
+    weatherFiveDay.getFiveDayWeatherData(function (result) {
+        
+        socket.emit('weatherFiveDay', result);
+        
+    });
 
 
+    //Übertrage Daten zur Anzeige des aktuellen Wetters
+
+    weatherAPI.getActualWeather(function (result) {
+        
+        socket.emit('weather', result);
+        
+    });
 
 
+    //Übertrage Daten zur Anzeige der PV-Leistung
+    mysqlDaten.get5DaysPVData(function (result) {
+        var fiveResults = [];
+        for (var i = (result.length - 5); i < result.length; i++) {
+            fiveResults.push(result[i]);
+        }
+        socket.emit('powerForecast', fiveResults);
+
+    });
 
 
-
- weatherFiveDay.getFiveDayWeatherData(function (result) {
-
-
-                         socket.emit('weatherFiveDay', result);
+    //Übertrage Daten zur Anzeige der Wettervorhersage
+    forecastAPI.get5DayForecast(function (result) {
 
 
+        socket.emit('weatherForecast', result);
 
-               });
+    });
 
-
-
-
-            //Übertrage Daten zur Anzeige des aktuellen Wetters
-
-            weatherAPI.getActualWeather(function (result) {
-
-
-
-           socket.emit('weather', result);
-
-
-            });
-
-
-
-
-            //Übertrage Daten zur Anzeige der PV-Leistung
-            mysqlDaten.get5DaysPVData(function (result) {
-
-                socket.emit('powerForecast', result);
-
-
-              });
-
-
-
-
-
-
-            //Übertrage Daten zur Anzeige der Wettervorhersage
-            forecastAPI.get5DayForecast(function (result) {
-
-
-                socket.emit('weatherForecast', result);
-
-            });
-            
-        });
+});
 
 // Webserver
 // auf den Port x schalten
