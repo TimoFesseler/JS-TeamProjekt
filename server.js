@@ -49,7 +49,7 @@ io.sockets.on('connection', function (socket) {
     //Übertrage Daten zur Anzeige der PV-Leistung
     mysqlDaten.get5DaysPVData(function (result) {
         var fiveResults = [];
-        for (var i = (result.length - 5); i < result.length; i++) {
+        for (var i = (result.length - 6); i < (result.length-1); i++) {
             fiveResults.push(result[i]);
         }
         socket.emit('powerForecast', fiveResults);
