@@ -76,7 +76,7 @@ module.exports =
                 result: result
             });
 
-            // console.log("Classify : ", dt.classify([50, 0, 24.7]));
+            //console.log("Classify : ", dt.classify([50, 0, 24.7]));
             
             for (var i = 0; i < weatherTestArr.length; i++) {
 
