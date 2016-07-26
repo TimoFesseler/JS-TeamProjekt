@@ -60,7 +60,7 @@ module.exports =
                     power: power
                 });
             }
-console.log(daysJSON);
+// console.log(daysJSON);
             callback(daysJSON);
 
         });

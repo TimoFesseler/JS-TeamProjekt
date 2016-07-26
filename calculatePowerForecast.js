@@ -5,7 +5,7 @@
  */
 
 
-var ml = require('machine_learning');
+var brain = require('brain');
 var request = require('request');
 var mysqlDaten = require('./mysqlDaten.js');
 var fiveDayAvgWeather = require('./5DayAvgWeather.js');
@@ -18,10 +18,10 @@ var powerPVData = null;
 /* Speichern der Power-Daten des Arrays aus mysqlDaten.js --> daysJSON.js */
 var weatherData = null;
 
-module.exports =
-{
-
-    calcPowerForecast: function (callback) {
+// module.exports =
+// {
+//
+//     calcPowerForecast: function (callback) {
 
 // function weather() {
 //
@@ -45,7 +45,7 @@ module.exports =
 
 
         mysqlDaten.get5DaysPVData(function (result1) {
-            
+
             /* 
              *   Decision Tree
              *   Reference : 'Programming Collective Intelligence' by Toby Segaran.
@@ -62,7 +62,6 @@ module.exports =
                 [5, 0.5, 29.6]
             ];
 
-
             powerPVData = result1;
             for (var g = (powerPVData.length - data.length); g < powerPVData.length; g++) {
                 dataPower.push(powerPVData[g].power);
@@ -70,32 +69,46 @@ module.exports =
             }
 
             var result = dataPower;
+// console.log(result[0]);
+            var net = new brain.NeuralNetwork();
 
-            var dt = new ml.DecisionTree({
-                data: data,
-                result: result
-            });
+            // net.train([
+            //     {input: data[0], output: result[0]},
+            //     {input: data[1], output: result[1]},
+            //     {input: data[2], output: result[2]},
+            //     {input: data[3], output: result[3]},
+            //     {input: data[4], output: result[4]},
+            //     {input: data[5], output: result[5]},
+            //     {input: data[6], output: result[6]}]);
 
-            //console.log("Classify : ", dt.classify([50, 0, 24.7]));
             
-            for (var i = 0; i < weatherTestArr.length; i++) {
+// clouds = c, rain = r, temprature = t
 
-                dt.build();
-                dt.prune(1.0); // 1.0 : mingain.
-                // dt.print();  // Ausgabe des Decision Trees
-                var convertDTInput = "[" + weatherTestArr[i] + "]";
+                net.train([{input: {c: 88, r: 0.5, t: 23.6}, output: {power: 10}},
+                    {input: {c: 1, r: 0.5, t: 25}, output: {power: 90}},
+                    {input: {c: 45, r: 6.5, t: 18.4}, output: {power: 60}}]);
 
-                var vc = dt.classify(convertDTInput);
-                var st = JSON.stringify(vc);
-                var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
+                var output = net.run([2, 0.0, 32.2]);
 
-                powerForecast.push({
-                    date: dataDate[i],
-                    power: convertDTOutput
-                });
-            }
-            callback(powerForecast);
-            
-        });
-    }
-};
+                // var output = net.run(data1[0]);  // { white: 0.99, black: 0.002 }
+            // for (var i = 0; i < weatherTestArr.length; i++) {
+            //
+            //
+            //     // var convertDTInput = "[" + weatherTestArr[i] + "]";
+            //
+            //     var output = net.run([10, 0.5, 26.5]);
+                // var st = JSON.stringify(output);
+                // var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
+console.log(output);
+
+                // powerForecast.push({
+                //     date: dataDate[i],
+                //     power: st[i]
+                // });
+            // }
+            // callback(powerForecast);
+// console.log("Power Forecast: " + powerForecast);
+        }
+        );
+    // }
+// }
