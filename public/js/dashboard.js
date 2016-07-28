@@ -140,7 +140,6 @@ $(document).ready(function () {
      ================================================
      */
     socket.on('weatherFiveDay', function (data) {
-    console.log(data);
 
     var margin = {top: 25, right: 20, bottom: 30, left: 40},
                 width = 750 - margin.left - margin.right,
@@ -226,7 +225,6 @@ $(document).ready(function () {
      ================================================
      */
     socket.on('powerForecastFive', function (data) {
-console.log(data);
 
         var margin = {top: 25, right: 20, bottom: 30, left: 40},
             width = 750 - margin.left - margin.right,

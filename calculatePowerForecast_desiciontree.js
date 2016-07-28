@@ -66,8 +66,7 @@ module.exports =
                 dataPower.push(powerPVData[g].power);
                 dataDate.push(powerPVData[g].date);
             }
-            console.log("Was steht in 'powerPVData'?")
-            console.log(powerPVData);
+           
             var result = dataPower;
             var dt = new ml.DecisionTree({
                 data: data,

@@ -32,8 +32,7 @@ result.save(function (err, result) {
 
   if (err) return console.error(err);
   if (!err) {
-
-  console.log("Datensatz zwurde gepspeichert: \n"+result);
+    
   process.exit()
   }
 

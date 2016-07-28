@@ -41,6 +41,7 @@
 
 <body>
 
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -63,7 +64,7 @@
     </div>
 </nav>
 
-<div class="template">
+<div id="template">
 
     <div class="row">
 
@@ -75,69 +76,69 @@
                 </div>
                 <div id="power" class="panel-body">
 
-                       <div id="powerForecast"></div>
+                    <div id="powerForecast"></div>
 
-                 </div>
-             </div>
-         </div>
-
-
-         <div id="weather" class="col-md-4">
+                </div>
+            </div>
+        </div>
 
 
-             <div class="panel panel-default  panel-transparent">
-                 <div class="panel-heading">
-                     <h3 class="panel-title">Aktuelles Wetter</h3>
-                 </div>
-                 <div class="panel-body">
+        <div id="weather" class="col-md-4">
+            <div class="panel panel-default  panel-transparent">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Aktuelles Wetter</h3>
+                </div>
+                <div class="panel-body">
 
 
-                     <table class="table">
+                    <table class="table">
 
-                         <tbody>
+                        <tbody>
 
-                         <tr>
-                             <td>Ort:</td>
-                             <td id="ort"></td>
-                         </tr>
+                        <tr>
+                            <td>Ort:</td>
+                            <td id="ort"></td>
+                        </tr>
 
-                         <tr>
-                             <td>Temperatur:</td>
-                             <td id="temp"></td>
-                         </tr>
+                        <tr>
+                            <td>Temperatur:</td>
+                            <td id="temp"></td>
+                        </tr>
 
-                         <tr>
-                             <td>Wolken:</td>
-                             <td id="clouds"></td>
-                         </tr>
+                        <tr>
+                            <td>Wolken:</td>
+                            <td id="clouds"></td>
+                        </tr>
 
-                         <tr>
-                             <td>Regen:</td>
-                             <td id="rain"></td>
-                         </tr>
+                        <tr>
+                            <td>Regen:</td>
+                            <td id="rain"></td>
+                        </tr>
 
-                         <tr>
-                             <td>Sonnenaufgang:</td>
-                             <td id="sunrise"></td>
-                         </tr>
+                        <tr>
+                            <td>Sonnenaufgang:</td>
+                            <td id="sunrise"></td>
+                        </tr>
 
-                         <tr>
-                             <td>Sonnenuntergang:</td>
-                             <td id="sunset"></td>
-                         </tr>
+                        <tr>
+                            <td>Sonnenuntergang:</td>
+                            <td id="sunset"></td>
+                        </tr>
 
-                         </tbody>
-
-
-                     </table>
+                        </tbody>
 
 
-                 </div>
-             </div>
+                    </table>
+
+                    <div id="maps"></div>
 
 
-         </div>
-     </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
     <div class="row">
 
@@ -150,15 +151,14 @@
                 <div id="power" class="panel-body">
 
 
-
                     <div id="fiveDays"></div>
-
 
 
                 </div>
             </div>
         </div>
- </div><!-- /.container -->
+    </div>
+</div><!-- /.container -->
 
 
 <!-- Bootstrap core JavaScript
@@ -169,5 +169,25 @@
 <script src="../../dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+<script>
+
+    var map;
+    window.initMap = function () {
+        console.log("map1");
+        map = new google.maps.Map(document.getElementById("maps"), {
+            center: {lat: 48.766111, lng: 8.934722},
+            zoom: 12
+        });
+    }
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhzSkLsyI6KDYXyvBW7iAE-DP83BTCl_A&callback=initMap"
+        async defer>
+</script>
+
+
 </body>
 </html>

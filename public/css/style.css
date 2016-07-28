@@ -7,8 +7,8 @@ body {
 
 }
 
-.template {
-    padding: 40px 15px;
+#template {
+    padding: 60px 15px;
     text-align: center;
 }
 
@@ -86,3 +86,11 @@ light transparency of panels
 .spaceDown{
     padding-top: 12%;
 }
+
+/*
+gmaps style
+============================= */
+html, body, #maps {
+    margin: 0;
+    padding: 0;
+    height: 200px;}

@@ -69,7 +69,6 @@ var weatherData = null;
             }
 
             var result = dataPower;
-// console.log(result[0]);
             var net = new brain.NeuralNetwork();
 
             // net.train([
@@ -99,7 +98,6 @@ var weatherData = null;
             //     var output = net.run([10, 0.5, 26.5]);
                 // var st = JSON.stringify(output);
                 // var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
-console.log(output);
 
                 // powerForecast.push({
                 //     date: dataDate[i],
@@ -107,7 +105,6 @@ console.log(output);
                 // });
             // }
             // callback(powerForecast);
-// console.log("Power Forecast: " + powerForecast);
         }
         );
     // }
