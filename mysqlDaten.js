@@ -77,7 +77,7 @@ module.exports =
             // Um das richtige Datum als auch Uhrzeit bekommen zu können muss man
             // den UNIX-Timestamp, welcher in Sekunden ist *1000 nehmen,
             // damit die "new Date()"-Funktion den Timnestamp richtig übersetzt.
-            var dat = new Date(datum * 1000);
+            var dat = new Date((datum * 1000)-86400000);
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var year = dat.getFullYear();
             var month = months[dat.getMonth()];
