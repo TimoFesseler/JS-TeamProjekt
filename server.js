@@ -55,10 +55,10 @@ io.sockets.on('connection', function (socket) {
     // });
 
 
-    //Übertrage Daten zur Anzeige der PV-Leistung
+    //Übertrage Daten zur Anzeige der vergangenen PV-Leistung
     mysqlDaten.get5DaysPVData(function (result) {
         var fiveResults = [];
-        for (var i = (result.length - 5); i < (result.length); i++) {
+        for (var i = (result.length - 10); i < (result.length); i++) {
             fiveResults.push(result[i]);
         }
         socket.emit('powerForecast', fiveResults);
@@ -66,7 +66,7 @@ io.sockets.on('connection', function (socket) {
     });
 
 
-    //Übertrage Daten zur Anzeige der Wettervorhersage
+    //Übertrage Daten zur Anzeige der vergangenen Wettervorhersagen
     forecastAPI.get5DayForecast(function (result) {
 
 
