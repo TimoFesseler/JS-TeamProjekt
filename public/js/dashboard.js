@@ -42,7 +42,14 @@ $(document).ready(function () {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+            })
 
+             svg.call(tip);
         function draw(data) {
 
 
@@ -89,7 +96,9 @@ $(document).ready(function () {
                 })
                 .attr("height", function (d) {
                     return height - y(d.power);
-                });
+                })
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
         }
         
         draw(data);
