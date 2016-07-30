@@ -13,17 +13,17 @@ $(document).ready(function () {
     // neue Nachricht
 
     /*
-           PV-Daten-Diagramm letzer 5 Tage
+           PV-Daten-Diagramm letzen 10 Tage
      ================================================
      */
     socket.on('powerForecast', function (data) {
         
-        var margin = {top: 25, right: 20, bottom: 30, left: 40},
+        var margin = {top: 25, right: 20, bottom: 30, left: 20},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
 
         var x = d3.scale.ordinal()
-            .rangeRoundBands([0, width], .1);
+            .rangeRoundBands([2, width], .15);
 
         var y = d3.scale.linear()
             .range([height, 0]);
@@ -80,7 +80,7 @@ $(document).ready(function () {
                 .attr("y", 0 - (margin.top/2.8))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Photovoltaik Leistung (5 Tage)");
+                .text("Photovoltaik Leistung (letzten 10 Tage)");
 
 
             svg.selectAll(".bar")
@@ -145,17 +145,17 @@ $(document).ready(function () {
 
 
     /*
-            Wetter-Diagramm letzer 5 Tage
+            Wetter-Diagramm letzen 10 Tage
      ================================================
      */
     socket.on('weatherFiveDay', function (data) {
 
-    var margin = {top: 25, right: 20, bottom: 30, left: 40},
+    var margin = {top: 25, right: 20, bottom: 30, left: 20},
                 width = 750 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
 
             var x = d3.scale.ordinal()
-                .rangeRoundBands([0, width], .1);
+                .rangeRoundBands([2, width], .15);
 
             var y = d3.scale.linear()
                 .range([height, 0]);
@@ -205,7 +205,7 @@ $(document).ready(function () {
                     .attr("y", 0 - (margin.top/2.8))
                     .attr("text-anchor", "middle")
                     .style("font-size", "16px")
-                    .text("Wolken der letzten 5 Tage");
+                    .text("Wolken in % (letzten 10 Tage)");
 
 
                 svg.selectAll(".bar")

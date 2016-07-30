@@ -19,7 +19,7 @@ date1.setDate(date1.getDate() - 1);
 var date2 = new Date();
 var dateFirst = 0;
 var dateNext = 0;
-date2.setDate(date2.getDate() - 5);
+date2.setDate(date2.getDate() - 10);
 var oneDay = [];
 var week = [];
 var dayCount = 0;
