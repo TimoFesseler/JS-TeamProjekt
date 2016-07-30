@@ -12,6 +12,20 @@ $(document).ready(function () {
     var socket = io.connect();
     // neue Nachricht
 
+
+    /*
+     Zur Darstellung des D3 charts wurden Inhalte aus folgenem Tutorial teilweise entnommen und angepasst:
+     https://bl.ocks.org/mbostock/3885304    --> Mike Bostock
+     ================================================
+     */
+
+    /*
+     Zur Darstellung der Tooltips der Charts wurden Inhalte aus:
+     http://bl.ocks.org/Caged/6476579    --> Justin Palmer  übernommen
+     ================================================
+     */
+
+
     /*
            PV-Daten-Diagramm letzen 10 Tage
      ================================================
@@ -46,7 +60,7 @@ $(document).ready(function () {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
+                return "<strong>kWh: </strong> <span style='color:red'>" +  Number((d.power).toFixed(1)); + "</span>";
             })
 
              svg.call(tip);
@@ -150,6 +164,8 @@ $(document).ready(function () {
      */
     socket.on('weatherFiveDay', function (data) {
 
+        console.log(data);
+
     var margin = {top: 25, right: 20, bottom: 30, left: 20},
                 width = 750 - margin.left - margin.right,
                 height = 350 - margin.top - margin.bottom;
@@ -173,6 +189,15 @@ $(document).ready(function () {
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<strong>Wolkendecke in %:  </strong> <span style='color:red'>" +  Number((d.clouds).toFixed(1));
+            })
+
+        svg.call(tip);
 
 
             function draw(data) {
@@ -220,8 +245,10 @@ $(document).ready(function () {
                         return y(d.clouds);
                     })
                     .attr("height", function (d) {
-                        return height - y(d.clouds);
-                    });
+                        return height - y(d.clouds)
+                    })
+                    .on('mouseover', tip.show)
+                    .on('mouseout', tip.hide);
             }
         
             draw(data);
@@ -258,6 +285,15 @@ $(document).ready(function () {
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d) {
+                return "<strong>Voraussichtlicher Ertrag in kWH:  </strong> <span style='color:red'>" +  Number((d.power).toFixed(1));  + "</span>";
+            })
+
+        svg.call(tip);
 
 
         function draw(data) {
@@ -306,7 +342,9 @@ $(document).ready(function () {
                 })
                 .attr("height", function (d) {
                     return height - y(d.power);
-                });
+                })
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
         }
 
         draw(data);
