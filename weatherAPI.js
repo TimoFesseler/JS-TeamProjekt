@@ -7,8 +7,8 @@
 //Verwendete Requirements
 var request = require('request');
 require('./weather_model');
-var mongoose = require( 'mongoose' ),
-Weather = mongoose.model('Weather');
+var mongoose = require('mongoose'),
+    Weather = mongoose.model('Weather');
 require('./db.js');
 
 //Anhand der cityID wird die Abfrage an die API der openWeatherMap gestellt
@@ -30,7 +30,7 @@ module.exports =
 //diese anschließend zurück. Da Wetterdaten werden ebenfalls in einer MongoDB gespeichert.
     getActualWeather: function (callback) {
 
-console.log(apiUrl + cityID + '&APPID=' + token);
+        console.log(apiUrl + cityID + '&APPID=' + token);
 
 
         //Hier wird der String zur Abfrage zusammen gefügt und der request anschließend gestartet
@@ -62,14 +62,13 @@ console.log(apiUrl + cityID + '&APPID=' + token);
                     });
 
 
-
- //Liefert die Wetterdaten zurück
-            callback(weatherData);
+                //Liefert die Wetterdaten zurück
+                callback(weatherData);
 
             }
 
 
-            if(error){
+            if (error) {
 
                 request(apiUrl + "2878695" + '&APPID=' + token, function (error, response, body) {
                     if (!error) {
@@ -99,33 +98,20 @@ console.log(apiUrl + cityID + '&APPID=' + token);
                             });
 
 
-
                         //Liefert die Wetterdaten zurück
                         callback(weatherData);
 
                     }
 
 
-
                 });
-
-
-
-
-
-
-
 
 
             }
 
 
-
-
         });
 
 
-
-
-
-}};
+    }
+};

@@ -1,6 +1,7 @@
 /*
  ## Server-Seitig
  ++++++++   Abfrage der API: OpenWeatherMap.org   ++++++++
+ ++++++++   Wettervorhersage über 5 Tage   ++++++++
  ++++++++   Speicherung der Daten in einer MongoDB   ++++++++
  */
 

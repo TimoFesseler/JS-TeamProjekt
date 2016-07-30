@@ -10,6 +10,7 @@
 $(document).ready(function () {
     // WebSocket
     var socket = io.connect();
+
     // neue Nachricht
 
 
@@ -31,6 +32,8 @@ $(document).ready(function () {
      ================================================
      */
     socket.on('powerForecast', function (data) {
+
+        console.log(data);
         
         var margin = {top: 25, right: 20, bottom: 30, left: 20},
             width = 750 - margin.left - margin.right,
@@ -348,7 +351,7 @@ $(document).ready(function () {
         }
 
         draw(data);
-
+        location.reload();
     });
 });
 
