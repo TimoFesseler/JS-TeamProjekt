@@ -1,0 +1,38 @@
+{
+  "name": "datenintegration-photovoltaik",
+  "version": "1.0.0",
+  "description": "Ein Projekt von Fabian Tschullik und Timo Fesseler",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "machine_learning": "^0.0.8",
+    "mysql": "^2.11.1",
+    "mongodb": "^2.2.4",
+    "socket.io": "^1.4.8",
+    "mongoose": "^4.5.7",
+    "request": "^2.74.0",
+    "body-parser": "^1.15.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimoFesseler/JS-TeamProjekt.git"
+  },
+  "keywords": [
+    "node",
+    "socket.io",
+    "photovoltaik",
+    "datenintegration",
+    "datenanalyse"
+  ],
+  "author": "Fabian Tschullik, Timo Fesseler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TimoFesseler/JS-TeamProjekt/issues"
+  },
+  "homepage": "https://github.com/TimoFesseler/JS-TeamProjekt#readme"
+}
