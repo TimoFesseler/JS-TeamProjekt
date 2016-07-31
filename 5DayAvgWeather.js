@@ -100,7 +100,6 @@ module.exports =
 
                 roundedDay = {
                     clouds: (roundedCloudsCounter / week[h].length),
-                    suntime: (roundedSuntimeCounter / week[h].length),
                     date_time: (week[h][0].date_time.getDate() + ". " + month[week[h][0].date_time.getMonth()] + " " + week[h][0].date_time.getFullYear())
                 };
 

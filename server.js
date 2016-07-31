@@ -25,7 +25,7 @@ var express = require('express')
 io.sockets.on('connection', function (socket) {
 
     calculatePowerForecast.calcPowerForecast(function (result) {
-
+       console.log(result)
         socket.emit('powerForecastFive', result);
 
     });
@@ -34,7 +34,6 @@ io.sockets.on('connection', function (socket) {
     weatherFiveDay.getFiveDayWeatherData(function (result) {
         
         socket.emit('weatherFiveDay', result);
-        socket.emit('suntime', result);
         
     });
 

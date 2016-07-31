@@ -33,7 +33,10 @@ $(document).ready(function () {
      */
     socket.on('powerForecast', function (data) {
 
-        console.log(data);
+
+
+        document.getElementById("kWhGestern").innerHTML = data[9].power;
+        document.getElementById("eurGestern").innerHTML = Math.round(data[9].power*0.278*100)/100 + " €";
         
         var margin = {top: 25, right: 20, bottom: 30, left: 20},
             width = 750 - margin.left - margin.right,
@@ -167,10 +170,11 @@ $(document).ready(function () {
 
     socket.on('currentPower', function (result) {
 
-
+document.getElementById("kW").innerHTML = result + " kW";
 
 
     });
+
 
 
 
@@ -273,11 +277,12 @@ $(document).ready(function () {
 
 
     /*
-        Ertragsvorschau-Diagramm letzer 10 Tage
+        Ertragsvorschau-Diagramm kommende 5 Tage
      ================================================
      */
     socket.on('powerForecastFive', function (data) {
-
+console.log("Chart");
+        console.log(data);
         var margin = {top: 25, right: 20, bottom: 30, left: 40},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
@@ -306,7 +311,7 @@ $(document).ready(function () {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Voraussichtlicher Ertrag in kWH:  </strong> <span style='color:red'>" +  Number((d.power).toFixed(1));  + "</span>";
+                return "<strong>Voraussichtlicher Ertrag in kWh:  </strong> <span style='color:red'>" +  Number((d.power).toFixed(1));  + "</span>";
             });
 
         svg.call(tip);
@@ -336,13 +341,6 @@ $(document).ready(function () {
                 .attr("dy", ".6em")
                 .style("text-anchor", "end")
                 .text("Tages-Leistung in kWh");
-
-            // svg.append("text")
-            //     .attr("x", (width / 2))
-            //     .attr("y", 0 - (margin.top / 2.8))
-            //     .attr("text-anchor", "middle")
-            //     .style("font-size", "16px")
-            //     .text("Ertragsvorhersage");
 
 
             svg.selectAll(".bar")
