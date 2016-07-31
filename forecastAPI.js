@@ -65,7 +65,8 @@ module.exports =
 
                                 'date_time': data.list[i].dt_txt,
                                 'temp': (data.list[i].main.temp - 273.15),
-                                'clouds': data.list[i].clouds.all
+                                'clouds': data.list[i].clouds.all,
+                                'suntime': data.list[i].sunset - data.list[i].sunrise
 
                             });
 
@@ -117,7 +118,8 @@ module.exports =
 
                                         'date_time': data.list[i].dt_txt,
                                         'temp': (data.list[i].main.temp - 273.15),
-                                        'clouds': data.list[i].clouds.all
+                                        'clouds': data.list[i].clouds.all,
+                                        'suntime': data.list[i].sunset - data.list[i].sunrise
 
                                     });
 

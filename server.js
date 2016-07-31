@@ -12,6 +12,7 @@ var forecastAPI = require('./forecastAPI.js');
 var weatherAPI = require('./weatherAPI.js');
 var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
+var currentPower = require('./currentPower.js');
 var calculatePowerForecast = require('./calculatePowerForecast_desiciontree.js');
 
 var express = require('express')
@@ -33,6 +34,7 @@ io.sockets.on('connection', function (socket) {
     weatherFiveDay.getFiveDayWeatherData(function (result) {
         
         socket.emit('weatherFiveDay', result);
+        socket.emit('suntime', result);
         
     });
 
@@ -48,11 +50,11 @@ io.sockets.on('connection', function (socket) {
 
     //Übertrage Daten zur Anzeige des aktuellen PV-Ertrags
 
-    // mysqlDaten.getCurrentPower(function (result) {
-    //
-    //     socket.emit('currentPower', result);
-    //
-    // });
+    currentPower.getCurrentPower(function (result) {
+
+        socket.emit('currentPower', result);
+
+    });
 
 
     //Übertrage Daten zur Anzeige der vergangenen PV-Leistung

@@ -22,13 +22,9 @@ var dateNext = 0;
 date2.setDate(date2.getDate() - 10);
 var oneDay = [];
 var week = [];
-var dayCount = 0;
-var g = 0;
-var p;
-var roundedClouds;
+var roundedSuntimeCounter = 0;
 var roundedCloudsCounter = 0;
 var roundedDay;
-var teiler = 0;
 var month = new Array();
 month[0] = "Jan";
 month[1] = "Feb";
@@ -97,6 +93,7 @@ module.exports =
                 for (var y = 0; y < week[h].length; y++) {
 
                     roundedCloudsCounter = roundedCloudsCounter + week[h][y].clouds;
+                    roundedSuntimeCounter = (roundedSuntimeCounter + week[h][y].sunset)-(roundedSuntimeCounter + week[h][y].sunrise);
 
                     
 
@@ -104,6 +101,7 @@ module.exports =
 
                 roundedDay = {
                     clouds: (roundedCloudsCounter / week[h].length),
+                    suntime: (roundedSuntimeCounter / week[h].length),
                     date_time: (week[h][0].date_time.getDate() + ". " + month[week[h][0].date_time.getMonth()] + " " + week[h][0].date_time.getFullYear())
                 };
 
@@ -113,6 +111,7 @@ module.exports =
 
                 roundedDay = null;
                 roundedCloudsCounter = 0;
+                roundedSuntimeCounter = 0;
 
 
             }
