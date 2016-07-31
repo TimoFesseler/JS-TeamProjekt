@@ -47,19 +47,10 @@ module.exports =
         connectionMySQL.query('SELECT * FROM DayData ORDER BY TimeStamp DESC LIMIT 1', function (err, rows, fields) {
             if (err) throw err;
 
-            // Speichern des konvertierten Datums, je ausgelesener Zeile aus der DB
-            var datum = rows.TimeStamp;
             // Speichern der kWh-Anzahl, je ausgelesener Zeile aus der DB
-            var power = (rows.Power / 1000);
+            var currentPower = (rows.Power / 1000);
 
-            var showDate = (datum/1000/60/60);
-            console.log("Sonnenstunden");
-            console.log(showDate);
             // Objekterzeugnung und schreiben in das daysJSON-Array
-            currentPower.push({
-                date: showDate,
-                power: power
-            });
 
 
             callback(currentPower);

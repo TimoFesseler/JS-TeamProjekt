@@ -93,7 +93,6 @@ module.exports =
                 for (var y = 0; y < week[h].length; y++) {
 
                     roundedCloudsCounter = roundedCloudsCounter + week[h][y].clouds;
-                    roundedSuntimeCounter = (roundedSuntimeCounter + week[h][y].sunset)-(roundedSuntimeCounter + week[h][y].sunrise);
 
                     
 

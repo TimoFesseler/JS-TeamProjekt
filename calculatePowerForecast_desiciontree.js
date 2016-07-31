@@ -10,27 +10,19 @@ var request = require('request');
 var mysqlDaten = require('./mysqlDaten.js');
 // var fiveDayAvgWeather = require('./5DayAvgWeather.js');
 var forecastAPI = require('./forecastAPI.js');
+var avgWeatherData = require('./avgWeatherData');
 
 
 var dataPower = [];
 var dataDate = [];
 /* Vorhersagen aus dem Decision Tree */
 var powerPVData = null;
-/* Speichern der Power-Daten des Arrays aus mysqlDaten.js --> daysJSON.js */
-var weatherData = null;
-
-//Verbindung Herstellen zur Mongo DB
-var mongoose = require('mongoose');
 
 var powerForecast = [];
-var weatherTestArr = [];
+var weatherRawArr = [];
+var weatherArr = [];
+var roundedWeek = [];
 
-
-forecastAPI.get5DayForecast(function (result) {
-    weatherTestArr = result;
-    console.log("==============????============");
-    console.log(weatherTestArr);
-});
 
 module.exports =
 {
@@ -38,159 +30,126 @@ module.exports =
     calcPowerForecast: function (callback) {
 
 
+        forecastAPI.get5DayForecast(function (result) {
+            var counter = 0;
+            var adClouds = 0;
+            var adRain = 0;
+            var adTemp = 0;
+
+            var dayX = 0;
+            var dayXMin1 = 0;
 
 
+            for (var x = 0; x < result.forecast.length; x++) {
+                console.log(adRain);
+                dayX = new Date(result.forecast[x].date_time);
+                console.log("====================");
+console.log(dayX);
+                if (x >= 1) {
 
-        require('./weather_model');
-        var Weather = mongoose.model('Weather');
+                    dayXMin1 = new Date(result.forecast[x - 1].date_time);
+                    console.log(dayXMin1);
+                    if (Number(dayX.getDay()) == Number(dayXMin1.getDay())) {
+                        counter++;
+                        console.log(dayX.getDay() == dayXMin1.getDay());
+                        console.log("DayX: " + dayX.getDay());
+                        console.log("DayXMin1: " + dayXMin1.getDay());
+                        adClouds += Number(result.forecast[x].clouds);
 
-        var date1 = new Date();
-        date1.setDate(date1.getDate() - 1);
-        var date2 = new Date();
-        var dateFirst = 0;
-        var dateNext = 0;
+                        if (result.forecast[x].rain != null) {
 
-        date2.setDate(Weather.findById({_id: "5769173f0f9095197edb0504"}, function (err, user) {
-            if (err) {
-                console.log("Something WRONG: ", err);
-            }
-            else {
-                return user.date_time;
-            }
-        }));
+                            adRain += result.forecast[x].rain["3h"];
 
-        var oneDay = [];
-        var week = [];
-        var roundedCloudsCounter = 0;
-        var roundedRainCounter = 0;
-        var roundedTempCounter = 0;
-        var roundedSuntimeCounter = 0;
-        var roundedDay;
-        var month = new Array();
-        month[0] = "Jan";
-        month[1] = "Feb";
-        month[2] = "Mär";
-        month[3] = "Apr";
-        month[4] = "Mai";
-        month[5] = "Jun";
-        month[6] = "Jul";
-        month[7] = "Aug";
-        month[8] = "Sep";
-        month[9] = "Oct";
-        month[10] = "Nov";
-        month[11] = "Dec";
+                        }
+                        adTemp += Number(result.forecast[x].temp);
 
-        var roundedWeek = [];
+                    }
+                    else {
+                        console.log("drin");
 
-        Weather.find({"date_time": {$gt: date2, $lt: date1}}, function (err, docs) {
-            dateFirst = docs[0].date_time.getDate();
+                        weatherArr.push[
+                            (adClouds / counter),
+                                (adRain / counter),
+                                (adTemp / counter)
+                            ];
 
-            for (var i = 0; i < docs.length; i++) {
-                dateNext = docs[i].date_time.getDate();
+                        adClouds = 0;
+                        adRain = 0;
+                        adTemp = 0;
+                        counter = 0;
 
-                if (dateFirst == dateNext) {
-                    oneDay.push(docs[i]);
+                        adClouds += Number(result.forecast[x].clouds);
+
+                        if (result.forecast[x].rain != null) {
+
+                            adRain += result.forecast[x].rain["3h"];
+                        }
+                        adTemp += Number(result.forecast[x].temp);
+
+                    }
+
                 }
                 else {
-                    week.push(oneDay);
-                    oneDay = [];
-                    oneDay.push(docs[i]);
-                }
+                    adClouds += Number(result.forecast[x].clouds);
 
-                dateFirst = dateNext;
-            }
-            week.push(oneDay);
+                    if (result.forecast[x].rain != null) {
 
+                        adRain += result.forecast[x].rain["3h"];
 
-// round the clouds
-
-            for (var h = 0; h < week.length; h++) {
-                for (var y = 0; y < week[h].length; y++) {
-                    roundedCloudsCounter = roundedCloudsCounter + week[h][y].clouds;
-
-                    roundedSuntimeCounter = (roundedSuntimeCounter + week[h][y].sunset) - roundedSuntimeCounter + week[h][y].sunrise;
-
-                    var rainValue = Number(week[h][y].rain);
-                    if (isNaN(week[h][y].rain)) {
-                        rainValue = 0
                     }
-                    roundedRainCounter = roundedRainCounter + rainValue;
-
-                    roundedTempCounter = roundedTempCounter + week[h][y].temp;
+                    adTemp += Number(result.forecast[x].temp);
                 }
-
-                roundedDay = [
-                    (roundedCloudsCounter / week[h].length),
-                    (roundedSuntimeCounter / week[h].length),
-                    (roundedRainCounter / week[h].length),
-                    (roundedTempCounter / week[h].length)
-                    // (week[h][0].date_time.getDate() + ". " + month[week[h][0].date_time.getMonth()] + " " + week[h][0].date_time.getFullYear())
-                ];
-
-                roundedWeek.push(roundedDay);
-
-                roundedDay = null;
-                roundedCloudsCounter = 0;
-                roundedSuntimeCounter = 0;
-                roundedRainCounter = 0;
-                roundedTempCounter = 0;
-
             }
 
+            console.log("==============????============");
+            console.log(weatherArr.length);
+            // console.log(weatherArr);
 
-            // roundedWeek = [];
-            roundedDay = [];
-        });
+            avgWeatherData.getAvgWeatherData((function (result) {
+
+                roundedWeek = result;
+
+                mysqlDaten.get5DaysPVData(function (result1) {
+
+                    /*
+                     *   Decision Tree
+                     *   Reference : 'Programming Collective Intelligence' by Toby Segaran.
+                     */
+
+                    /*  Arrayaufbau: [clouds, rain, temp]  */
 
 
-        // var weatherTestArr = [
-        //     [100, 9.5, 20],
-        //     [50, 0.5, 20],
-        //     [0, 0, 20],
-        //     [70, 5.5, 20],
-        //     [1, 0.1, 30.3]
-        // ];
+                    powerPVData = result1;
+                    for (var g = (powerPVData.length - roundedWeek.length); g < powerPVData.length; g++) {
+                        dataPower.push(powerPVData[g].power);
+                        dataDate.push(powerPVData[g].date);
+                    }
 
+                    var dt = new ml.DecisionTree({
+                        data: roundedWeek,
+                        result: dataPower
+                    });
+                    dt.build();
 
-        mysqlDaten.get5DaysPVData(function (result1) {
+                    for (var i = 0; i < weatherRawArr.length; i++) {
+                        // dt.prune(1.0); // 1.0 : mingain.
 
-            /* 
-             *   Decision Tree
-             *   Reference : 'Programming Collective Intelligence' by Toby Segaran.
-             */
+                        var vc = dt.classify(weatherRawArr[i]);
+                        var st = JSON.stringify(vc);
+                        var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
+                        powerForecast.push({
+                            date: dataDate[i],
+                            power: convertDTOutput
+                        });
 
-            /*  Arrayaufbau: [clouds, rain, temp]  */
+                    }
+                    callback(powerForecast);
 
-            var data = roundedWeek;
-console.log("was steht in 'data'?");
-            console.log(data);
-            powerPVData = result1;
-            for (var g = (powerPVData.length - data.length); g < powerPVData.length; g++) {
-                dataPower.push(powerPVData[g].power);
-                dataDate.push(powerPVData[g].date);
-            }
-
-            var result = dataPower;
-            var dt = new ml.DecisionTree({
-                data: data,
-                result: result
-            });
-            dt.build();
-
-            for (var i = 0; i < weatherTestArr.length; i++) {
-                // dt.prune(1.0); // 1.0 : mingain.
-
-                var vc = dt.classify(weatherTestArr[i]);
-                var st = JSON.stringify(vc);
-                var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
-                powerForecast.push({
-                    date: dataDate[i],
-                    power: convertDTOutput
                 });
 
-            }
-            callback(powerForecast);
+            }))
 
         });
+
     }
 };
