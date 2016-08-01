@@ -52,6 +52,8 @@ module.exports =
 
             var dayX = 0;
             var dayXMin1 = 0;
+            var today = new Date();
+
 
 //Umwandlung des JSON-Objekt zu einem Array, damit der DecisionTree die Werte verarbeiten kann
             //Es werden Durchschnitte gebildet. Je Tag kommen 8 Werte rein, da alle drei Stunden eine Vorhersage erstellt wird,
@@ -59,19 +61,66 @@ module.exports =
 
                 dayX = new Date(result.forecast[x].date_time);
 
+                    if (x >= 1) {
 
-                if (x >= 1) {
-
-                    dayXMin1 = new Date(result.forecast[x - 1].date_time);
+                        dayXMin1 = new Date(result.forecast[x - 1].date_time);
 
 
-                    if (dayX.getDay() == dayXMin1.getDay()) {
-                        counter++;
+                        if (dayX.getDay() == dayXMin1.getDay()) {
+                            counter++;
 
+                            adClouds += Number(result.forecast[x].clouds);
+
+                            // Falls "rain" undefined ist oder, falls in "rain" nichts drin steht (leere Objekt)
+                            // wird nichts gemacht, wenn etwas in dem Objekt steht wird es verwertet.
+                            if (result.forecast[x].rain !== undefined) {
+                                if (isNaN(result.forecast[x].rain["3h"]) == false) {
+
+                                    adRain += result.forecast[x].rain["3h"];
+
+                                }
+                            }
+
+                            else {
+
+                            }
+
+                            adTemp += result.forecast[x].temp;
+
+                        }
+                        else {
+//Reihenfolge der Werte [Wolken, Regen, Temperatur]
+                            if (dayXMin1.getDay() != today.getDay()) {
+                                weatherArr.push(
+                                    [
+                                        (adClouds / counter),
+                                        (adRain / counter),
+                                        (adTemp / counter)
+                                    ]
+                                );
+                            }
+                            adClouds = 0;
+                            adRain = 0;
+                            adTemp = 0;
+                            counter = 0;
+
+                            adClouds += Number(result.forecast[x].clouds);
+
+                            if (result.forecast[x].rain !== undefined) {
+                                if (isNaN(result.forecast[x].rain["3h"]) == false) {
+
+                                    adRain += result.forecast[x].rain["3h"];
+
+                                }
+                            }
+                            adTemp += Number(result.forecast[x].temp);
+
+                        }
+
+                    }
+                    else {
                         adClouds += Number(result.forecast[x].clouds);
 
-                        // Falls "rain" undefined ist oder, falls in "rain" nichts drin steht (leere Objekt)
-                        // wird nichts gemacht, wenn etwas in dem Objekt steht wird es verwertet.
                         if (result.forecast[x].rain !== undefined) {
                             if (isNaN(result.forecast[x].rain["3h"]) == false) {
 
@@ -79,16 +128,10 @@ module.exports =
 
                             }
                         }
-
-                        else {
-
-                        }
-
-                        adTemp += result.forecast[x].temp;
-
+                        adTemp += Number(result.forecast[x].temp);
                     }
-                    else {
-//Reihenfolge der Werte [Wolken, Regen, Temperatur]
+
+                    if (x == 4) {
                         weatherArr.push(
                             [
                                 (adClouds / counter),
@@ -101,49 +144,9 @@ module.exports =
                         adRain = 0;
                         adTemp = 0;
                         counter = 0;
-
-                        adClouds += Number(result.forecast[x].clouds);
-
-                        if (result.forecast[x].rain !== undefined) {
-                            if (isNaN(result.forecast[x].rain["3h"]) == false) {
-
-                                adRain += result.forecast[x].rain["3h"];
-
-                            }
-                        }
-                        adTemp += Number(result.forecast[x].temp);
-
                     }
-
                 }
-                else {
-                    adClouds += Number(result.forecast[x].clouds);
-
-                    if (result.forecast[x].rain !== undefined) {
-                        if (isNaN(result.forecast[x].rain["3h"]) == false) {
-
-                            adRain += result.forecast[x].rain["3h"];
-
-                        }
-                    }
-                    adTemp += Number(result.forecast[x].temp);
-                }
-
-                if (x == 4) {
-                    weatherArr.push(
-                        [
-                            (adClouds / counter),
-                            (adRain / counter),
-                            (adTemp / counter)
-                        ]
-                    );
-
-                    adClouds = 0;
-                    adRain = 0;
-                    adTemp = 0;
-                    counter = 0;
-                }
-            }
+            // }
 
 // Wetterdaten zum lernen des DTs, werden hier übergeben
             avgWeatherData.getAvgWeatherData((function (result) {
@@ -175,6 +178,7 @@ module.exports =
                         result: dataPower
                     });
                     dt.build(); // der DT wird aufgebaut
+console.log(weatherArr);
 
                     // Da wir 5 Tage im Voraus sehen wollen, wie viel Ertrag wir möglicherweise haben werden
                     // wird hier von die 5 Felder im Array iteriert und jedes Mal eine Klassifizeirung der neuen Daten durchgeführt.
