@@ -70,13 +70,13 @@ module.exports =
 
                         adClouds += Number(result.forecast[x].clouds);
 
+                        if (result.forecast[x].rain !== undefined) {
+                            if (isNaN(result.forecast[x].rain["3h"]) == false) {
 
-                        if (isNaN(result.forecast[x].rain["3h"]) == false) {
+                                adRain += result.forecast[x].rain["3h"];
 
-                            adRain += result.forecast[x].rain["3h"];
-
+                            }
                         }
-
 
                         else {
 
@@ -102,9 +102,12 @@ module.exports =
 
                         adClouds += Number(result.forecast[x].clouds);
 
-                        if (isNaN(result.forecast[x].rain["3h"]) == false) {
+                        if (result.forecast[x].rain !== undefined) {
+                            if (isNaN(result.forecast[x].rain["3h"]) == false) {
 
-                            adRain += result.forecast[x].rain["3h"];
+                                adRain += result.forecast[x].rain["3h"];
+
+                            }
                         }
                         adTemp += Number(result.forecast[x].temp);
 
@@ -114,10 +117,12 @@ module.exports =
                 else {
                     adClouds += Number(result.forecast[x].clouds);
 
-                    if (isNaN(result.forecast[x].rain["3h"]) == false) {
+                    if (result.forecast[x].rain !== undefined) {
+                        if (isNaN(result.forecast[x].rain["3h"]) == false) {
 
-                        adRain += result.forecast[x].rain["3h"];
+                            adRain += result.forecast[x].rain["3h"];
 
+                        }
                     }
                     adTemp += Number(result.forecast[x].temp);
                 }

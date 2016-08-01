@@ -33,8 +33,8 @@ $(document).ready(function () {
      */
     socket.on('powerForecast', function (data) {
 
-
-        document.getElementById("kWhGestern").innerHTML = data[9].power;
+//Anzeige für das "PV-Ertrags"-Panel, da Daten aus der mysqlDaten.js benötigt werden.
+        document.getElementById("kWhGestern").innerHTML = data[9].power + " kWh";
         document.getElementById("eurGestern").innerHTML = Math.round(data[9].power * 0.278 * 100) / 100 + " €";
 
         var margin = {top: 25, right: 20, bottom: 30, left: 20},
