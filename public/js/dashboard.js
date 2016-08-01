@@ -28,16 +28,15 @@ $(document).ready(function () {
 
 
     /*
-           PV-Daten-Diagramm letzen 10 Tage
+     PV-Daten-Diagramm letzen 10 Tage
      ================================================
      */
     socket.on('powerForecast', function (data) {
 
 
-
         document.getElementById("kWhGestern").innerHTML = data[9].power;
-        document.getElementById("eurGestern").innerHTML = Math.round(data[9].power*0.278*100)/100 + " €";
-        
+        document.getElementById("eurGestern").innerHTML = Math.round(data[9].power * 0.278 * 100) / 100 + " €";
+
         var margin = {top: 25, right: 20, bottom: 30, left: 20},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
@@ -65,11 +64,12 @@ $(document).ready(function () {
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
-            .html(function(d) {
-                return "<strong>kWh: </strong> <span style='color:red'>" +  Number((d.power).toFixed(1)); + "</span>";
+            .html(function (d) {
+                return "<strong>kWh: </strong> <span style='color:red'>" + Number((d.power).toFixed(1));
+                +"</span>";
             });
 
-             svg.call(tip);
+        svg.call(tip);
         function draw(data) {
 
 
@@ -96,17 +96,17 @@ $(document).ready(function () {
                 .text("Tages-Leistung in kWh");
 
             svg.append("text")
-                .attr("x", (width/2))
-                .attr("y", 0 - (margin.top/2.8))
+                .attr("x", (width / 2))
+                .attr("y", 0 - (margin.top / 2.8))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Photovoltaik Leistung (letzten 10 Tage)");
 
 
-            svg.selectAll(".bar")
+            svg.selectAll(".bar1")
                 .data(data)
                 .enter().append("rect")
-                .attr("class", "bar")
+                .attr("class", "bar1")
                 .attr("x", function (d) {
                     return x(d.date);
                 })
@@ -120,47 +120,46 @@ $(document).ready(function () {
                 .on('mouseover', tip.show)
                 .on('mouseout', tip.hide);
         }
-        
+
         draw(data);
-        
+
     });
 
 
-
     /*
-                   Aktuelles Wetter
+     Aktuelles Wetter
      ================================================
      */
 
     socket.on('weather', function (result) {
 
-            document.getElementById("ort").innerHTML = result.city_name;
+        document.getElementById("ort").innerHTML = result.city_name;
 
-            var temp = result.temp;
-            var temp = temp.toString();
-            document.getElementById("temp").innerHTML = temp.slice(0, 5)+" C";
+        var temp = result.temp;
+        var temp = temp.toString();
+        document.getElementById("temp").innerHTML = temp.slice(0, 5) + " C";
 
-            document.getElementById("clouds").innerHTML = result.clouds+" %";
+        document.getElementById("clouds").innerHTML = result.clouds + " %";
 
-            if (result.rain == null){
+        if (result.rain == null) {
 
             document.getElementById("rain").innerHTML = "kein Regen";
-            }
+        }
 
-            else {
+        else {
 
-             document.getElementById("rain").innerHTML = result.rain;
-            }
-
-
-            d1=new Date(result.sunrise * 1000);
-            document.getElementById("sunrise").innerHTML = d1.getHours()+":"+d1.getMinutes()+" Uhr";
-
-            d2=new Date(result.sunset * 1000);
-            document.getElementById("sunset").innerHTML = d2.getHours()+":"+d2.getMinutes()+" Uhr";
+            document.getElementById("rain").innerHTML = result.rain;
+        }
 
 
-        });
+        d1 = new Date(result.sunrise * 1000);
+        document.getElementById("sunrise").innerHTML = d1.getHours() + ":" + d1.getMinutes() + " Uhr";
+
+        d2 = new Date(result.sunset * 1000);
+        document.getElementById("sunset").innerHTML = d2.getHours() + ":" + d2.getMinutes() + " Uhr";
+
+
+    });
 
 
     /*
@@ -170,114 +169,112 @@ $(document).ready(function () {
 
     socket.on('currentPower', function (result) {
 
-document.getElementById("kW").innerHTML = result + " kW";
+        document.getElementById("kW").innerHTML = result + " kW";
 
 
     });
 
 
-
-
     /*
-            Wolken-Diagramm letzen 10 Tage
+     Wolken-Diagramm letzen 10 Tage
      ================================================
      */
     socket.on('weatherFiveDay', function (data) {
 
         console.log(data);
 
-    var margin = {top: 25, right: 20, bottom: 30, left: 20},
-                width = 750 - margin.left - margin.right,
-                height = 350 - margin.top - margin.bottom;
+        var margin = {top: 25, right: 20, bottom: 30, left: 20},
+            width = 750 - margin.left - margin.right,
+            height = 350 - margin.top - margin.bottom;
 
-            var x = d3.scale.ordinal()
-                .rangeRoundBands([2, width], .15);
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([2, width], .15);
 
-            var y = d3.scale.linear()
-                .range([height, 0]);
+        var y = d3.scale.linear()
+            .range([height, 0]);
 
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
 
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
 
-            var svg = d3.select("#fiveDays").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        var svg = d3.select("#fiveDays").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
-            .html(function(d) {
-                return "<strong>Wolkendecke in %:  </strong> <span style='color:red'>" +  Number((d.clouds).toFixed(1));
+            .html(function (d) {
+                return "<strong>Wolkendecke in %:  </strong> <span style='color:red'>" + Number((d.clouds).toFixed(1));
             });
 
         svg.call(tip);
 
 
-            function draw(data) {
+        function draw(data) {
 
 
-                x.domain(data.map(function (d) {
-                    return d.date_time;
-                }));
-                y.domain([0, d3.max(data, function (d) {
-                    return d.clouds;
-                })]);
+            x.domain(data.map(function (d) {
+                return d.date_time;
+            }));
+            y.domain([0, d3.max(data, function (d) {
+                return d.clouds;
+            })]);
 
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis);
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
 
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 5)
-                    .attr("dy", ".6em")
-                    .style("text-anchor", "end")
-                    .text("Ø Wolken in %");
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 5)
+                .attr("dy", ".6em")
+                .style("text-anchor", "end")
+                .text("Ø Wolken in %");
 
-                svg.append("text")
-                    .attr("x", (width/2))
-                    .attr("y", 0 - (margin.top/2.8))
-                    .attr("text-anchor", "middle")
-                    .style("font-size", "16px")
-                    .text("Wolken in % (letzten 10 Tage)");
+            svg.append("text")
+                .attr("x", (width / 2))
+                .attr("y", 0 - (margin.top / 2.8))
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .text("Wolken in % (letzten 10 Tage)");
 
 
-                svg.selectAll(".bar")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("class", "bar")
-                    .attr("x", function (d) {
-                        return x(d.date_time);
-                    })
-                    .attr("width", x.rangeBand())
-                    .attr("y", function (d) {
-                        return y(d.clouds);
-                    })
-                    .attr("height", function (d) {
-                        return height - y(d.clouds)
-                    })
-                    .on('mouseover', tip.show)
-                    .on('mouseout', tip.hide);
-            }
-        
-            draw(data);
+            svg.selectAll(".bar2")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar2")
+                .attr("x", function (d) {
+                    return x(d.date_time);
+                })
+                .attr("width", x.rangeBand())
+                .attr("y", function (d) {
+                    return y(d.clouds);
+                })
+                .attr("height", function (d) {
+                    return height - y(d.clouds)
+                })
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
+        }
 
-            });
+        draw(data);
+
+    });
 
 
     /*
-        Ertragsvorschau-Diagramm kommende 5 Tage
+     Ertragsvorschau-Diagramm kommende 5 Tage
      ================================================
      */
 
@@ -313,8 +310,8 @@ document.getElementById("kW").innerHTML = result + " kW";
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
-            .html(function(d) {
-                return "<strong>Voraussichtlicher Ertrag in kWh: </strong> <span style='color:red'>" +  Number((d.power).toFixed(1));
+            .html(function (d) {
+                return "<strong>Voraussichtlicher Ertrag in kWh: </strong> <span style='color:red'>" + Number((d.power).toFixed(1));
             });
 
         svg.call(tip);
@@ -346,17 +343,17 @@ document.getElementById("kW").innerHTML = result + " kW";
                 .text("Ø Wolken in %");
 
             svg.append("text")
-                .attr("x", (width/2))
-                .attr("y", 0 - (margin.top/2.8))
+                .attr("x", (width / 2))
+                .attr("y", 0 - (margin.top / 2.8))
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Tages-Leistung in kWh");
 
 
-            svg.selectAll(".bar")
+            svg.selectAll(".bar3")
                 .data(data)
                 .enter().append("rect")
-                .attr("class", "bar")
+                .attr("class", "bar3")
                 .attr("x", function (d) {
                     return x(d.date);
                 })
@@ -373,94 +370,9 @@ document.getElementById("kW").innerHTML = result + " kW";
 
         draw(data);
     });
-
-
-
-
-//     socket.on('powerForecastFive', function (data) {
-// console.log("Chart");
-//         console.log(data);
-//         var margin = {top: 25, right: 20, bottom: 30, left: 40},
-//             width = 750 - margin.left - margin.right,
-//             height = 350 - margin.top - margin.bottom;
-//
-//         var x = d3.scale.ordinal()
-//             .rangeRoundBands([0, width], .1);
-//
-//         var y = d3.scale.linear()
-//             .range([height, 0]);
-//
-//         var xAxis = d3.svg.axis()
-//             .scale(x)
-//             .orient("bottom");
-//
-//         var yAxis = d3.svg.axis()
-//             .scale(y)
-//             .orient("left");
-//
-//         var svg = d3.select("#powerForecastFive").append("svg")
-//             .attr("width", width + margin.left + margin.right)
-//             .attr("height", height + margin.top + margin.bottom)
-//             .append("g")
-//             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//
-//         var tip = d3.tip()
-//             .attr('class', 'd3-tip')
-//             .offset([-10, 0])
-//             .html(function(d) {
-//                 return "<strong>Voraussichtlicher Ertrag in kWh:  </strong> <span style='color:red'>" +  Number((d.power).toFixed(1));  + "</span>";
-//             });
-//
-//         svg.call(tip);
-//
-//
-//         function draw(data) {
-//
-//
-//             x.domain(data.map(function (d) {
-//                 return d.date;
-//             }));
-//             y.domain([0, d3.max(data, function (d) {
-//                 return d.power;
-//             })]);
-//
-//             svg.append("g")
-//                 .attr("class", "x axis")
-//                 .attr("transform", "translate(0," + height + ")")
-//                 .call(xAxis);
-//
-//             svg.append("g")
-//                 .attr("class", "y axis")
-//                 .call(yAxis)
-//                 .append("text")
-//                 .attr("transform", "rotate(-90)")
-//                 .attr("y", 5)
-//                 .attr("dy", ".6em")
-//                 .style("text-anchor", "end")
-//                 .text("Tages-Leistung in kWh");
-//
-//
-//             svg.selectAll(".bar")
-//                 .data(data)
-//                 .enter().append("rect")
-//                 .attr("class", "bar")
-//                 .attr("x", function (d) {
-//                     return x(d.date);
-//                 })
-//                 .attr("width", x.rangeBand())
-//                 .attr("y", function (d) {
-//                     return y(d.power);
-//                 })
-//                 .attr("height", function (d) {
-//                     return height - y(d.power);
-//                 })
-//                 .on('mouseover', tip.show)
-//                 .on('mouseout', tip.hide);
-//         }
-//
-//         draw(data);
-//         location.reload();
-//     });
 });
+
+
+
 
 

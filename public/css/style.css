@@ -12,11 +12,23 @@ body {
     text-align: center;
 }
 
+#ertragsvorhersage{
+    display: none;
+}
+
 /*
         D3 - Bar Chart
 ===============================*/
-.bar {
+.bar1 {
     fill: steelblue;
+}
+
+.bar2 {
+    fill: grey;
+}
+
+.bar3 {
+    fill: green;
 }
 
 .axis {

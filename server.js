@@ -14,7 +14,12 @@ var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
 var currentPower = require('./currentPower.js');
 var calculatePowerForecast = require('./calculatePowerForecast_desiciontree.js');
-var array = new Array();
+var powerForecast = [];
+var weatherTenDays = [];
+var currentWeather = [];
+var currentEnergy = [];
+var powerTenResults = [];
+var weatherForecast = [];
 
 var express = require('express')
     , app = express()
@@ -24,71 +29,68 @@ var express = require('express')
 
 
 
-//Übertrage Daten zur Anzeige der Ertragsvorschau
-calculatePowerForecast.calcPowerForecast(function (result) {
-
-    array = result;
-
-
-});
-
-
 
 io.sockets.on('connection', function (socket) {
 
 
-
-        socket.emit('powerForecastFive', array);
-
-
-
 //Übertrage Daten zur Anzeige des vergangenen Wetters
-    weatherFiveDay.getFiveDayWeatherData(function (result) {
-        
-        socket.emit('weatherFiveDay', result);
-        
-    });
-
+weatherFiveDay.getFiveDayWeatherData(function (result2) {
+    weatherTenDays = result2;
 
     //Übertrage Daten zur Anzeige des aktuellen Wetters
+    weatherAPI.getActualWeather(function (result3) {
+        currentWeather = result3;
 
-    weatherAPI.getActualWeather(function (result) {
-        
-        socket.emit('weather', result);
-        
+        //Übertrage Daten zur Anzeige des aktuellen PV-Ertrags
+        currentPower.getCurrentPower(function (result4) {
+            currentEnergy = result4;
+
+//Übertrage Daten zur Anzeige der Ertragsvorschau
+calculatePowerForecast.calcPowerForecast(function (result1) {
+    powerForecast = result1;
+
+
+
+
+
+
+
+                //Übertrage Daten zur Anzeige der vergangenen PV-Leistung
+                mysqlDaten.get5DaysPVData(function (result5) {
+                    for (var i = (result5.length - 10); i < (result5.length); i++) {
+                        powerTenResults.push(result5[i]);
+                    }
+
+
+                    //Übertrage Daten zur Anzeige der vergangenen Wettervorhersagen
+                    forecastAPI.get5DayForecast(function (result6) {
+                        weatherForecast = result6;
+
+                    });
+                });
+            });
+        });
     });
+});
 
 
-    //Übertrage Daten zur Anzeige des aktuellen PV-Ertrags
 
-    currentPower.getCurrentPower(function (result) {
+    socket.emit('powerForecastFive', powerForecast);
 
-        socket.emit('currentPower', result);
+    socket.emit('weatherFiveDay', weatherTenDays);
 
-    });
+    socket.emit('weather', currentWeather);
 
+    socket.emit('currentPower', currentEnergy);
 
-    //Übertrage Daten zur Anzeige der vergangenen PV-Leistung
-    mysqlDaten.get5DaysPVData(function (result) {
-        var tenResults = [];
-        for (var i = (result.length - 10); i < (result.length); i++) {
-            tenResults.push(result[i]);
-        }
+    socket.emit('powerForecast', powerTenResults);
 
-        socket.emit('powerForecast', tenResults);
-
-    });
+    socket.emit('weatherForecast', weatherForecast);
 
 
-    //Übertrage Daten zur Anzeige der vergangenen Wettervorhersagen
-    forecastAPI.get5DayForecast(function (result) {
-
-
-        socket.emit('weatherForecast', result);
-
-    });
 
 });
+
 
 // Webserver
 // auf den Port x schalten
