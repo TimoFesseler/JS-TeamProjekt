@@ -367,7 +367,6 @@ $(document).ready(function () {
         }
 
         draw(data);
-        location.reload();
     });
 });
 

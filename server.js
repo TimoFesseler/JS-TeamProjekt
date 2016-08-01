@@ -64,6 +64,21 @@ io.sockets.on('connection', function (socket) {
                             forecastAPI.get5DayForecast(function (result6) {
                                 weatherForecast = result6;
 
+                                socket.emit('powerForecastFive', powerForecast);
+
+                                socket.emit('weatherFiveDay', weatherTenDays);
+
+                                socket.emit('weather', currentWeather);
+
+                                socket.emit('currentPower', currentEnergy);
+
+                                socket.emit('powerForecast', powerTenResults);
+
+                                socket.emit('weatherForecast', weatherForecast);
+
+
+
+
                             });
                         });
                     });
@@ -72,21 +87,11 @@ io.sockets.on('connection', function (socket) {
         });
 
 
-        socket.emit('powerForecastFive', powerForecast);
 
-        socket.emit('weatherFiveDay', weatherTenDays);
-
-        socket.emit('weather', currentWeather);
-
-        socket.emit('currentPower', currentEnergy);
-
-        socket.emit('powerForecast', powerTenResults);
-
-        socket.emit('weatherForecast', weatherForecast);
 
 
     });
-
+});
 
 // Webserver
 // auf den Port x schalten
@@ -106,4 +111,3 @@ io.sockets.on('connection', function (socket) {
 
 // Portnummer in die Konsole schreiben
     console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');
-});
