@@ -14,12 +14,14 @@ var weatherFiveDay = require('./5DayAvgWeather.js');
 var mysqlDaten = require('./mysqlDaten.js');
 var currentPower = require('./currentPower.js');
 var calculatePowerForecast = require('./calculatePowerForecast_desiciontree.js');
+
 var powerForecast = [];
 var weatherTenDays = [];
 var currentWeather = [];
 var currentEnergy = [];
 var powerTenResults = [];
 var weatherForecast = [];
+
 
 var express = require('express')
     , app = express()
@@ -28,9 +30,10 @@ var express = require('express')
     , conf = require('./config.json');
 
 
-
-
 io.sockets.on('connection', function (socket) {
+
+    //Übertrage Daten zur Anzeige der Ertragsvorschau
+    calculatePowerForecast.calcPowerForecast(function (result) {
 
 
 //Übertrage Daten zur Anzeige des vergangenen Wetters

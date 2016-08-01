@@ -281,8 +281,6 @@ $(document).ready(function () {
 
     socket.on('powerForecastFive', function (data) {
 
-        console.log(data);
-
         var margin = {top: 25, right: 20, bottom: 30, left: 20},
             width = 750 - margin.left - margin.right,
             height = 350 - margin.top - margin.bottom;
@@ -369,6 +367,7 @@ $(document).ready(function () {
         }
 
         draw(data);
+        location.reload();
     });
 });
 
