@@ -172,7 +172,7 @@ var today = new Date();
 
                         var vc = dt.classify(weatherArr[i]);
                         var st = JSON.stringify(vc);
-                        var convertDTOutput = st.match(/{(.*)}/).pop().match(/"(.*)"/).pop();
+                        var convertDTOutput = parseFloat(st.match(/{(.*)}/).pop().match(/"(.*)"/).pop());
                         powerForecast.push({
                             date: (today.getDate()+i+1) + ". " + month[today.getMonth()] + " " + today.getFullYear(),
                             power: convertDTOutput
@@ -181,6 +181,9 @@ var today = new Date();
                     }
 
                     callback(powerForecast);
+
+                    powerForecast=[];
+                    weatherArr=[];
 
                 });
 

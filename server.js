@@ -24,13 +24,14 @@ var express = require('express')
 
 io.sockets.on('connection', function (socket) {
 
+    //Übertrage Daten zur Anzeige der Ertragsvorschau
     calculatePowerForecast.calcPowerForecast(function (result) {
-       console.log(result)
+
         socket.emit('powerForecastFive', result);
 
     });
 
-
+//Übertrage Daten zur Anzeige des vergangenen Wetters
     weatherFiveDay.getFiveDayWeatherData(function (result) {
         
         socket.emit('weatherFiveDay', result);
@@ -58,11 +59,12 @@ io.sockets.on('connection', function (socket) {
 
     //Übertrage Daten zur Anzeige der vergangenen PV-Leistung
     mysqlDaten.get5DaysPVData(function (result) {
-        var fiveResults = [];
+        var tenResults = [];
         for (var i = (result.length - 10); i < (result.length); i++) {
-            fiveResults.push(result[i]);
+            tenResults.push(result[i]);
         }
-        socket.emit('powerForecast', fiveResults);
+
+        socket.emit('powerForecast', tenResults);
 
     });
 
