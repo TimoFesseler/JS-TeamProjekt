@@ -65,7 +65,6 @@ module.exports =
                     dayXMin1 = new Date(result.forecast[x - 1].date_time);
 
 
-
                     if (dayX.getDay() == dayXMin1.getDay()) {
                         counter++;
 
@@ -90,9 +89,9 @@ module.exports =
 
                         weatherArr.push(
                             [
-                                (adClouds/counter),
+                                (adClouds / counter),
                                 (adRain / counter),
-                                (adTemp/counter)
+                                (adTemp / counter)
                             ]
                         );
 
@@ -123,12 +122,12 @@ module.exports =
                     adTemp += Number(result.forecast[x].temp);
                 }
 
-                if(x==4){
+                if (x == 4) {
                     weatherArr.push(
                         [
-                            (adClouds/counter),
+                            (adClouds / counter),
                             (adRain / counter),
-                            (adTemp/counter)
+                            (adTemp / counter)
                         ]
                     );
 
@@ -138,7 +137,6 @@ module.exports =
                     counter = 0;
                 }
             }
-
 
 
             avgWeatherData.getAvgWeatherData((function (result) {
@@ -154,7 +152,7 @@ module.exports =
 
                     /*  Arrayaufbau: [clouds, rain, temp]  */
 
-var today = new Date();
+                    var today = new Date();
 
                     powerPVData = result1;
                     for (var g = (powerPVData.length - roundedWeek.length); g < powerPVData.length; g++) {
@@ -174,7 +172,7 @@ var today = new Date();
                         var st = JSON.stringify(vc);
                         var convertDTOutput = parseFloat(st.match(/{(.*)}/).pop().match(/"(.*)"/).pop());
                         powerForecast.push({
-                            date: (today.getDate()+i+1) + ". " + month[today.getMonth()] + " " + today.getFullYear(),
+                            date: (today.getDate() + i + 1) + ". " + month[today.getMonth()] + " " + today.getFullYear(),
                             power: convertDTOutput
                         });
 
@@ -182,8 +180,8 @@ var today = new Date();
 
                     callback(powerForecast);
 
-                    powerForecast=[];
-                    weatherArr=[];
+                    powerForecast = [];
+                    weatherArr = [];
 
                 });
 

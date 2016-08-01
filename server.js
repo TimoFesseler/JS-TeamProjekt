@@ -4,8 +4,7 @@
 
 /*
  ## Server-Seitig
- ++++++++   -   ++++++++
- ++++++++   -   ++++++++
+ ++++++++   Zentrale Verteilung der Daten von Serverseitig zum Client   ++++++++
  */
 
 var forecastAPI = require('./forecastAPI.js');
@@ -15,6 +14,7 @@ var mysqlDaten = require('./mysqlDaten.js');
 var currentPower = require('./currentPower.js');
 var calculatePowerForecast = require('./calculatePowerForecast_desiciontree.js');
 
+//Variablen zur Speicherung der Übergabewerte der Funktionen
 var powerForecast = [];
 var weatherTenDays = [];
 var currentWeather = [];
@@ -31,10 +31,6 @@ var express = require('express')
 
 
 io.sockets.on('connection', function (socket) {
-
-    //Übertrage Daten zur Anzeige der Ertragsvorschau
-    calculatePowerForecast.calcPowerForecast(function (result) {
-
 
 //Übertrage Daten zur Anzeige des vergangenen Wetters
         weatherFiveDay.getFiveDayWeatherData(function (result2) {
@@ -86,11 +82,6 @@ io.sockets.on('connection', function (socket) {
             });
         });
 
-
-
-
-
-    });
 });
 
 // Webserver
