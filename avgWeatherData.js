@@ -1,3 +1,10 @@
+/*
+ ## Server-Seitig
+ ++++++++   Abfrage der MongoDB   ++++++++
+ ++++++++   Aufbereitung der gespeicherten Wetterdaten   ++++++++
+ */
+
+
 var mongoose = require('mongoose');
 var request = require('request');
 require('./weather_model');

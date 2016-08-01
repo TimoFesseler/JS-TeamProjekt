@@ -32,7 +32,7 @@ var express = require('express')
 
 io.sockets.on('connection', function (socket) {
 
-//Übertrage Daten zur Anzeige des vergangenen Wetters
+        //Übertrage Daten zur Anzeige des vergangenen Wetters
         weatherFiveDay.getFiveDayWeatherData(function (result2) {
             weatherTenDays = result2;
 
@@ -44,7 +44,7 @@ io.sockets.on('connection', function (socket) {
                 currentPower.getCurrentPower(function (result4) {
                     currentEnergy = result4;
 
-//Übertrage Daten zur Anzeige der Ertragsvorschau
+                    //Übertrage Daten zur Anzeige der Ertragsvorschau
                     calculatePowerForecast.calcPowerForecast(function (result1) {
                         powerForecast = result1;
 
@@ -72,16 +72,12 @@ io.sockets.on('connection', function (socket) {
 
                                 socket.emit('weatherForecast', weatherForecast);
 
-
-
-
                             });
                         });
                     });
                 });
             });
         });
-
 });
 
 // Webserver
@@ -98,7 +94,6 @@ io.sockets.on('connection', function (socket) {
         res.sendfile(__dirname + '/public/index.html');
 
     });
-
 
 // Portnummer in die Konsole schreiben
     console.log('Der Server läuft nun unter http://127.0.0.1:' + conf.port + '/');

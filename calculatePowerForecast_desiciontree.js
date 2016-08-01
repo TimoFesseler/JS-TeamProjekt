@@ -1,7 +1,6 @@
 /*
  ## Server-Seitig
- ++++++++   -   ++++++++
- ++++++++   -   ++++++++
+ ++++++++   Berechnung der Ertragsvorhersage durch einen Decision Tree   ++++++++
  */
 
 
@@ -14,12 +13,12 @@ var avgWeatherData = require('./avgWeatherData');
 
 
 var dataPower = [];
-var dataDate = [];
+
 /* Vorhersagen aus dem Decision Tree */
 var powerPVData = null;
 
+//Variablen zum Zwischenspeichern der Parametervariablen
 var powerForecast = [];
-var weatherRawArr = [];
 var weatherArr = [];
 var roundedWeek = [];
 
@@ -54,7 +53,8 @@ module.exports =
             var dayX = 0;
             var dayXMin1 = 0;
 
-
+//Umwandlung des JSON-Objekt zu einem Array, damit der DecisionTree die Werte verarbeiten kann
+            //Es werden Durchschnitte gebildet. Je Tag kommen 8 Werte rein, da alle drei Stunden eine Vorhersage erstellt wird,
             for (var x = 0; x < result.forecast.length; x++) {
 
                 dayX = new Date(result.forecast[x].date_time);
@@ -70,6 +70,8 @@ module.exports =
 
                         adClouds += Number(result.forecast[x].clouds);
 
+                        // Falls "rain" undefined ist oder, falls in "rain" nichts drin steht (leere Objekt)
+                        // wird nichts gemacht, wenn etwas in dem Objekt steht wird es verwertet.
                         if (result.forecast[x].rain !== undefined) {
                             if (isNaN(result.forecast[x].rain["3h"]) == false) {
 
@@ -86,7 +88,7 @@ module.exports =
 
                     }
                     else {
-
+//Reihenfolge der Werte [Wolken, Regen, Temperatur]
                         weatherArr.push(
                             [
                                 (adClouds / counter),
@@ -143,11 +145,13 @@ module.exports =
                 }
             }
 
-
+// Wetterdaten zum lernen des DTs, werden hier übergeben
             avgWeatherData.getAvgWeatherData((function (result) {
 
                 roundedWeek = result;
 
+
+                //PV-Ertragsdaten werden hier übergeben, ebenfalls zum Lernen.
                 mysqlDaten.get5DaysPVData(function (result1) {
 
                     /*
@@ -164,17 +168,22 @@ module.exports =
                         dataPower.push(powerPVData[g].power);
                     }
 
+
+                    // Hier werden dem DT die Historischen Daten übergeben
                     var dt = new ml.DecisionTree({
                         data: roundedWeek,
                         result: dataPower
                     });
-                    dt.build();
+                    dt.build(); // der DT wird aufgebaut
 
+                    // Da wir 5 Tage im Voraus sehen wollen, wie viel Ertrag wir möglicherweise haben werden
+                    // wird hier von die 5 Felder im Array iteriert und jedes Mal eine Klassifizeirung der neuen Daten durchgeführt.
                     for (var i = 0; i < weatherArr.length; i++) {
-                        // dt.prune(1.0); // 1.0 : mingain.
 
                         var vc = dt.classify(weatherArr[i]);
                         var st = JSON.stringify(vc);
+
+                        //Umwandlung der Ausgabe des DT, damit die Daten später im D3-Chart dargestellt werden können.
                         var convertDTOutput = parseFloat(st.match(/{(.*)}/).pop().match(/"(.*)"/).pop());
                         powerForecast.push({
                             date: (today.getDate() + i + 1) + ". " + month[today.getMonth()] + " " + today.getFullYear(),

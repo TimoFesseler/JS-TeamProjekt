@@ -50,9 +50,6 @@ module.exports =
             // Speichern der kWh-Anzahl, je ausgelesener Zeile aus der DB
             var currentPower = (rows[0].Power / 1000);
 
-            // Objekterzeugnung und schreiben in das daysJSON-Array
-
-
             callback(currentPower);
 
         });
