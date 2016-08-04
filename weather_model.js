@@ -19,6 +19,7 @@ var mongoose = require('mongoose');
             lon: Number,
             lat: Number
         },
+        description: String,
         sunrise: Number,
         sunset: Number,
 

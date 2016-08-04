@@ -30,11 +30,11 @@ module.exports =
 //diese anschließend zurück. Da Wetterdaten werden ebenfalls in einer MongoDB gespeichert.
     getActualWeather: function (callback) {
 
-        console.log(apiUrl + cityID + '&APPID=' + token);
+        console.log(apiUrl + cityID + '&lang=de&APPID=' + token);
 
 
         //Hier wird der String zur Abfrage zusammen gefügt und der request anschließend gestartet
-        request(apiUrl + cityID + '&APPID=' + token, function (error, response, body) {
+        request(apiUrl + cityID + '&lang=de&APPID=' + token, function (error, response, body) {
             if (!error) {
 
                 var data = JSON.parse(body);
@@ -50,6 +50,7 @@ module.exports =
                             lon: data.coord.lon,
                             lat: data.coord.lat
                         },
+                        description: data.weather[0].description,
                         sunrise: data.sys.sunrise,
                         sunset: data.sys.sunset,
 
@@ -57,10 +58,9 @@ module.exports =
                         temp: (data.main.temp - 273.15),
                         temp_min: (data.main.temp_min - 273.15),
                         temp_max: (data.main.temp_max - 273.15),
-                        //rain: data.rain['3h'],
+                        rain: data.rain['1h'],
                         clouds: data.clouds.all
                     });
-
 
                 //Liefert die Wetterdaten zurück
                 callback(weatherData);
@@ -70,7 +70,7 @@ module.exports =
 
             if (error) {
 
-                request(apiUrl + "2878695" + '&APPID=' + token, function (error, response, body) {
+                request(apiUrl + "2878695" + '&lang=de&APPID=' + token, function (error, response, body) {
                     if (!error) {
 
                         var data = JSON.parse(body);
@@ -86,6 +86,7 @@ module.exports =
                                     lon: data.coord.lon,
                                     lat: data.coord.lat
                                 },
+                                description: data.weather[0].description,
                                 sunrise: data.sys.sunrise,
                                 sunset: data.sys.sunset,
 
@@ -93,16 +94,14 @@ module.exports =
                                 temp: (data.main.temp - 273.15),
                                 temp_min: (data.main.temp_min - 273.15),
                                 temp_max: (data.main.temp_max - 273.15),
-                                //rain: data.rain['3h'],
+                                rain: data.rain['1h'],
                                 clouds: data.clouds.all
                             });
-
 
                         //Liefert die Wetterdaten zurück
                         callback(weatherData);
 
                     }
-
 
                 });
 

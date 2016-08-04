@@ -45,18 +45,27 @@ module.exports =
 // Ausführung der SQL-Abfrage mit Verarbeitung der Daten
 // Letzten Eintrag abrufen
         connectionMySQL.query('SELECT * FROM DayData ORDER BY TimeStamp DESC LIMIT 1', function (err, rows, fields) {
-            if (err) throw err;
+                if (err) throw err;
 
-            // Speichern der kWh-Anzahl, je ausgelesener Zeile aus der DB
-            var currentPower = (rows[0].Power / 1000);
+                var today = new Date();
+                var currentTime = today.getTime();
+                if ((currentTime - rows[0].TimeStamp) < (15 * 1000 * 60 * 60)) {
 
-            callback(currentPower);
+                    // Speichern der kWh-Anzahl, je ausgelesener Zeile aus der DB
+                    var currentPower = (rows[0].Power / 1000);
+                }
+                else {
+                    currentPower = 0;
+                }
 
-        });
+                callback(currentPower);
+
+            });
 
 
 // Verbindung wird hier beendet
         connectionMySQL.end(function (err) {
         });
     }
-};
+}
+;

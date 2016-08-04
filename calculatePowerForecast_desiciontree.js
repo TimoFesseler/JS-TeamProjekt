@@ -178,7 +178,6 @@ module.exports =
                         result: dataPower
                     });
                     dt.build(); // der DT wird aufgebaut
-console.log(weatherArr);
 
                     // Da wir 5 Tage im Voraus sehen wollen, wie viel Ertrag wir möglicherweise haben werden
                     // wird hier von die 5 Felder im Array iteriert und jedes Mal eine Klassifizeirung der neuen Daten durchgeführt.

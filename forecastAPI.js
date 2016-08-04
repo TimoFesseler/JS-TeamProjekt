@@ -69,7 +69,6 @@ module.exports =
                                 'rain': data.list[i].rain
 
                             });
-
                         }
 
 

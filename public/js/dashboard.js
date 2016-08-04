@@ -133,6 +133,8 @@ $(document).ready(function () {
 
     socket.on('weather', function (result) {
 
+        document.getElementById("weatherType").innerHTML = '<h3 class="panel-title">Aktuelles Wetter - ' + result.description +  '</h3>'
+
         document.getElementById("ort").innerHTML = result.city_name;
 
         var temp = result.temp;
@@ -148,15 +150,19 @@ $(document).ready(function () {
 
         else {
 
-            document.getElementById("rain").innerHTML = result.rain;
+            document.getElementById("rain").innerHTML = result.rain + " mm/Std";
         }
 
 
         d1 = new Date(result.sunrise * 1000);
-        document.getElementById("sunrise").innerHTML = d1.getHours() + ":" + d1.getMinutes() + " Uhr";
+        var d1minute = d1.getMinutes();
+        if(d1minute < 10){ d1minute = '0' + d1minute;}
+        document.getElementById("sunrise").innerHTML = d1.getHours() + ":" + d1minute + " Uhr";
 
         d2 = new Date(result.sunset * 1000);
-        document.getElementById("sunset").innerHTML = d2.getHours() + ":" + d2.getMinutes() + " Uhr";
+        var d2minute = d2.getMinutes();
+        if(d2minute < 10){ d2minute = '0' + d2minute;}
+        document.getElementById("sunset").innerHTML = d2.getHours() + ":" + d2minute + " Uhr";
 
 
     });
