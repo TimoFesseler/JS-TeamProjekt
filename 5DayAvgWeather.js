@@ -49,6 +49,7 @@ module.exports =
 
 
         Weather.find({"date_time": {$gt: date2, $lt: date1}}, function (err, docs) {
+            console.log("hallo");
 
             var dateFirst = docs[0].date_time.getDate();
 
