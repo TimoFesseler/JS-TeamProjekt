@@ -58,7 +58,7 @@ module.exports =
                         temp: (data.main.temp - 273.15),
                         temp_min: (data.main.temp_min - 273.15),
                         temp_max: (data.main.temp_max - 273.15),
-                        rain: data.rain['1h'],
+                        rain: data.rain['3h'],
                         clouds: data.clouds.all
                     });
 

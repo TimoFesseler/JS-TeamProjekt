@@ -52,7 +52,7 @@ module.exports =
             console.log("hallo");
 
             var dateFirst = docs[0].date_time.getDate();
-
+            console.log("hallo2");
 
             for (var i = 0; i < docs.length; i++) {
 
