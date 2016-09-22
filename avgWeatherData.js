@@ -54,6 +54,7 @@ module.exports =
         var roundedWeek = [];
 
         Weather.find({"date_time": {$gt: date2, $lt: date1}}, function (err, docs) {
+            console.log(docs);
             dateFirst = docs[0].date_time.getDate();
 
             for (var i = 0; i < docs.length; i++) {
