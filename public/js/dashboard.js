@@ -32,6 +32,8 @@ $(document).ready(function () {
      ================================================
      */
     socket.on('powerForecast', function (data) {
+        console.log("fehler");
+        console.log(data);
 
 //Anzeige für das "PV-Ertrags"-Panel, da Daten aus der mysqlDaten.js benötigt werden.
         document.getElementById("kWhGestern").innerHTML = data[9].power + " kWh";
